@@ -1,0 +1,1 @@
+// Pagination DTO - page, limit, sort parameters

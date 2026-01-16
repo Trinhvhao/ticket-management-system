@@ -1,0 +1,1 @@
+// Response DTO - standardized API response format
