@@ -1,0 +1,10 @@
+export { Header } from './Header';
+export { HeroSection } from './HeroSection';
+export { StatsSection } from './StatsSection';
+export { CapabilitiesSection } from './CapabilitiesSection';
+export { WorkflowSection } from './WorkflowSection';
+export { FeaturesShowcase } from './FeaturesShowcase';
+export { AIFeaturesSection } from './AIFeaturesSection';
+export { EcosystemSection } from './EcosystemSection';
+export { TicketDemoSection } from './TicketDemoSection';
+export { Footer } from './Footer';
