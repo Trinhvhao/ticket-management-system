@@ -12,6 +12,8 @@ import {
   Palette,
   Save,
   Loader2,
+  Mail,
+  Send,
 } from 'lucide-react';
 
 type TabType = 'profile' | 'password' | 'notifications' | 'appearance';
@@ -101,6 +103,24 @@ export default function SettingsPage() {
     },
   });
 
+  // Test email mutation
+  const testEmailMutation = useMutation({
+    mutationFn: async () => {
+      const response = await apiClient.post('/notifications/test-email');
+      return response.data;
+    },
+    onSuccess: (data) => {
+      if (data.success) {
+        toast.success(`Test email sent to ${data.recipient}! Check your inbox.`);
+      } else {
+        toast.error('Failed to send test email. Check SMTP configuration.');
+      }
+    },
+    onError: (error: any) => {
+      toast.error(error.response?.data?.message || 'Failed to send test email');
+    },
+  });
+
   const handleSaveProfile = async () => {
     const updateData: UpdateProfileRequest = {};
     if (profileData.fullName !== user?.fullName) updateData.fullName = profileData.fullName;
@@ -136,6 +156,7 @@ export default function SettingsPage() {
   };
 
   const saving = updateProfileMutation.isPending || changePasswordMutation.isPending;
+  const sendingEmail = testEmailMutation.isPending;
 
   return (
     <div className="space-y-6">
@@ -272,7 +293,40 @@ export default function SettingsPage() {
 
             {activeTab === 'notifications' && (
               <div className="space-y-6">
-                <h2 className="text-lg font-semibold text-gray-900">Notification Preferences</h2>
+                <div className="flex items-center justify-between">
+                  <h2 className="text-lg font-semibold text-gray-900">Notification Preferences</h2>
+                  <button
+                    onClick={() => testEmailMutation.mutate()}
+                    disabled={sendingEmail}
+                    className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 transition-colors"
+                  >
+                    {sendingEmail ? (
+                      <>
+                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                        Sending...
+                      </>
+                    ) : (
+                      <>
+                        <Send className="w-4 h-4 mr-2" />
+                        Test Email
+                      </>
+                    )}
+                  </button>
+                </div>
+
+                {/* Email Configuration Info */}
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                  <div className="flex items-start space-x-3">
+                    <Mail className="w-5 h-5 text-blue-600 mt-0.5" />
+                    <div>
+                      <h3 className="font-medium text-blue-900">Email Notifications</h3>
+                      <p className="text-sm text-blue-700 mt-1">
+                        Click "Test Email" to verify your SMTP configuration. You'll receive a test email at <strong>{user?.email}</strong>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
                 <div className="space-y-4">
                   <label className="flex items-center justify-between p-4 bg-gray-50 rounded-lg cursor-pointer">
                     <div>

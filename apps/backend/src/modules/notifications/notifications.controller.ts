@@ -6,19 +6,24 @@ import {
   Param,
   UseGuards,
   ParseIntPipe,
+  Post,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiParam } from '@nestjs/swagger';
 import { NotificationsService } from './notifications.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
 import { User } from '../../database/entities';
+import { EmailService } from '../../common/services/email.service';
 
 @ApiTags('notifications')
 @ApiBearerAuth('JWT-auth')
 @Controller('notifications')
 @UseGuards(JwtAuthGuard)
 export class NotificationsController {
-  constructor(private readonly notificationsService: NotificationsService) {}
+  constructor(
+    private readonly notificationsService: NotificationsService,
+    private readonly emailService: EmailService,
+  ) {}
 
   @Get()
   @ApiOperation({ summary: 'Get my notifications', description: 'Get all notifications for current user' })
@@ -84,5 +89,44 @@ export class NotificationsController {
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   removeAll(@CurrentUser() user: User) {
     return this.notificationsService.deleteAll(user.id);
+  }
+
+  @Post('test-email')
+  @ApiOperation({ summary: 'Test email configuration', description: 'Send a test email to verify SMTP settings' })
+  @ApiResponse({ status: 200, description: 'Test email sent successfully' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  async testEmail(@CurrentUser() user: User) {
+    const success = await this.emailService.sendEmail({
+      to: user.email,
+      subject: 'Test Email - NexusFlow Ticket System',
+      html: `
+        <h2>🎉 Email Configuration Successful!</h2>
+        <p>Hi ${user.fullName},</p>
+        <p>This is a test email to confirm that your SMTP configuration is working correctly.</p>
+        <ul>
+          <li><strong>System:</strong> NexusFlow Ticket Management System</li>
+          <li><strong>Sent to:</strong> ${user.email}</li>
+          <li><strong>Time:</strong> ${new Date().toLocaleString('vi-VN')}</li>
+        </ul>
+        <p>You will now receive email notifications for:</p>
+        <ul>
+          <li>✅ Ticket assignments</li>
+          <li>✅ Ticket updates</li>
+          <li>✅ New comments</li>
+          <li>✅ SLA warnings</li>
+          <li>✅ Ticket resolutions</li>
+        </ul>
+        <p>Best regards,<br>NexusFlow Support Team</p>
+      `,
+      text: `Email Configuration Successful!\n\nHi ${user.fullName},\n\nThis is a test email to confirm that your SMTP configuration is working correctly.\n\nSystem: NexusFlow Ticket Management System\nSent to: ${user.email}\nTime: ${new Date().toLocaleString('vi-VN')}\n\nBest regards,\nNexusFlow Support Team`,
+    });
+
+    return {
+      success,
+      message: success 
+        ? 'Test email sent successfully! Check your inbox.' 
+        : 'Failed to send test email. Please check your SMTP configuration.',
+      recipient: user.email,
+    };
   }
 }

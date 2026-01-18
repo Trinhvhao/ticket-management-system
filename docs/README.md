@@ -1,66 +1,85 @@
-# 👋 Hey there! I'm Vũ Đỗ
+# Documentation Index
 
-<div align="left">
-  <img src="https://readme-typing-svg.herokuapp.com?font=Geist+Mono&size=32&duration=3000&pause=1000&color=0EA5E9&center=false&vCenter=true&width=700&lines=Backend+Web+Developer;Code+Hard,+Sleep+Rarely;Đừng+Để+Tao+Siuuuu+!!" alt="Typing Animation" />
-</div>
+Tài liệu dự án Ticket Management System.
 
-<p align="left">
-  <a target="_blank" href="https://vudovn.dev"><img src="https://img.shields.io/badge/Website-0EA5E9?style=for-the-badge&logo=google-chrome&logoColor=white" /></a>
-  <a target="_blank" href="https://www.tiktok.com/@vudovn"><img src="https://img.shields.io/badge/TikTok-000000?style=for-the-badge&logo=tiktok&logoColor=white" /></a>
-  <a target="_blank" href="https://soundcloud.com/vudovn"><img src="https://img.shields.io/badge/SoundCloud-FF5500?style=for-the-badge&logo=soundcloud&logoColor=white" /></a>
-  <a target="_blank" href="https://www.instagram.com/vudovn"><img src="https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white" /></a>
-  <a target="_blank" href="https://facebook.com/vudovn.354"><img src="https://img.shields.io/badge/Facebook-1877F2?style=for-the-badge&logo=facebook&logoColor=white" /></a>
-</p>
+## 📊 Status & Overview
+
+- [📊 Current Status](./CURRENT-STATUS.md) - Tình trạng dự án hiện tại (97% complete)
+- [📋 Comprehensive Project Report](./COMPREHENSIVE-PROJECT-REPORT.md) - Báo cáo toàn diện chi tiết
+- [⚠️ Project Issues](./PROJECT-ISSUES.md) - Vấn đề cần xử lý và đề xuất
+
+## 🚀 Deployment & Operations
+
+- [🚀 Deployment Guide](./DEPLOYMENT-GUIDE.md) - Hướng dẫn deploy production đầy đủ
+- [✅ Testing Checklist](./TESTING-CHECKLIST.md) - 200+ test cases
+- [🗑️ Cleanup Recommendations](./CLEANUP-RECOMMENDATIONS.md) - Đề xuất dọn dẹp project
+
+## 📖 User Guides
+
+- [📖 User Manual](./USER-MANUAL.md) - Hướng dẫn sử dụng cho Employee, IT Staff, Admin
+
+## 🏗️ Architecture & Technical
+
+- [🏗️ Project Structure](./PROJECT-STRUCTURE.md) - Cấu trúc dự án và naming conventions
+- [🔐 RBAC Report](./ROLE-BASED-ACCESS-CONTROL-REPORT.md) - Role-based Access Control
+- [🔑 Token Blacklist Implementation](./TOKEN-BLACKLIST-IMPLEMENTATION.md) - Token security
+- [🔍 Quick Role Reference](./QUICK-ROLE-REFERENCE.md) - Tham chiếu nhanh về roles
+
+## 🔌 API Documentation
+
+Backend API documentation nằm trong `apps/backend/docs/`:
+
+- [Backend Implementation Summary](../apps/backend/docs/BACKEND-IMPLEMENTATION-SUMMARY.md)
+- [Attachments API](../apps/backend/docs/ATTACHMENTS-API.md)
+- [Business Hours SLA](../apps/backend/docs/BUSINESS-HOURS-SLA.md)
+- [Escalation API](../apps/backend/docs/ESCALATION-API.md)
+- [Escalation Implementation](../apps/backend/docs/ESCALATION-IMPLEMENTATION.md)
+- [Reports API](../apps/backend/docs/REPORTS-API.md)
+- [SLA API](../apps/backend/docs/SLA-API.md)
+- [Ticket History API](../apps/backend/docs/TICKET-HISTORY-API.md)
+- [Ticket History Implementation](../apps/backend/docs/TICKET-HISTORY-IMPLEMENTATION.md)
+
+## 📁 Document Organization
+
+```
+docs/
+├── CURRENT-STATUS.md                      # Quick status overview
+├── COMPREHENSIVE-PROJECT-REPORT.md        # Master status report
+├── PROJECT-ISSUES.md                      # Issues & recommendations
+├── DEPLOYMENT-GUIDE.md                    # Production deployment
+├── TESTING-CHECKLIST.md                   # Testing guide
+├── USER-MANUAL.md                         # End-user guide
+├── PROJECT-STRUCTURE.md                   # Architecture
+├── ROLE-BASED-ACCESS-CONTROL-REPORT.md    # RBAC details
+├── TOKEN-BLACKLIST-IMPLEMENTATION.md      # Security
+├── QUICK-ROLE-REFERENCE.md                # Quick reference
+├── CLEANUP-RECOMMENDATIONS.md             # Cleanup guide
+└── README.md                              # This file
+```
+
+## 🎯 Quick Links by Role
+
+### For Developers
+1. [Project Structure](./PROJECT-STRUCTURE.md)
+2. [Backend Implementation](../apps/backend/docs/BACKEND-IMPLEMENTATION-SUMMARY.md)
+3. [API Documentation](../apps/backend/docs/)
+4. [Testing Checklist](./TESTING-CHECKLIST.md)
+
+### For DevOps
+1. [Deployment Guide](./DEPLOYMENT-GUIDE.md)
+2. [Current Status](./CURRENT-STATUS.md)
+3. [Project Issues](./PROJECT-ISSUES.md)
+
+### For End Users
+1. [User Manual](./USER-MANUAL.md)
+2. [Quick Role Reference](./QUICK-ROLE-REFERENCE.md)
+
+### For Project Managers
+1. [Comprehensive Report](./COMPREHENSIVE-PROJECT-REPORT.md)
+2. [Current Status](./CURRENT-STATUS.md)
+3. [Testing Checklist](./TESTING-CHECKLIST.md)
 
 ---
 
-## ✨ About Me
-
-☕ Turning coffee into **clean, maintainable, and scalable backend systems**.  
-💻 Passionate about **building full-stack web apps** that blend performance with delightful UX.
-
-- 🌱 Currently exploring **Frontend Development & Next.js**
-- 💬 Ask me about **Laravel, REST APIs, and full-stack architecture**
-- 📫 Reach me at: **[vudevweb@gmail.com](mailto:vudevweb@gmail.com)**
-
-> “Code is like humor — when you have to explain it, it’s bad.” 😎
-
----
-
-## ✨ Tech Stack
-
-<div align="start">
-
-### - Backend
-<img src="https://skillicons.dev/icons?i=php,laravel,nodejs,mysql,mongodb" />
-
-### - Frontend
-<img src="https://skillicons.dev/icons?i=js,ts,react,nextjs,html,css,tailwind,bootstrap" />
-
-### - Tools & Others
-<img src="https://skillicons.dev/icons?i=postman,github,vscode,figma,discord,docker" />
-
-</div>
-
----
-
-## ✨ GitHub Contribution
-
-<div align="center">
-    <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/vudovn/vudovn/output/github-contribution-grid-snake-dark.svg">
-      <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/vudovn/vudovn/output/github-contribution-grid-snake.svg">
-      <img alt="github contribution grid snake animation" src="https://raw.githubusercontent.com/vudovn/vudovn/output/github-contribution-grid-snake.svg">
-</picture>
-</div>
-
----
-
-## ✨ Fun Facts
-- 🎧 Coding with lo-fi beats or SoundCloud remixes
-- 🧩 Loves problem-solving and system design
-- 🚀 Always open to learning and collaboration
-
----
-
-⭐ *If you like what I do, consider giving my repos a star — it keeps me caffeinated!* ☕
+*Last Updated: 18/01/2026*  
+*Project Status: 97% Complete - Ready for Testing*

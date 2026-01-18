@@ -17,7 +17,8 @@ import {
   ChevronRight,
   Plus,
   Bell,
-  AlertCircle
+  AlertCircle,
+  TrendingUp
 } from 'lucide-react';
 import { useAuth } from '@/lib/hooks/useAuth';
 import { usePermissions } from '@/lib/hooks/usePermissions';
@@ -70,6 +71,12 @@ const navigation: NavItem[] = [
     name: 'SLA Rules', 
     href: '/sla', 
     icon: Clock,
+    permissionCheck: (p) => p.canManageSLA()
+  },
+  { 
+    name: 'Escalation', 
+    href: '/escalation', 
+    icon: TrendingUp,
     permissionCheck: (p) => p.canManageSLA()
   },
   { 

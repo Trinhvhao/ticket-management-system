@@ -188,11 +188,26 @@ npm run lint         # Run ESLint
 
 ## 📚 Tài liệu
 
-- [API Documentation](./apps/backend/docs/)
-- [Architecture Guide](./docs/ARCHITECTURE.md)
-- [Comprehensive Report](./docs/COMPREHENSIVE-PROJECT-REPORT.md)
-- [Database Setup](./docs/DATABASE-SETUP.md)
-- [Auth Debug Guide](./docs/AUTH-DEBUG-GUIDE.md)
+### 📖 Hướng dẫn chính
+- [📊 Current Status](./docs/CURRENT-STATUS.md) - Tình trạng dự án hiện tại
+- [📋 Comprehensive Report](./docs/COMPREHENSIVE-PROJECT-REPORT.md) - Báo cáo toàn diện
+- [🚀 Deployment Guide](./docs/DEPLOYMENT-GUIDE.md) - Hướng dẫn deploy production
+- [📖 User Manual](./docs/USER-MANUAL.md) - Hướng dẫn sử dụng cho end-user
+- [✅ Testing Checklist](./docs/TESTING-CHECKLIST.md) - Danh sách test cases
+
+### 🔧 Tài liệu kỹ thuật
+- [🏗️ Project Structure](./docs/PROJECT-STRUCTURE.md) - Cấu trúc dự án
+- [🔐 RBAC Report](./docs/ROLE-BASED-ACCESS-CONTROL-REPORT.md) - Phân quyền
+- [🔑 Token Blacklist](./docs/TOKEN-BLACKLIST-IMPLEMENTATION.md) - Bảo mật token
+- [🔍 Quick Role Reference](./docs/QUICK-ROLE-REFERENCE.md) - Tham chiếu nhanh roles
+
+### 🔌 API Documentation
+- [Backend API Docs](./apps/backend/docs/) - Tất cả API endpoints
+- [Backend Implementation](./apps/backend/docs/BACKEND-IMPLEMENTATION-SUMMARY.md) - Chi tiết backend
+
+### 🧹 Maintenance
+- [🗑️ Cleanup Recommendations](./docs/CLEANUP-RECOMMENDATIONS.md) - Đề xuất dọn dẹp
+- [⚠️ Project Issues](./docs/PROJECT-ISSUES.md) - Vấn đề cần xử lý
 
 ## 🎯 Roadmap
 
@@ -274,4 +289,4 @@ This project is licensed under the MIT License - see the [LICENSE](./LICENSE) fi
 
 **Made with ❤️ by Trinh Van Hao**
 
-**Status:** 🟢 Active Development | Backend: 100% ✅ | Frontend: 85% 🟡 | Overall: 92% 🎯
+**Status:** 🟢 Ready for Testing | Backend: 100% ✅ | Frontend: 95% ✅ | Overall: 97% 🎯

@@ -4,6 +4,7 @@ export interface ActionRequiredResponse {
   actionRequired: number;
   breakdown: {
     newTickets: number;
+    newUnassigned: number;
     assignedToMe: number;
     unassigned: number;
     myOpenTickets: number;

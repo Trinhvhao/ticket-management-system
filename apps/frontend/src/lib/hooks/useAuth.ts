@@ -66,7 +66,10 @@ export function useAuth() {
 
   // Logout mutation
   const logoutMutation = useMutation({
-    mutationFn: () => authService.logout(),
+    mutationFn: () => {
+      const refreshToken = localStorage.getItem('refreshToken');
+      return authService.logout(refreshToken || undefined);
+    },
     onSuccess: () => {
       logoutStore();
       queryClient.clear();

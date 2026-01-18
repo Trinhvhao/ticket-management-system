@@ -19,6 +19,7 @@ import { ReportsModule } from './modules/reports/reports.module';
 import { SlaModule } from './modules/sla/sla.module';
 import { BusinessHoursModule } from './modules/business-hours/business-hours.module';
 import { EscalationModule } from './modules/escalation/escalation.module';
+import { HolidaysModule } from './modules/holidays/holidays.module';
 import { AuditLog } from './database/entities/audit-log.entity';
 import { AuditLogService } from './common/services/audit-log.service';
 import { AuditInterceptor } from './common/interceptors/audit.interceptor';
@@ -114,6 +115,7 @@ import { AuditInterceptor } from './common/interceptors/audit.interceptor';
         SlaModule,
         BusinessHoursModule,
         EscalationModule,
+        HolidaysModule,
     ],
     controllers: [AppController],
     providers: [

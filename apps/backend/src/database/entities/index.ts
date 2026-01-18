@@ -13,6 +13,7 @@ import { BusinessHours } from './business-hours.entity';
 import { Holiday } from './holiday.entity';
 import { EscalationRule, EscalationTriggerType, EscalationTargetType } from './escalation-rule.entity';
 import { EscalationHistory } from './escalation-history.entity';
+import { RefreshToken } from './refresh-token.entity';
 
 export { User, UserRole };
 export { Ticket, TicketStatus, TicketPriority };
@@ -28,6 +29,7 @@ export { BusinessHours };
 export { Holiday };
 export { EscalationRule, EscalationTriggerType, EscalationTargetType };
 export { EscalationHistory };
+export { RefreshToken };
 
 // Entity array for Sequelize configuration
 export const entities = [
@@ -45,4 +47,5 @@ export const entities = [
   Holiday,
   EscalationRule,
   EscalationHistory,
+  RefreshToken,
 ];
