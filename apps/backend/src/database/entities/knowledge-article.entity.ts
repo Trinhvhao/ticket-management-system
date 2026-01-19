@@ -76,6 +76,13 @@ export class KnowledgeArticle extends Model {
   declare tags?: string;
 
   @Column({
+    type: DataType.TEXT,
+    allowNull: true,
+    comment: 'JSON string of embedding vector (384 dimensions)',
+  })
+  declare embedding?: string;
+
+  @Column({
     type: DataType.INTEGER,
     allowNull: false,
     defaultValue: 0,

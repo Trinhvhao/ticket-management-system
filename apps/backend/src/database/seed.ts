@@ -1,6 +1,7 @@
 import { Sequelize } from 'sequelize-typescript';
 import { User, Ticket, Comment, KnowledgeArticle, Category, Attachment } from './entities';
 import { seedUsers } from './seeders/001-seed-users';
+import { seedKnowledgeArticles } from './seeders/002-seed-knowledge-articles';
 import * as dotenv from 'dotenv';
 import * as path from 'path';
 
@@ -37,6 +38,7 @@ async function runSeeders() {
 
     // Run seeders
     await seedUsers();
+    await seedKnowledgeArticles();
 
     console.log('\n✅ All seeders completed successfully!');
     process.exit(0);

@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { ThrottlerModule } from '@nestjs/throttler';
-import { APP_INTERCEPTOR } from '@nestjs/core';
+// import { APP_INTERCEPTOR } from '@nestjs/core';
 import { AppController } from './app.controller';
 import { entities } from './database/entities';
 import { AuthModule } from './modules/auth/auth.module';
@@ -22,7 +22,7 @@ import { EscalationModule } from './modules/escalation/escalation.module';
 import { HolidaysModule } from './modules/holidays/holidays.module';
 import { AuditLog } from './database/entities/audit-log.entity';
 import { AuditLogService } from './common/services/audit-log.service';
-import { AuditInterceptor } from './common/interceptors/audit.interceptor';
+// import { AuditInterceptor } from './common/interceptors/audit.interceptor';
 
 @Module({
     imports: [
@@ -120,10 +120,11 @@ import { AuditInterceptor } from './common/interceptors/audit.interceptor';
     controllers: [AppController],
     providers: [
         AuditLogService,
-        {
-            provide: APP_INTERCEPTOR,
-            useClass: AuditInterceptor,
-        },
+        // Temporarily disabled - audit_logs table not created yet
+        // {
+        //     provide: APP_INTERCEPTOR,
+        //     useClass: AuditInterceptor,
+        // },
     ],
 })
 export class AppModule { }

@@ -6,18 +6,18 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { JwtStrategy } from './strategies/jwt.strategy';
-import { User, RefreshToken } from '../../database/entities';
+import { User } from '../../database/entities';
 
 @Module({
   imports: [
-    SequelizeModule.forFeature([User, RefreshToken]),
+    SequelizeModule.forFeature([User]),
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.registerAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
         secret: configService.get<string>('JWT_SECRET') || 'your-secret-key',
         signOptions: {
-          expiresIn: '15m', // Default expiration for access tokens
+          expiresIn: '7d', // 7 days - simple and sufficient for internal system
         },
       }),
       inject: [ConfigService],
