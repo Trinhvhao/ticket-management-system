@@ -28,14 +28,15 @@ export function useAuth() {
         return;
       }
       
-      if (!data.accessToken || !data.refreshToken) {
-        console.error('[useAuth] ERROR: Missing tokens!');
+      if (!data.accessToken) {
+        console.error('[useAuth] ERROR: Missing access token!');
         toast.error('Lỗi: Không nhận được token xác thực');
         return;
       }
       
       console.log('[useAuth] Login successful, setting auth state');
-      setAuth(data.accessToken, data.refreshToken, data.user);
+      // No refresh token anymore - simplified auth with 7-day access token
+      setAuth(data.accessToken, data.accessToken, data.user); // Use accessToken for both
       toast.success('Đăng nhập thành công!');
       
       console.log('[useAuth] Redirecting to dashboard');
@@ -55,7 +56,8 @@ export function useAuth() {
   const registerMutation = useMutation({
     mutationFn: (data: RegisterRequest) => authService.register(data),
     onSuccess: (data) => {
-      setAuth(data.accessToken, data.refreshToken, data.user);
+      // No refresh token anymore - simplified auth with 7-day access token
+      setAuth(data.accessToken, data.accessToken, data.user); // Use accessToken for both
       toast.success('Đăng ký thành công!');
       router.push('/dashboard');
     },
@@ -66,10 +68,7 @@ export function useAuth() {
 
   // Logout mutation
   const logoutMutation = useMutation({
-    mutationFn: () => {
-      const refreshToken = localStorage.getItem('refreshToken');
-      return authService.logout(refreshToken || undefined);
-    },
+    mutationFn: () => authService.logout(),
     onSuccess: () => {
       logoutStore();
       queryClient.clear();
@@ -89,23 +88,19 @@ export function useAuth() {
     queryKey: ['profile'],
     queryFn: () => authService.getProfile(),
     enabled: (() => {
-      // Only enable if authenticated AND has valid tokens
+      // Only enable if authenticated AND has valid token
       if (!isAuthenticated) return false;
       
       if (typeof window === 'undefined') return false;
       
       const accessToken = localStorage.getItem('accessToken');
-      const refreshToken = localStorage.getItem('refreshToken');
       
-      // Check tokens are valid (not null, undefined, or string 'undefined')
+      // Check token is valid (not null, undefined, or string 'undefined')
       const hasValidAccessToken = !!(accessToken && 
         accessToken !== 'undefined' && 
         accessToken !== 'null');
-      const hasValidRefreshToken = !!(refreshToken && 
-        refreshToken !== 'undefined' && 
-        refreshToken !== 'null');
       
-      return Boolean(hasValidAccessToken && hasValidRefreshToken);
+      return Boolean(hasValidAccessToken);
     })(),
     retry: false,
     staleTime: 5 * 60 * 1000, // 5 minutes
