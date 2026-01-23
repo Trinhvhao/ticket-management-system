@@ -10,6 +10,7 @@ import { AssignTicketDto } from './dto/assign-ticket.dto';
 import { ResolveTicketDto } from './dto/resolve-ticket.dto';
 import { RateTicketDto } from './dto/rate-ticket.dto';
 import { TicketHistoryService } from '../ticket-history/ticket-history.service';
+import { SlaService } from '../sla/sla.service';
 import { PermissionsUtil } from '../../common/utils/permissions.util';
 
 export interface TicketFilters {
@@ -17,8 +18,10 @@ export interface TicketFilters {
   priority?: TicketPriority | undefined;
   categoryId?: number | undefined;
   submitterId?: number | undefined;
-  assigneeId?: number | undefined;
+  assigneeId?: number | null | undefined; // Support null for unassigned tickets
   search?: string | undefined;
+  slaBreached?: boolean | undefined; // Filter for SLA breached tickets
+  slaAtRisk?: boolean | undefined; // Filter for tickets at risk of breaching SLA
 }
 
 export interface PaginationOptions {
@@ -38,6 +41,7 @@ export class TicketsService {
     @InjectModel(Category)
     private readonly categoryModel: typeof Category,
     private readonly ticketHistoryService: TicketHistoryService,
+    private readonly slaService: SlaService,
   ) {}
 
   /**
@@ -65,13 +69,19 @@ export class TicketsService {
     });
     const ticketNumber = `TKT-${year}-${String(count + 1).padStart(4, '0')}`;
 
+    // Calculate SLA due date based on priority
+    const priority = createTicketDto.priority || TicketPriority.MEDIUM;
+    const createdAt = new Date();
+    const dueDate = await this.slaService.calculateDueDate(priority, createdAt);
+
     // Create ticket
     const ticket = await this.ticketModel.create({
       ...createTicketDto,
       ticketNumber,
       submitterId: userId,
       status: TicketStatus.NEW,
-      priority: createTicketDto.priority || TicketPriority.MEDIUM,
+      priority,
+      dueDate, // ✅ Auto-set dueDate based on SLA
     } as any);
 
     // Log ticket creation
@@ -105,7 +115,15 @@ export class TicketsService {
     if (filters.priority) where.priority = filters.priority;
     if (filters.categoryId) where.categoryId = filters.categoryId;
     if (filters.submitterId) where.submitterId = filters.submitterId;
-    if (filters.assigneeId) where.assigneeId = filters.assigneeId;
+    
+    // Handle assigneeId filter - support null for unassigned tickets
+    if (filters.assigneeId !== undefined) {
+      if (filters.assigneeId === null) {
+        where.assigneeId = { [Op.is]: null };
+      } else {
+        where.assigneeId = filters.assigneeId;
+      }
+    }
 
     // Search in title and description
     if (filters.search) {
@@ -114,6 +132,20 @@ export class TicketsService {
         { description: { [Op.iLike]: `%${filters.search}%` } },
         { ticketNumber: { [Op.iLike]: `%${filters.search}%` } },
       ];
+    }
+
+    // SLA filters
+    const now = new Date();
+    if (filters.slaBreached) {
+      // Tickets that have passed their due date and are not resolved/closed
+      where.dueDate = { [Op.lt]: now };
+      where.status = { [Op.notIn]: [TicketStatus.RESOLVED, TicketStatus.CLOSED] };
+    }
+    if (filters.slaAtRisk) {
+      // Tickets that will breach SLA in next 2 hours and are not resolved/closed
+      const riskThreshold = new Date(now.getTime() + 2 * 60 * 60 * 1000); // 2 hours from now
+      where.dueDate = { [Op.between]: [now, riskThreshold] };
+      where.status = { [Op.notIn]: [TicketStatus.RESOLVED, TicketStatus.CLOSED] };
     }
 
     // Get tickets with associations
@@ -334,7 +366,7 @@ export class TicketsService {
       throw new ForbiddenException('You do not have permission to close this ticket');
     }
 
-    ticket.close(currentUser.id);
+    ticket.close(currentUser.id, currentUser.role);
     await ticket.save();
 
     // Log status change

@@ -209,7 +209,12 @@ export class Ticket extends Model {
     return this.assigneeId === userId && (this.isInProgress || this.isPending);
   }
 
-  canBeClosedBy(userId: number): boolean {
+  canBeClosedBy(userId: number, userRole?: string): boolean {
+    // Admin can close any ticket
+    if (userRole === 'Admin') {
+      return this.isResolved || this.isInProgress || this.isPending;
+    }
+    // Submitter can only close resolved tickets
     return this.submitterId === userId && this.isResolved;
   }
 
@@ -242,9 +247,13 @@ export class Ticket extends Model {
     this.resolvedAt = new Date();
   }
 
-  close(userId: number): void {
-    if (!this.canBeClosedBy(userId)) {
-      throw new Error('Ticket cannot be closed by this user or in current status');
+  close(userId: number, userRole?: string): void {
+    if (!this.canBeClosedBy(userId, userRole)) {
+      if (userRole === 'Admin') {
+        throw new Error('Ticket must be in Resolved, In Progress, or Pending status to be closed');
+      } else {
+        throw new Error('Only the ticket submitter can close a resolved ticket');
+      }
     }
     this.status = TicketStatus.CLOSED;
     this.closedAt = new Date();

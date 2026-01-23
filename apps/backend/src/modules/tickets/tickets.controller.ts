@@ -79,7 +79,7 @@ export class TicketsController {
       priority,
       categoryId: categoryId ? parseInt(categoryId) : undefined,
       submitterId: submitterId ? parseInt(submitterId) : undefined,
-      assigneeId: assigneeId ? parseInt(assigneeId) : undefined,
+      assigneeId: assigneeId === 'null' ? null : (assigneeId ? parseInt(assigneeId) : undefined),
       search,
     };
 
