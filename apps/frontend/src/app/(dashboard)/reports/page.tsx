@@ -146,7 +146,8 @@ export default function ReportsPage() {
             {[
               { label: 'New', count: dashboard?.ticketsByStatus?.new || 0, color: 'bg-blue-500' },
               { label: 'Assigned', count: dashboard?.ticketsByStatus?.assigned || 0, color: 'bg-purple-500' },
-              { label: 'In Progress', count: dashboard?.ticketsByStatus?.in_progress || 0, color: 'bg-yellow-500' },
+              { label: 'In Progress', count: dashboard?.ticketsByStatus?.in_progress || 0, color: 'bg-orange-500' },
+              { label: 'Pending', count: dashboard?.ticketsByStatus?.pending || 0, color: 'bg-yellow-500' },
               { label: 'Resolved', count: dashboard?.ticketsByStatus?.resolved || 0, color: 'bg-green-500' },
               { label: 'Closed', count: dashboard?.ticketsByStatus?.closed || 0, color: 'bg-gray-500' },
             ].map((item) => (

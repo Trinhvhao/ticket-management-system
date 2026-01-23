@@ -17,13 +17,41 @@ async function bootstrap() {
   app.use(helmet());
   app.use(compression());
 
-  // CORS
-  const corsOrigin = configService.get<string>('CORS_ORIGIN') || 'http://localhost:5173';
+  // CORS - Allow multiple origins for development
+  const corsOriginEnv = configService.get<string>('CORS_ORIGIN') || 'http://localhost:5173';
   const corsCredentials = configService.get<string>('CORS_CREDENTIALS') === 'true';
   
+  // Parse multiple origins from comma-separated string
+  const allowedOrigins = corsOriginEnv.split(',').map(origin => origin.trim());
+  
   app.enableCors({
-    origin: corsOrigin,
+    origin: (origin, callback) => {
+      // Allow requests with no origin (like mobile apps, Postman, or same-origin)
+      if (!origin) return callback(null, true);
+      
+      // Check if origin is in allowed list or matches pattern
+      const isAllowed = allowedOrigins.some(allowed => {
+        if (allowed === '*') return true;
+        if (allowed === origin) return true;
+        // Allow any localhost/127.0.0.1 with any port in development
+        if (configService.get<string>('NODE_ENV') === 'development') {
+          if (origin.match(/^http:\/\/(localhost|127\.0\.0\.1|192\.168\.\d+\.\d+|26\.185\.\d+\.\d+)(:\d+)?$/)) {
+            return true;
+          }
+        }
+        return false;
+      });
+      
+      if (isAllowed) {
+        callback(null, true);
+      } else {
+        console.warn(`⚠️  CORS blocked origin: ${origin}`);
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
     credentials: corsCredentials,
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
   });
 
   // Global validation pipe

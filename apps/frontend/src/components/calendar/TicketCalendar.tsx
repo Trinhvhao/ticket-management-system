@@ -23,8 +23,8 @@ interface TicketCalendarProps {
 const statusColors: Record<string, string> = {
   'New': 'bg-blue-500',
   'Assigned': 'bg-purple-500',
-  'In_Progress': 'bg-yellow-500',
-  'Pending': 'bg-orange-500',
+  'In Progress': 'bg-orange-500',
+  'Pending': 'bg-yellow-500',
   'Resolved': 'bg-green-500',
   'Closed': 'bg-gray-400',
 };

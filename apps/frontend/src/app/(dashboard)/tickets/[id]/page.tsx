@@ -21,8 +21,8 @@ import {
 const statusColors: Record<string, string> = {
   'New': 'bg-blue-100 text-blue-700 border-blue-200',
   'Assigned': 'bg-purple-100 text-purple-700 border-purple-200',
-  'In Progress': 'bg-yellow-100 text-yellow-700 border-yellow-200',
-  'Pending': 'bg-orange-100 text-orange-700 border-orange-200',
+  'In Progress': 'bg-orange-100 text-orange-700 border-orange-200',
+  'Pending': 'bg-yellow-100 text-yellow-700 border-yellow-200',
   'Resolved': 'bg-green-100 text-green-700 border-green-200',
   'Closed': 'bg-gray-100 text-gray-700 border-gray-200',
 };
@@ -110,9 +110,13 @@ export default function TicketDetailPage() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['ticket', ticketId] });
       queryClient.invalidateQueries({ queryKey: ['ticket-history', ticketId] });
+      queryClient.invalidateQueries({ queryKey: ['tickets'] });
       toast.success('Đã bắt đầu xử lý ticket');
     },
-    onError: () => toast.error('Không thể bắt đầu xử lý ticket'),
+    onError: (error: any) => {
+      const message = error.response?.data?.message || 'Không thể bắt đầu xử lý ticket';
+      toast.error(message);
+    },
   });
 
   const resolveMutation = useMutation({
@@ -120,11 +124,16 @@ export default function TicketDetailPage() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['ticket', ticketId] });
       queryClient.invalidateQueries({ queryKey: ['ticket-history', ticketId] });
+      queryClient.invalidateQueries({ queryKey: ['tickets'] });
+      queryClient.invalidateQueries({ queryKey: ['dashboard'] });
       setShowResolveModal(false);
       setResolutionNotes('');
       toast.success('Ticket đã được giải quyết');
     },
-    onError: () => toast.error('Không thể giải quyết ticket'),
+    onError: (error: any) => {
+      const message = error.response?.data?.message || 'Không thể giải quyết ticket';
+      toast.error(message);
+    },
   });
 
   const closeMutation = useMutation({
@@ -132,9 +141,14 @@ export default function TicketDetailPage() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['ticket', ticketId] });
       queryClient.invalidateQueries({ queryKey: ['ticket-history', ticketId] });
+      queryClient.invalidateQueries({ queryKey: ['tickets'] });
+      queryClient.invalidateQueries({ queryKey: ['dashboard'] });
       toast.success('Ticket đã được đóng');
     },
-    onError: () => toast.error('Không thể đóng ticket'),
+    onError: (error: any) => {
+      const message = error.response?.data?.message || 'Không thể đóng ticket';
+      toast.error(message);
+    },
   });
 
   const reopenMutation = useMutation({
@@ -142,9 +156,14 @@ export default function TicketDetailPage() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['ticket', ticketId] });
       queryClient.invalidateQueries({ queryKey: ['ticket-history', ticketId] });
+      queryClient.invalidateQueries({ queryKey: ['tickets'] });
+      queryClient.invalidateQueries({ queryKey: ['dashboard'] });
       toast.success('Ticket đã được mở lại');
     },
-    onError: () => toast.error('Không thể mở lại ticket'),
+    onError: (error: any) => {
+      const message = error.response?.data?.message || 'Không thể mở lại ticket';
+      toast.error(message);
+    },
   });
 
   const assignMutation = useMutation({
@@ -152,11 +171,15 @@ export default function TicketDetailPage() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['ticket', ticketId] });
       queryClient.invalidateQueries({ queryKey: ['ticket-history', ticketId] });
+      queryClient.invalidateQueries({ queryKey: ['tickets'] });
       setShowAssignModal(false);
       setSelectedAssignee(null);
       toast.success('Đã gán ticket thành công');
     },
-    onError: () => toast.error('Không thể gán ticket'),
+    onError: (error: any) => {
+      const message = error.response?.data?.message || 'Không thể gán ticket';
+      toast.error(message);
+    },
   });
 
   const rateMutation = useMutation({
@@ -174,10 +197,16 @@ export default function TicketDetailPage() {
   const deleteMutation = useMutation({
     mutationFn: () => ticketsService.delete(ticketId),
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['tickets'] });
+      queryClient.invalidateQueries({ queryKey: ['dashboard'] });
+      queryClient.invalidateQueries({ queryKey: ['recent-tickets'] });
       toast.success('Đã xóa ticket');
       router.push('/tickets');
     },
-    onError: () => toast.error('Không thể xóa ticket'),
+    onError: (error: any) => {
+      const message = error.response?.data?.message || 'Không thể xóa ticket';
+      toast.error(message);
+    },
   });
 
   // Comment mutations
@@ -694,6 +723,28 @@ export default function TicketDetailPage() {
                   <p className="font-medium text-gray-900">{formatDate(ticket.createdAt)}</p>
                 </div>
               </div>
+              {ticket.dueDate && (
+                <div className="flex items-start gap-3">
+                  <Clock className={`w-5 h-5 mt-0.5 ${
+                    new Date(ticket.dueDate) < new Date() && !ticket.resolvedAt
+                      ? 'text-red-500'
+                      : 'text-orange-500'
+                  }`} />
+                  <div>
+                    <p className="text-sm text-gray-500">Hạn xử lý (SLA)</p>
+                    <p className={`font-medium ${
+                      new Date(ticket.dueDate) < new Date() && !ticket.resolvedAt
+                        ? 'text-red-600'
+                        : 'text-gray-900'
+                    }`}>
+                      {formatDate(ticket.dueDate)}
+                    </p>
+                    {new Date(ticket.dueDate) < new Date() && !ticket.resolvedAt && (
+                      <p className="text-xs text-red-600 mt-1">⚠️ Đã quá hạn</p>
+                    )}
+                  </div>
+                </div>
+              )}
               {ticket.resolvedAt && (
                 <div className="flex items-start gap-3">
                   <CheckCircle className="w-5 h-5 text-green-500 mt-0.5" />

@@ -31,56 +31,56 @@ interface QuickFiltersProps {
 export const QUICK_FILTER_PRESETS: QuickFilterPreset[] = [
   {
     id: 'all',
-    label: 'All Tickets',
+    label: 'Tất cả',
     icon: <Inbox className="w-4 h-4" />,
     filters: {},
   },
   {
     id: 'my-tickets',
-    label: 'My Tickets',
+    label: 'Ticket của tôi',
     icon: <User className="w-4 h-4" />,
     filters: { createdById: -1 }, // -1 = current user, will be replaced
     roles: [UserRole.EMPLOYEE, UserRole.IT_STAFF, UserRole.ADMIN],
   },
   {
     id: 'assigned-to-me',
-    label: 'Assigned to Me',
+    label: 'Được giao cho tôi',
     icon: <Bookmark className="w-4 h-4" />,
     filters: { assigneeId: -1 }, // -1 = current user
     roles: [UserRole.IT_STAFF, UserRole.ADMIN],
   },
   {
     id: 'unassigned',
-    label: 'Unassigned',
+    label: 'Chưa phân công',
     icon: <Users className="w-4 h-4" />,
-    filters: { unassigned: true } as any,
+    filters: { assigneeId: null as any }, // null = unassigned tickets
     roles: [UserRole.IT_STAFF, UserRole.ADMIN],
   },
   {
     id: 'high-priority',
-    label: 'High Priority',
+    label: 'Ưu tiên cao',
     icon: <AlertTriangle className="w-4 h-4" />,
     filters: { priority: 'High' as any },
   },
   {
     id: 'sla-breached',
-    label: 'SLA Breached',
+    label: 'Quá hạn SLA',
     icon: <AlertCircle className="w-4 h-4" />,
     filters: { slaBreached: true } as any,
     roles: [UserRole.IT_STAFF, UserRole.ADMIN],
   },
   {
-    id: 'pending',
-    label: 'Pending',
+    id: 'sla-at-risk',
+    label: 'Sắp quá hạn',
     icon: <Clock className="w-4 h-4" />,
-    filters: { status: TicketStatus.PENDING },
+    filters: { slaAtRisk: true } as any,
+    roles: [UserRole.IT_STAFF, UserRole.ADMIN],
   },
   {
-    id: 'resolved-today',
-    label: 'Resolved Today',
-    icon: <CheckCircle className="w-4 h-4" />,
-    filters: { status: TicketStatus.RESOLVED, resolvedToday: true } as any,
-    roles: [UserRole.IT_STAFF, UserRole.ADMIN],
+    id: 'pending',
+    label: 'Đang chờ',
+    icon: <Clock className="w-4 h-4" />,
+    filters: { status: TicketStatus.PENDING },
   },
 ];
 

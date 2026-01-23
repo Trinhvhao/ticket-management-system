@@ -136,12 +136,39 @@ export default function KnowledgePage() {
                     <Calendar className="w-3.5 h-3.5 mr-1" />
                     {new Date(article.createdAt).toLocaleDateString('vi-VN')}
                   </span>
-                  {article.tags?.length > 0 && (
-                    <div className="flex items-center space-x-1">
-                      <Tag className="w-3.5 h-3.5" />
-                      <span>{article.tags.slice(0, 2).join(', ')}</span>
-                    </div>
-                  )}
+                  {article.tags && (() => {
+                    try {
+                      let tagsArray: string[] = [];
+                      const tags = article.tags as any;
+                      if (typeof tags === 'string') {
+                        if (tags.trim().startsWith('[')) {
+                          tagsArray = JSON.parse(tags);
+                        } else {
+                          tagsArray = tags.split(',').map((t: string) => t.trim()).filter(Boolean);
+                        }
+                      } else if (Array.isArray(tags)) {
+                        tagsArray = tags;
+                      }
+                      return tagsArray.length > 0 ? (
+                        <div className="flex items-center space-x-1">
+                          <Tag className="w-3.5 h-3.5" />
+                          <span>{tagsArray.slice(0, 2).join(', ')}</span>
+                        </div>
+                      ) : null;
+                    } catch (e) {
+                      const tags = article.tags as any;
+                      if (typeof tags === 'string') {
+                        const tagsArray = tags.split(',').map((t: string) => t.trim()).filter(Boolean);
+                        return tagsArray.length > 0 ? (
+                          <div className="flex items-center space-x-1">
+                            <Tag className="w-3.5 h-3.5" />
+                            <span>{tagsArray.slice(0, 2).join(', ')}</span>
+                          </div>
+                        ) : null;
+                      }
+                      return null;
+                    }
+                  })()}
                 </div>
               </div>
             ))}

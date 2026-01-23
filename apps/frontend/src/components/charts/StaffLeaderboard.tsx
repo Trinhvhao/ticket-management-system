@@ -58,7 +58,7 @@ export default function StaffLeaderboard({ data, period = 'This Week' }: StaffLe
         <div className="flex items-center justify-between mb-6">
           <h3 className="text-lg font-semibold text-gray-900 flex items-center">
             <span className="w-1 h-6 bg-gradient-to-b from-yellow-500 to-orange-500 rounded-full mr-3" />
-            Top Performers
+            Nhân viên xuất sắc
           </h3>
           <span className="text-sm text-gray-500 bg-gray-100 px-3 py-1 rounded-full">
             {period}
@@ -156,7 +156,7 @@ export default function StaffLeaderboard({ data, period = 'This Week' }: StaffLe
                               transition={{ delay: 0.8, type: "spring" }}
                               className="text-xs bg-yellow-100 text-yellow-700 px-2 py-0.5 rounded-full"
                             >
-                              🏆 Top
+                              🏆 Xuất sắc
                             </motion.span>
                           )}
                         </div>
@@ -177,7 +177,7 @@ export default function StaffLeaderboard({ data, period = 'This Week' }: StaffLe
                       {/* Stats */}
                       <div className="text-right">
                         <p className="text-xl font-bold text-gray-900">{member.ticketsResolved}</p>
-                        <p className="text-xs text-gray-500">resolved</p>
+                        <p className="text-xs text-gray-500">đã xử lý</p>
                       </div>
 
                       {/* Expand icon */}
@@ -205,21 +205,21 @@ export default function StaffLeaderboard({ data, period = 'This Week' }: StaffLe
                                 <CheckCircle className="w-4 h-4" />
                               </div>
                               <p className="text-lg font-bold text-gray-900">{member.ticketsResolved}</p>
-                              <p className="text-xs text-gray-500">Resolved</p>
+                              <p className="text-xs text-gray-500">Đã giải quyết</p>
                             </div>
                             <div className="text-center p-3 bg-white rounded-lg">
                               <div className="flex items-center justify-center gap-1 text-blue-600 mb-1">
                                 <Clock className="w-4 h-4" />
                               </div>
                               <p className="text-lg font-bold text-gray-900">{formatTime(member.avgResolutionTime)}</p>
-                              <p className="text-xs text-gray-500">Avg Time</p>
+                              <p className="text-xs text-gray-500">TG trung bình</p>
                             </div>
                             <div className="text-center p-3 bg-white rounded-lg">
                               <div className="flex items-center justify-center gap-1 text-yellow-500 mb-1">
                                 <Star className="w-4 h-4 fill-current" />
                               </div>
                               <p className="text-lg font-bold text-gray-900">{member.satisfactionRate}%</p>
-                              <p className="text-xs text-gray-500">Satisfaction</p>
+                              <p className="text-xs text-gray-500">Hài lòng</p>
                             </div>
                           </div>
                           
@@ -232,7 +232,7 @@ export default function StaffLeaderboard({ data, period = 'This Week' }: StaffLe
                             <TrendingUp className={`w-4 h-4 ${member.trend === 'down' ? 'rotate-180' : ''}`} />
                             {member.trend === 'up' ? `+${member.trendValue}%` : 
                              member.trend === 'down' ? `-${member.trendValue}%` : 
-                             'No change'} vs last period
+                             'Không thay đổi'} so với kỳ trước
                           </div>
                         </motion.div>
                       )}

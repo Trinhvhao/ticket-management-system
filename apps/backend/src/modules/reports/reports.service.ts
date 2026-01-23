@@ -190,8 +190,41 @@ export class ReportsService {
       ? parseFloat((avgResolution as any).avgHours || '0')
       : 0;
 
-    // SLA compliance rate
+    // SLA compliance rate and counts
     const slaCompliance = await this.calculateSlaComplianceRate(where);
+    
+    // SLA breached count (resolved tickets that missed SLA)
+    const slaBreached = await this.ticketModel.count({
+      where: {
+        ...where,
+        dueDate: { [Op.ne]: null },
+        resolvedAt: { [Op.ne]: null },
+        [Op.and]: [
+          literal('resolved_at > due_date'),
+        ],
+      },
+    });
+
+    // SLA at risk count (open tickets approaching due date - within 2 hours)
+    const twoHoursFromNow = new Date();
+    twoHoursFromNow.setHours(twoHoursFromNow.getHours() + 2);
+    const slaAtRisk = await this.ticketModel.count({
+      where: {
+        dueDate: {
+          [Op.ne]: null,
+          [Op.lte]: twoHoursFromNow,
+          [Op.gte]: new Date(),
+        },
+        status: {
+          [Op.in]: [
+            TicketStatus.NEW,
+            TicketStatus.ASSIGNED,
+            TicketStatus.IN_PROGRESS,
+            TicketStatus.PENDING,
+          ],
+        },
+      },
+    });
 
     // Tickets by priority
     const priorityCounts = await this.ticketModel.findAll({
@@ -205,14 +238,16 @@ export class ReportsService {
     });
 
     const ticketsByPriority = {
-      High: 0,
-      Medium: 0,
-      Low: 0,
+      high: 0,
+      medium: 0,
+      low: 0,
     };
 
     priorityCounts.forEach((item: any) => {
-      ticketsByPriority[item.priority as keyof typeof ticketsByPriority] =
-        parseInt(item.count);
+      const priority = item.priority.toLowerCase();
+      if (priority in ticketsByPriority) {
+        ticketsByPriority[priority as keyof typeof ticketsByPriority] = parseInt(item.count);
+      }
     });
 
     // Tickets by status
@@ -227,17 +262,20 @@ export class ReportsService {
     });
 
     const ticketsByStatus = {
-      New: 0,
-      Assigned: 0,
-      'In Progress': 0,
-      Pending: 0,
-      Resolved: 0,
-      Closed: 0,
+      new: 0,
+      assigned: 0,
+      in_progress: 0,
+      pending: 0,
+      resolved: 0,
+      closed: 0,
     };
 
     statusCounts.forEach((item: any) => {
-      ticketsByStatus[item.status as keyof typeof ticketsByStatus] =
-        parseInt(item.count);
+      // Convert status to lowercase with underscores
+      const status = item.status.toLowerCase().replace(/ /g, '_');
+      if (status in ticketsByStatus) {
+        ticketsByStatus[status as keyof typeof ticketsByStatus] = parseInt(item.count);
+      }
     });
 
     return {
@@ -246,8 +284,10 @@ export class ReportsService {
       closedToday,
       closedThisWeek,
       closedThisMonth,
-      averageResolutionHours: Math.round(averageResolutionHours * 10) / 10,
+      avgResolutionTime: Math.round(averageResolutionHours * 10) / 10,
       slaComplianceRate: Math.round(slaCompliance * 10) / 10,
+      slaBreached,
+      slaAtRisk,
       ticketsByPriority,
       ticketsByStatus,
     };
@@ -288,7 +328,7 @@ export class ReportsService {
       where,
       attributes: [
         'categoryId',
-        [fn('COUNT', col('id')), 'count'],
+        [fn('COUNT', col('Ticket.id')), 'count'], // Specify table name to avoid ambiguity
       ],
       include: [
         {
@@ -502,29 +542,30 @@ export class ReportsService {
     limit: number,
   ): Promise<TrendDataDto[]> {
     const trends: TrendDataDto[] = [];
+    
+    // Get current date at start of day (00:00:00)
     const now = new Date();
+    now.setHours(0, 0, 0, 0);
 
     for (let i = limit - 1; i >= 0; i--) {
-      const periodStart = new Date(now);
-      const periodEnd = new Date(now);
+      let periodStart: Date;
+      let periodEnd: Date;
 
       if (period === 'day') {
-        periodStart.setDate(now.getDate() - i);
-        periodStart.setHours(0, 0, 0, 0);
-        periodEnd.setDate(now.getDate() - i);
-        periodEnd.setHours(23, 59, 59, 999);
+        // Calculate date by subtracting milliseconds (more reliable than setDate)
+        const daysAgoMs = i * 24 * 60 * 60 * 1000;
+        periodStart = new Date(now.getTime() - daysAgoMs);
+        periodEnd = new Date(periodStart.getTime() + (24 * 60 * 60 * 1000) - 1); // End of day
       } else if (period === 'week') {
-        periodStart.setDate(now.getDate() - (i * 7));
-        periodStart.setHours(0, 0, 0, 0);
-        periodEnd.setDate(now.getDate() - (i * 7) + 6);
-        periodEnd.setHours(23, 59, 59, 999);
+        // Week calculation
+        const weeksAgoMs = i * 7 * 24 * 60 * 60 * 1000;
+        periodStart = new Date(now.getTime() - weeksAgoMs);
+        periodEnd = new Date(periodStart.getTime() + (7 * 24 * 60 * 60 * 1000) - 1);
       } else {
-        periodStart.setMonth(now.getMonth() - i);
-        periodStart.setDate(1);
-        periodStart.setHours(0, 0, 0, 0);
-        periodEnd.setMonth(now.getMonth() - i + 1);
-        periodEnd.setDate(0);
-        periodEnd.setHours(23, 59, 59, 999);
+        // Month calculation - use proper Date constructor
+        const monthDate = new Date(now.getFullYear(), now.getMonth() - i, 1);
+        periodStart = new Date(monthDate.getFullYear(), monthDate.getMonth(), 1, 0, 0, 0, 0);
+        periodEnd = new Date(monthDate.getFullYear(), monthDate.getMonth() + 1, 0, 23, 59, 59, 999);
       }
 
       const ticketsCreated = await this.ticketModel.count({

@@ -8,8 +8,8 @@ interface CategoryData {
   name: string;
   icon?: string;
   ticketCount: number;
-  avgResolutionTime: number; // in hours
-  satisfactionRate: number; // 0-100
+  avgResolutionTime?: number; // in hours (optional until backend provides it)
+  satisfactionRate?: number; // 0-100 (optional until backend provides it)
   color: string;
 }
 
@@ -27,16 +27,16 @@ export default function CategoryPerformanceChart({ data }: CategoryPerformanceCh
       case 'tickets':
         return b.ticketCount - a.ticketCount;
       case 'time':
-        return a.avgResolutionTime - b.avgResolutionTime;
+        return (a.avgResolutionTime || 0) - (b.avgResolutionTime || 0);
       case 'satisfaction':
-        return b.satisfactionRate - a.satisfactionRate;
+        return (b.satisfactionRate || 0) - (a.satisfactionRate || 0);
       default:
         return 0;
     }
   });
 
   const maxTickets = Math.max(...data.map(d => d.ticketCount));
-  const maxTime = Math.max(...data.map(d => d.avgResolutionTime));
+  const maxTime = Math.max(...data.map(d => d.avgResolutionTime || 0));
 
   const formatTime = (hours: number) => {
     if (hours < 1) return `${Math.round(hours * 60)}m`;
@@ -59,15 +59,15 @@ export default function CategoryPerformanceChart({ data }: CategoryPerformanceCh
         <div className="flex items-center justify-between mb-6">
           <h3 className="text-lg font-semibold text-gray-900 flex items-center">
             <span className="w-1 h-6 bg-gradient-to-b from-purple-500 to-pink-500 rounded-full mr-3" />
-            Category Performance
+            Hiệu suất theo danh mục
           </h3>
           
           {/* Sort buttons */}
           <div className="flex items-center gap-1 bg-gray-100 rounded-lg p-1">
             {[
-              { key: 'tickets', icon: Folder, label: 'Tickets' },
-              { key: 'time', icon: Clock, label: 'Time' },
-              { key: 'satisfaction', icon: Star, label: 'Rating' },
+              { key: 'tickets', icon: Folder, label: 'Ticket' },
+              { key: 'time', icon: Clock, label: 'Thời gian' },
+              { key: 'satisfaction', icon: Star, label: 'Đánh giá' },
             ].map(({ key, icon: Icon, label }) => (
               <button
                 key={key}
@@ -120,20 +120,24 @@ export default function CategoryPerformanceChart({ data }: CategoryPerformanceCh
 
                   {/* Metrics */}
                   <div className="flex items-center gap-4">
-                    <div className="text-right">
-                      <div className="flex items-center gap-1 text-gray-500">
-                        <Clock className="w-3 h-3" />
-                        <span className="text-sm font-medium">{formatTime(category.avgResolutionTime)}</span>
+                    {category.avgResolutionTime !== undefined && (
+                      <div className="text-right">
+                        <div className="flex items-center gap-1 text-gray-500">
+                          <Clock className="w-3 h-3" />
+                          <span className="text-sm font-medium">{formatTime(category.avgResolutionTime)}</span>
+                        </div>
+                        <p className="text-xs text-gray-400">Avg. time</p>
                       </div>
-                      <p className="text-xs text-gray-400">Avg. time</p>
-                    </div>
-                    <div className="text-right">
-                      <div className="flex items-center gap-1">
-                        <Star className="w-3 h-3 text-yellow-500 fill-yellow-500" />
-                        <span className="text-sm font-medium text-gray-900">{category.satisfactionRate}%</span>
+                    )}
+                    {category.satisfactionRate !== undefined && (
+                      <div className="text-right">
+                        <div className="flex items-center gap-1">
+                          <Star className="w-3 h-3 text-yellow-500 fill-yellow-500" />
+                          <span className="text-sm font-medium text-gray-900">{category.satisfactionRate}%</span>
+                        </div>
+                        <p className="text-xs text-gray-400">Satisfaction</p>
                       </div>
-                      <p className="text-xs text-gray-400">Satisfaction</p>
-                    </div>
+                    )}
                   </div>
                 </div>
 
@@ -175,16 +179,20 @@ export default function CategoryPerformanceChart({ data }: CategoryPerformanceCh
                   <div className="pt-3 mt-3 border-t border-gray-100 grid grid-cols-3 gap-4 text-center">
                     <div>
                       <p className="text-lg font-bold text-gray-900">{category.ticketCount}</p>
-                      <p className="text-xs text-gray-500">Total Tickets</p>
+                      <p className="text-xs text-gray-500">Tổng ticket</p>
                     </div>
-                    <div>
-                      <p className="text-lg font-bold text-gray-900">{formatTime(category.avgResolutionTime)}</p>
-                      <p className="text-xs text-gray-500">Avg Resolution</p>
-                    </div>
-                    <div>
-                      <p className="text-lg font-bold text-gray-900">{category.satisfactionRate}%</p>
-                      <p className="text-xs text-gray-500">Satisfaction</p>
-                    </div>
+                    {category.avgResolutionTime !== undefined && (
+                      <div>
+                        <p className="text-lg font-bold text-gray-900">{formatTime(category.avgResolutionTime)}</p>
+                        <p className="text-xs text-gray-500">TG xử lý TB</p>
+                      </div>
+                    )}
+                    {category.satisfactionRate !== undefined && (
+                      <div>
+                        <p className="text-lg font-bold text-gray-900">{category.satisfactionRate}%</p>
+                        <p className="text-xs text-gray-500">Hài lòng</p>
+                      </div>
+                    )}
                   </div>
                 </motion.div>
               </motion.div>
@@ -196,7 +204,7 @@ export default function CategoryPerformanceChart({ data }: CategoryPerformanceCh
         {data.length === 0 && (
           <div className="text-center py-12 text-gray-500">
             <Folder className="w-12 h-12 mx-auto mb-3 text-gray-300" />
-            <p>No category data available</p>
+            <p>Không có dữ liệu danh mục</p>
           </div>
         )}
       </div>

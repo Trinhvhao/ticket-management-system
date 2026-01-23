@@ -34,59 +34,59 @@ interface NavItem {
 
 const navigation: NavItem[] = [
   { 
-    name: 'Dashboard', 
+    name: 'Tổng quan', 
     href: '/dashboard', 
     icon: LayoutDashboard,
     permissionCheck: (p) => p.canViewDashboard()
   },
   { 
-    name: 'Tickets', 
+    name: 'Ticket', 
     href: '/tickets', 
     icon: Ticket,
     showBadge: true
   },
   { 
-    name: 'Knowledge Base', 
+    name: 'Kho kiến thức', 
     href: '/knowledge', 
     icon: BookOpen 
   },
   {
-    name: 'Notifications',
+    name: 'Thông báo',
     href: '/notifications',
     icon: Bell
   },
   { 
-    name: 'Users', 
+    name: 'Người dùng', 
     href: '/users', 
     icon: Users,
     permissionCheck: (p) => p.canViewUsers()
   },
   { 
-    name: 'Categories', 
+    name: 'Danh mục', 
     href: '/categories', 
     icon: FolderKanban,
     permissionCheck: (p) => p.canManageCategories()
   },
   { 
-    name: 'SLA Rules', 
+    name: 'Quy tắc SLA', 
     href: '/sla', 
     icon: Clock,
     permissionCheck: (p) => p.canManageSLA()
   },
   { 
-    name: 'Escalation', 
+    name: 'Báo cáo leo thang', 
     href: '/escalation', 
     icon: TrendingUp,
     permissionCheck: (p) => p.canManageSLA()
   },
   { 
-    name: 'Reports', 
+    name: 'Báo cáo', 
     href: '/reports', 
     icon: BarChart3,
     permissionCheck: (p) => p.canViewReports()
   },
   { 
-    name: 'Settings', 
+    name: 'Cài đặt', 
     href: '/settings', 
     icon: Settings 
   },
@@ -220,10 +220,10 @@ export function Sidebar() {
           className={`flex items-center justify-center space-x-2 w-full px-4 py-2.5 bg-[#0052CC] hover:bg-blue-700 text-white rounded-lg transition-all shadow-sm hover:shadow-md ${
             collapsed ? 'px-0' : ''
           }`}
-          title="Create New Ticket"
+          title="Tạo ticket mới"
         >
           <Plus className="w-5 h-5 flex-shrink-0" />
-          {!collapsed && <span className="font-medium">New Ticket</span>}
+          {!collapsed && <span className="font-medium">Tạo ticket</span>}
         </Link>
       </div>
 
@@ -266,7 +266,7 @@ export function Sidebar() {
                   {/* Tooltip */}
                   {showTooltip && (
                     <div className="absolute right-0 top-full mt-2 z-50 px-3 py-2 bg-gray-900 text-white text-xs rounded-lg whitespace-nowrap shadow-lg">
-                      <div className="font-medium mb-1">Action Required</div>
+                      <div className="font-medium mb-1">Cần xử lý</div>
                       <div className="text-gray-300">{badgeInfo.tooltip}</div>
                       <div className="absolute -top-1 right-4 w-2 h-2 bg-gray-900 rotate-45"></div>
                     </div>

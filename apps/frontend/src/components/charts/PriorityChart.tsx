@@ -45,7 +45,7 @@ export default function PriorityChart({ data }: PriorityChartProps) {
       <div className="relative">
         <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
           <span className="w-1 h-6 bg-gradient-to-b from-orange-600 to-red-600 rounded-full mr-3" />
-          Priority Distribution
+          Phân bố độ ưu tiên
         </h3>
         <ResponsiveContainer width="100%" height={300}>
           <BarChart data={data}>

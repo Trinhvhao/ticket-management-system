@@ -121,7 +121,7 @@ export function Header({ onMenuClick }: HeaderProps) {
         <button
           onClick={() => router.push('/knowledge')}
           className="hidden md:flex p-2 rounded-lg hover:bg-gray-100 transition-colors"
-          title="Help & Knowledge Base"
+          title="Trợ giúp & Kho kiến thức"
         >
           <HelpCircle className="w-5 h-5 text-gray-600" />
         </button>
@@ -130,7 +130,7 @@ export function Header({ onMenuClick }: HeaderProps) {
         <button
           onClick={() => router.push('/notifications')}
           className="p-2 rounded-lg hover:bg-gray-100 transition-colors relative"
-          title="Notifications"
+          title="Thông báo"
         >
           <Bell className="w-5 h-5 text-gray-600" />
           {unreadCount > 0 && (
@@ -147,11 +147,11 @@ export function Header({ onMenuClick }: HeaderProps) {
             className="flex items-center space-x-3 p-1.5 pr-3 rounded-lg hover:bg-gray-100 transition-colors"
           >
             <div className="w-9 h-9 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white text-sm font-semibold shadow-sm">
-              {user?.fullName.charAt(0).toUpperCase()}
+              {(user?.fullName || user?.username || 'U').charAt(0).toUpperCase()}
             </div>
             <div className="hidden md:block text-left">
               <p className="text-sm font-semibold text-gray-900 leading-tight">
-                {user?.fullName}
+                {user?.fullName || user?.username}
               </p>
               <p className="text-xs text-gray-500 leading-tight">{user?.role}</p>
             </div>
@@ -164,11 +164,11 @@ export function Header({ onMenuClick }: HeaderProps) {
               <div className="px-4 py-3 border-b border-gray-200">
                 <div className="flex items-center space-x-3">
                   <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white font-semibold text-lg shadow-sm">
-                    {user?.fullName.charAt(0).toUpperCase()}
+                    {(user?.fullName || user?.username || 'U').charAt(0).toUpperCase()}
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-semibold text-gray-900 truncate">
-                      {user?.fullName}
+                      {user?.fullName || user?.username}
                     </p>
                     <p className="text-xs text-gray-500 truncate">{user?.email}</p>
                     <span className="inline-block mt-1 px-2 py-0.5 text-xs font-medium bg-blue-100 text-blue-700 rounded">
@@ -188,7 +188,7 @@ export function Header({ onMenuClick }: HeaderProps) {
                   className="w-full flex items-center px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
                 >
                   <User className="w-4 h-4 mr-3 text-gray-400" />
-                  <span>My Profile</span>
+                  <span>Hồ sơ của tôi</span>
                 </button>
                 
                 <button
@@ -199,7 +199,7 @@ export function Header({ onMenuClick }: HeaderProps) {
                   className="w-full flex items-center px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
                 >
                   <Settings className="w-4 h-4 mr-3 text-gray-400" />
-                  <span>Settings</span>
+                  <span>Cài đặt</span>
                 </button>
               </div>
               
@@ -209,7 +209,7 @@ export function Header({ onMenuClick }: HeaderProps) {
                   className="w-full flex items-center px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors"
                 >
                   <LogOut className="w-4 h-4 mr-3" />
-                  <span className="font-medium">Logout</span>
+                  <span className="font-medium">Đăng xuất</span>
                 </button>
               </div>
             </div>

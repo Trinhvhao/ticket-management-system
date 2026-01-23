@@ -4,19 +4,21 @@ export class DashboardStatsDto {
   declare closedToday: number;
   declare closedThisWeek: number;
   declare closedThisMonth: number;
-  declare averageResolutionHours: number;
+  declare avgResolutionTime: number;
   declare slaComplianceRate: number;
+  declare slaBreached: number;
+  declare slaAtRisk: number;
   declare ticketsByPriority: {
-    High: number;
-    Medium: number;
-    Low: number;
+    high: number;
+    medium: number;
+    low: number;
   };
   declare ticketsByStatus: {
-    New: number;
-    Assigned: number;
-    'In Progress': number;
-    Pending: number;
-    Resolved: number;
-    Closed: number;
+    new: number;
+    assigned: number;
+    in_progress: number;
+    pending: number;
+    resolved: number;
+    closed: number;
   };
 }

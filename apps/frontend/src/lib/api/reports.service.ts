@@ -17,7 +17,7 @@ export interface DashboardStats {
   closedToday: number;
   closedThisWeek: number;
   closedThisMonth: number;
-  avgResolutionTime: string;
+  avgResolutionTime: number;
   slaComplianceRate: number;
   slaBreached?: number;
   slaAtRisk?: number;
@@ -30,6 +30,7 @@ export interface DashboardStats {
     new: number;
     assigned: number;
     in_progress: number;
+    pending: number;
     resolved: number;
     closed: number;
   };
@@ -70,20 +71,22 @@ export interface SLACompliance {
 }
 
 export interface StaffPerformance {
-  userId: number;
-  fullName: string;
+  staffId: number;
+  staffName: string;
+  staffEmail: string;
   assignedTickets: number;
   resolvedTickets: number;
-  avgResolutionTime: string;
+  averageResolutionHours: number;
   slaComplianceRate: number;
   currentWorkload: number;
 }
 
 export interface TrendData {
   period: string;
-  created: number;
-  resolved: number;
-  avgResolutionTime: number;
+  ticketsCreated: number;
+  ticketsResolved: number;
+  ticketsClosed: number;
+  averageResolutionHours: number;
 }
 
 export const reportsService = {
@@ -148,6 +151,7 @@ export const reportsService = {
    */
   getTrends: async (params: {
     period?: 'day' | 'week' | 'month';
+    limit?: number;
     startDate?: string;
     endDate?: string;
   }): Promise<TrendData[]> => {

@@ -253,12 +253,14 @@ export default function UserDetailPage() {
                   <p className="text-sm text-gray-500">#{ticket.id} • {new Date(ticket.createdAt).toLocaleDateString('vi-VN')}</p>
                 </div>
                 <span className={`px-2.5 py-1 text-xs font-medium rounded-full ${
-                  ticket.status === 'Open' ? 'bg-blue-100 text-blue-700' :
-                  ticket.status === 'In_Progress' ? 'bg-yellow-100 text-yellow-700' :
+                  ticket.status === 'New' ? 'bg-blue-100 text-blue-700' :
+                  ticket.status === 'Assigned' ? 'bg-purple-100 text-purple-700' :
+                  ticket.status === 'In Progress' ? 'bg-orange-100 text-orange-700' :
+                  ticket.status === 'Pending' ? 'bg-yellow-100 text-yellow-700' :
                   ticket.status === 'Resolved' ? 'bg-green-100 text-green-700' :
                   'bg-gray-100 text-gray-700'
                 }`}>
-                  {ticket.status.replace('_', ' ')}
+                  {ticket.status}
                 </span>
               </div>
             ))}

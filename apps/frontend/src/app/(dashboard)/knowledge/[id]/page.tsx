@@ -147,9 +147,32 @@ export default function ArticleDetailPage() {
           </div>
 
           {/* Tags */}
-          {article.tags && article.tags.length > 0 && (
+          {article.tags && (
             <div className="flex flex-wrap gap-2 mb-8">
-              {article.tags.map((tag, index) => (
+              {(() => {
+                try {
+                  // Try to parse as JSON array first
+                  if (typeof article.tags === 'string') {
+                    // Check if it looks like JSON
+                    if (article.tags.trim().startsWith('[')) {
+                      return JSON.parse(article.tags);
+                    }
+                    // Otherwise split by comma
+                    return article.tags.split(',').map(t => t.trim()).filter(Boolean);
+                  }
+                  // Already an array
+                  if (Array.isArray(article.tags)) {
+                    return article.tags;
+                  }
+                  return [];
+                } catch (e) {
+                  // If JSON parse fails, split by comma
+                  if (typeof article.tags === 'string') {
+                    return article.tags.split(',').map(t => t.trim()).filter(Boolean);
+                  }
+                  return [];
+                }
+              })().map((tag: string, index: number) => (
                 <span
                   key={index}
                   className="inline-flex items-center px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm"

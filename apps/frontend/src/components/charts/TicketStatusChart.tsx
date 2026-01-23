@@ -15,18 +15,22 @@ interface TicketStatusChartProps {
 
 const RADIAN = Math.PI / 180;
 const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent }: any) => {
-  const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+  // Calculate position in the middle of the donut segment
+  const radius = innerRadius + (outerRadius - innerRadius) * 0.6; // Adjusted to 0.6 for better centering
   const x = cx + radius * Math.cos(-midAngle * RADIAN);
   const y = cy + radius * Math.sin(-midAngle * RADIAN);
+
+  // Only show percentage if it's significant (> 5%)
+  if (percent < 0.05) return null;
 
   return (
     <text 
       x={x} 
       y={y} 
       fill="white" 
-      textAnchor={x > cx ? 'start' : 'end'} 
+      textAnchor="middle" 
       dominantBaseline="central"
-      className="text-sm font-semibold drop-shadow-lg"
+      className="text-sm font-bold drop-shadow-lg"
     >
       {`${(percent * 100).toFixed(0)}%`}
     </text>
@@ -35,6 +39,7 @@ const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, per
 
 const CustomTooltip = ({ active, payload }: any) => {
   if (active && payload && payload.length) {
+    const data = payload[0].payload;
     return (
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
@@ -45,6 +50,9 @@ const CustomTooltip = ({ active, payload }: any) => {
         <p className="text-sm text-gray-600">
           <span className="font-medium">{payload[0].value}</span> tickets
         </p>
+        {data.description && (
+          <p className="text-xs text-gray-500 mt-1">{data.description}</p>
+        )}
       </motion.div>
     );
   }
@@ -65,7 +73,7 @@ export default function TicketStatusChart({ data }: TicketStatusChartProps) {
       <div className="relative">
         <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
           <span className="w-1 h-6 bg-gradient-to-b from-blue-600 to-purple-600 rounded-full mr-3" />
-          Ticket Status Distribution
+          Phân bố trạng thái ticket
         </h3>
         <ResponsiveContainer width="100%" height={300}>
           <PieChart>

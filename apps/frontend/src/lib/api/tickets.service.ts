@@ -20,7 +20,12 @@ export const ticketsService = {
     if (filters.priority) params.append('priority', filters.priority);
     if (filters.categoryId) params.append('categoryId', String(filters.categoryId));
     if (filters.submitterId) params.append('submitterId', String(filters.submitterId));
-    if (filters.assigneeId) params.append('assigneeId', String(filters.assigneeId));
+    
+    // Handle assigneeId - support null for unassigned tickets
+    if (filters.assigneeId !== undefined) {
+      params.append('assigneeId', filters.assigneeId === null ? 'null' : String(filters.assigneeId));
+    }
+    
     if (filters.createdById) params.append('submitterId', String(filters.createdById));
     if (filters.search) params.append('search', filters.search);
     if (filters.page) params.append('page', String(filters.page));

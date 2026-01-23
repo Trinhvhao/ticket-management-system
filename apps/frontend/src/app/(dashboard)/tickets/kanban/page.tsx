@@ -89,16 +89,47 @@ export default function KanbanPage() {
     return grouped;
   }, [filteredTickets]);
 
-  // Update ticket status mutation
+  // Update ticket status mutation with optimistic updates
   const updateStatusMutation = useMutation({
     mutationFn: ({ ticketId, newStatus }: { ticketId: number; newStatus: string }) =>
       ticketsService.changeStatus(ticketId, newStatus),
+    onMutate: async ({ ticketId, newStatus }) => {
+      // Cancel any outgoing refetches to avoid overwriting optimistic update
+      await queryClient.cancelQueries({ queryKey: ['tickets', 'kanban'] });
+
+      // Snapshot the previous value
+      const previousTickets = queryClient.getQueryData(['tickets', 'kanban']);
+
+      // Optimistically update the ticket status
+      queryClient.setQueryData(['tickets', 'kanban'], (old: any) => {
+        if (!old?.tickets) return old;
+        
+        return {
+          ...old,
+          tickets: old.tickets.map((ticket: Ticket) =>
+            ticket.id === ticketId
+              ? { ...ticket, status: newStatus }
+              : ticket
+          ),
+        };
+      });
+
+      // Return context with previous value for rollback
+      return { previousTickets };
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['tickets'] });
+      queryClient.invalidateQueries({ queryKey: ['dashboard'] });
       toast.success('Ticket status updated');
     },
-    onError: () => {
-      toast.error('Failed to update ticket status');
+    onError: (error: any, variables, context) => {
+      // Rollback to previous state on error
+      if (context?.previousTickets) {
+        queryClient.setQueryData(['tickets', 'kanban'], context.previousTickets);
+      }
+      
+      const errorMessage = error.response?.data?.message || 'Failed to update ticket status';
+      toast.error(errorMessage);
     },
   });
 

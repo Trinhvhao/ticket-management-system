@@ -78,7 +78,7 @@ export default function SLAGaugeChart({
       <div className="relative">
         <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
           <span className="w-1 h-6 bg-gradient-to-b from-green-500 to-emerald-600 rounded-full mr-3" />
-          SLA Compliance
+          Tuân thủ SLA
         </h3>
 
         <div className="flex flex-col items-center">
@@ -179,7 +179,7 @@ export default function SLAGaugeChart({
               >
                 <motion.span>{displayValue}</motion.span>%
               </motion.span>
-              <span className="text-xs text-gray-500 mt-1">Compliance Rate</span>
+              <span className="text-xs text-gray-500 mt-1">Tỷ lệ tuân thủ</span>
             </div>
           </div>
 
@@ -196,7 +196,7 @@ export default function SLAGaugeChart({
               </div>
               <div>
                 <p className="text-2xl font-bold text-red-600">{breachedCount}</p>
-                <p className="text-xs text-red-600/70">SLA Breached</p>
+                <p className="text-xs text-red-600/70">Vi phạm SLA</p>
               </div>
             </motion.div>
 
@@ -211,7 +211,7 @@ export default function SLAGaugeChart({
               </div>
               <div>
                 <p className="text-2xl font-bold text-yellow-600">{atRiskCount}</p>
-                <p className="text-xs text-yellow-600/70">At Risk</p>
+                <p className="text-xs text-yellow-600/70">Có rủi ro</p>
               </div>
             </motion.div>
           </div>
@@ -230,12 +230,12 @@ export default function SLAGaugeChart({
             {value >= target ? (
               <>
                 <CheckCircle className="w-4 h-4" />
-                Meeting SLA Target
+                Đạt mục tiêu SLA
               </>
             ) : (
               <>
                 <AlertTriangle className="w-4 h-4" />
-                Below Target ({target}%)
+                Dưới mục tiêu ({target}%)
               </>
             )}
           </motion.div>

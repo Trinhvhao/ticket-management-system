@@ -87,9 +87,11 @@ export interface TicketFilters {
   priority?: TicketPriority;
   categoryId?: number;
   submitterId?: number;
-  assigneeId?: number;
+  assigneeId?: number | null;
   createdById?: number;
   search?: string;
+  slaBreached?: boolean;
+  slaAtRisk?: boolean;
   page?: number;
   limit?: number;
   sortBy?: string;

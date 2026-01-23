@@ -34,8 +34,8 @@ import {
 const statusColors: Record<string, string> = {
   'New': 'bg-blue-100 text-blue-700',
   'Assigned': 'bg-purple-100 text-purple-700',
-  'In Progress': 'bg-yellow-100 text-yellow-700',
-  'Pending': 'bg-orange-100 text-orange-700',
+  'In Progress': 'bg-orange-100 text-orange-700',
+  'Pending': 'bg-yellow-100 text-yellow-700',
   'Resolved': 'bg-green-100 text-green-700',
   'Closed': 'bg-gray-100 text-gray-700',
 };
@@ -44,8 +44,8 @@ const statusColors: Record<string, string> = {
 const statusDotColors: Record<string, string> = {
   'New': 'bg-blue-500',
   'Assigned': 'bg-purple-500',
-  'In Progress': 'bg-yellow-500',
-  'Pending': 'bg-orange-500',
+  'In Progress': 'bg-orange-500',
+  'Pending': 'bg-yellow-500',
   'Resolved': 'bg-green-500',
   'Closed': 'bg-gray-400',
 };
@@ -240,8 +240,8 @@ export default function TicketsPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Tickets</h1>
-          <p className="text-gray-500 mt-1">Manage and track support tickets</p>
+          <h1 className="text-2xl font-bold text-gray-900">Quản lý Ticket</h1>
+          <p className="text-gray-500 mt-1">Quản lý và theo dõi các yêu cầu hỗ trợ</p>
         </div>
         <div className="flex items-center gap-3">
           <button
@@ -249,7 +249,7 @@ export default function TicketsPage() {
             className="inline-flex items-center justify-center space-x-2 px-4 py-2.5 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium"
           >
             <CalendarIcon className="w-5 h-5" />
-            <span className="hidden sm:inline">Calendar</span>
+            <span className="hidden sm:inline">Lịch</span>
           </button>
           <button
             onClick={() => router.push('/tickets/kanban')}
@@ -263,7 +263,7 @@ export default function TicketsPage() {
             className="inline-flex items-center justify-center space-x-2 px-4 py-2.5 bg-[#0052CC] text-white rounded-lg hover:bg-[#0047B3] transition-colors font-medium"
           >
             <Plus className="w-5 h-5" />
-            <span>New Ticket</span>
+            <span>Tạo ticket</span>
           </button>
         </div>
       </div>
@@ -271,7 +271,7 @@ export default function TicketsPage() {
       {/* Quick Filters */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-sm font-medium text-gray-700">Quick Filters</h3>
+          <h3 className="text-sm font-medium text-gray-700">Bộ lọc nhanh</h3>
           <div className="flex items-center gap-2">
             {/* Saved Views */}
             <div className="relative">
@@ -282,7 +282,7 @@ export default function TicketsPage() {
                 }`}
               >
                 <Bookmark className="w-4 h-4" />
-                Saved Views
+                Lưu bộ lọc
                 {savedViews.length > 0 && (
                   <span className={`px-1.5 py-0.5 text-xs rounded-full ${
                     showSavedViews ? 'bg-white/20' : 'bg-gray-200'
@@ -341,7 +341,7 @@ export default function TicketsPage() {
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search tickets..."
+                placeholder="Tìm kiếm ticket..."
                 className="w-full pl-9 pr-4 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0052CC] focus:border-transparent"
               />
             </div>
@@ -354,14 +354,14 @@ export default function TicketsPage() {
               <button
                 onClick={() => setViewMode('table')}
                 className={`p-1.5 rounded transition-colors ${viewMode === 'table' ? 'bg-white shadow-sm' : ''}`}
-                title="Table View"
+                title="Dạng bảng"
               >
                 <Table2 className="w-4 h-4 text-gray-600" />
               </button>
               <button
                 onClick={() => setViewMode('compact')}
                 className={`p-1.5 rounded transition-colors ${viewMode === 'compact' ? 'bg-white shadow-sm' : ''}`}
-                title="Compact View"
+                title="Dạng thu gọn"
               >
                 <List className="w-4 h-4 text-gray-600" />
               </button>
@@ -374,14 +374,14 @@ export default function TicketsPage() {
               }`}
             >
               <Filter className="w-4 h-4" />
-              <span>Filters</span>
+              <span>Bộ lọc</span>
             </button>
             <button
               onClick={() => setShowAdvancedFilters(true)}
               className="inline-flex items-center space-x-2 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
             >
               <SlidersHorizontal className="w-4 h-4" />
-              <span className="hidden sm:inline">Advanced</span>
+              <span className="hidden sm:inline">Nâng cao</span>
             </button>
             {hasActiveFilters && (
               <button
@@ -389,7 +389,7 @@ export default function TicketsPage() {
                 className="inline-flex items-center space-x-1 px-3 py-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
               >
                 <X className="w-4 h-4" />
-                <span>Clear</span>
+                <span>Xóa</span>
               </button>
             )}
           </div>
@@ -399,39 +399,39 @@ export default function TicketsPage() {
         {showFilters && (
           <div className="mt-4 pt-4 border-t border-gray-200 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Trạng thái</label>
               <select
                 value={filters.status || ''}
                 onChange={(e) => handleFilterChange('status', e.target.value as TicketStatus)}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0052CC]"
               >
-                <option value="">All Status</option>
+                <option value="">Tất cả trạng thái</option>
                 {Object.values(TicketStatus).map(status => (
                   <option key={status} value={status}>{status}</option>
                 ))}
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Priority</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Độ ưu tiên</label>
               <select
                 value={filters.priority || ''}
                 onChange={(e) => handleFilterChange('priority', e.target.value as TicketPriority)}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0052CC]"
               >
-                <option value="">All Priority</option>
+                <option value="">Tất cả độ ưu tiên</option>
                 {Object.values(TicketPriority).map(priority => (
                   <option key={priority} value={priority}>{priority}</option>
                 ))}
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Danh mục</label>
               <select
                 value={filters.categoryId || ''}
                 onChange={(e) => handleFilterChange('categoryId', e.target.value ? Number(e.target.value) : undefined)}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0052CC]"
               >
-                <option value="">All Categories</option>
+                <option value="">Tất cả danh mục</option>
                 {categories?.map(cat => (
                   <option key={cat.id} value={cat.id}>{cat.name}</option>
                 ))}
@@ -442,7 +442,7 @@ export default function TicketsPage() {
                 onClick={clearFilters}
                 className="w-full px-4 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
               >
-                Clear Filters
+                Xóa bộ lọc
               </button>
             </div>
           </div>
@@ -476,16 +476,16 @@ export default function TicketsPage() {
         ) : !ticketsData?.tickets?.length ? (
           <div className="text-center py-20">
             <TicketIcon className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 mb-2">No tickets found</h3>
+            <h3 className="text-lg font-medium text-gray-900 mb-2">Không tìm thấy ticket</h3>
             <p className="text-gray-500 mb-6">
-              {hasActiveFilters ? 'Try adjusting your filters' : 'Create your first ticket to get started'}
+              {hasActiveFilters ? 'Thử điều chỉnh bộ lọc của bạn' : 'Tạo ticket đầu tiên để bắt đầu'}
             </p>
             <button
               onClick={() => router.push('/tickets/new')}
               className="inline-flex items-center space-x-2 px-4 py-2 bg-[#0052CC] text-white rounded-lg hover:bg-[#0047B3] transition-colors"
             >
               <Plus className="w-5 h-5" />
-              <span>Create Ticket</span>
+              <span>Tạo ticket</span>
             </button>
           </div>
         ) : viewMode === 'compact' ? (
@@ -511,11 +511,12 @@ export default function TicketsPage() {
                       />
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Ticket</th>
-                    <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Status</th>
-                    <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Priority</th>
-                    <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider hidden lg:table-cell">Category</th>
-                    <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider hidden md:table-cell">Assignee</th>
-                    <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider hidden sm:table-cell">Created</th>
+                    <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Trạng thái</th>
+                    <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Độ ưu tiên</th>
+                    <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider hidden xl:table-cell">Danh mục</th>
+                    <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider hidden lg:table-cell">Người xử lý</th>
+                    <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider hidden md:table-cell">Hạn xử lý</th>
+                    <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider hidden sm:table-cell">Ngày tạo</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200">
@@ -547,7 +548,7 @@ export default function TicketsPage() {
                                 <p className="text-sm font-medium text-gray-900 truncate">{ticket.title}</p>
                                 {needsAttention && (
                                   <span className="flex-shrink-0 px-1.5 py-0.5 text-[10px] font-semibold bg-orange-100 text-orange-700 rounded">
-                                    ACTION
+                                    CẦN XỬ LÝ
                                   </span>
                                 )}
                               </div>
@@ -565,10 +566,10 @@ export default function TicketsPage() {
                             {ticket.priority}
                           </span>
                         </td>
-                        <td className="px-6 py-4 hidden lg:table-cell cursor-pointer" onClick={() => router.push(`/tickets/${ticket.id}`)}>
+                        <td className="px-6 py-4 hidden xl:table-cell cursor-pointer" onClick={() => router.push(`/tickets/${ticket.id}`)}>
                           <span className="text-sm text-gray-600">{ticket.category?.name || '-'}</span>
                         </td>
-                        <td className="px-6 py-4 hidden md:table-cell cursor-pointer" onClick={() => router.push(`/tickets/${ticket.id}`)}>
+                        <td className="px-6 py-4 hidden lg:table-cell cursor-pointer" onClick={() => router.push(`/tickets/${ticket.id}`)}>
                           {ticket.assignee ? (
                             <div className="flex items-center space-x-2">
                               <div className="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center">
@@ -577,7 +578,32 @@ export default function TicketsPage() {
                               <span className="text-sm text-gray-600">{ticket.assignee.fullName}</span>
                             </div>
                           ) : (
-                            <span className="text-sm text-orange-500 font-medium">⚠ Unassigned</span>
+                            <span className="text-sm text-orange-500 font-medium">⚠ Chưa phân công</span>
+                          )}
+                        </td>
+                        <td className="px-6 py-4 hidden md:table-cell cursor-pointer" onClick={() => router.push(`/tickets/${ticket.id}`)}>
+                          {ticket.dueDate ? (
+                            <div className="flex flex-col">
+                              <span className={`text-sm ${
+                                new Date(ticket.dueDate) < new Date() && ticket.status !== 'Resolved' && ticket.status !== 'Closed'
+                                  ? 'text-red-600 font-semibold'
+                                  : new Date(ticket.dueDate).getTime() - new Date().getTime() < 2 * 60 * 60 * 1000
+                                  ? 'text-orange-600 font-medium'
+                                  : 'text-gray-600'
+                              }`}>
+                                {new Date(ticket.dueDate).toLocaleDateString('vi-VN', {
+                                  day: '2-digit',
+                                  month: '2-digit',
+                                  hour: '2-digit',
+                                  minute: '2-digit',
+                                })}
+                              </span>
+                              {new Date(ticket.dueDate) < new Date() && ticket.status !== 'Resolved' && ticket.status !== 'Closed' && (
+                                <span className="text-xs text-red-500 font-medium">⚠️ Quá hạn</span>
+                              )}
+                            </div>
+                          ) : (
+                            <span className="text-sm text-gray-400">-</span>
                           )}
                         </td>
                         <td className="px-6 py-4 hidden sm:table-cell">
@@ -596,8 +622,8 @@ export default function TicketsPage() {
         {ticketsData && ticketsData.totalPages > 1 && (
           <div className="px-6 py-4 border-t border-gray-200 flex items-center justify-between">
             <p className="text-sm text-gray-600">
-              Showing {((ticketsData.page - 1) * (filters.limit || 10)) + 1} to{' '}
-              {Math.min(ticketsData.page * (filters.limit || 10), ticketsData.total)} of {ticketsData.total} tickets
+              Hiển thị {((ticketsData.page - 1) * (filters.limit || 10)) + 1} đến{' '}
+              {Math.min(ticketsData.page * (filters.limit || 10), ticketsData.total)} trong tổng số {ticketsData.total} ticket
             </p>
             <div className="flex items-center space-x-2">
               <button
@@ -607,7 +633,7 @@ export default function TicketsPage() {
               >
                 <ChevronLeft className="w-5 h-5" />
               </button>
-              <span className="text-sm text-gray-600">Page {ticketsData.page} of {ticketsData.totalPages}</span>
+              <span className="text-sm text-gray-600">Trang {ticketsData.page} / {ticketsData.totalPages}</span>
               <button
                 onClick={() => handlePageChange(ticketsData.page + 1)}
                 disabled={ticketsData.page === ticketsData.totalPages}
