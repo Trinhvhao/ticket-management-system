@@ -24,7 +24,7 @@ export const databaseConfig = (): SequelizeModuleOptions => ({
   },
   define: {
     timestamps: true,
-    underscored: false,
+    underscored: true,
     freezeTableName: true,
   },
 });

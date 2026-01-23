@@ -10,6 +10,7 @@ import {
 @Table({
   tableName: 'holidays',
   timestamps: true,
+  underscored: true,
 })
 export class Holiday extends Model {
   @Column({
@@ -34,15 +35,10 @@ export class Holiday extends Model {
   @Column({
     type: DataType.BOOLEAN,
     defaultValue: false,
+    field: 'is_recurring',
     comment: 'If true, repeats every year',
   })
   isRecurring!: boolean;
-
-  @Column({
-    type: DataType.TEXT,
-    allowNull: true,
-  })
-  description!: string;
 
   @CreatedAt
   override createdAt!: Date;
