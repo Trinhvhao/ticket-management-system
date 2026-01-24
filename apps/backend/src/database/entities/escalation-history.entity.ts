@@ -14,6 +14,7 @@ import { EscalationRule } from './escalation-rule.entity';
 @Table({
   tableName: 'escalation_history',
   timestamps: false,
+  underscored: true,
 })
 export class EscalationHistory extends Model {
   @Column({

@@ -26,6 +26,7 @@ export enum EscalationTargetType {
 @Table({
   tableName: 'escalation_rules',
   timestamps: true,
+  underscored: true,
 })
 export class EscalationRule extends Model {
   @Column({
