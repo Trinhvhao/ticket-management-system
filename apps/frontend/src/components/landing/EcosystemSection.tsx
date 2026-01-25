@@ -26,14 +26,14 @@ export function EcosystemSection() {
         >
           <div className="inline-flex items-center px-4 py-2 bg-white/10 rounded-full mb-6">
             <Globe className="w-4 h-4 text-[#4C9AFF] mr-2" />
-            <span className="text-sm font-semibold text-[#4C9AFF]">Enterprise Architecture</span>
+            <span className="text-sm font-semibold text-[#4C9AFF]">Kiến trúc doanh nghiệp</span>
           </div>
           <h2 className="text-4xl md:text-5xl font-extrabold text-white mb-6 tracking-tight">
-            Built for
-            <span className="text-[#4C9AFF]"> infinite scale</span>
+            Xây dựng cho
+            <span className="text-[#4C9AFF]"> quy mô vô hạn</span>
           </h2>
           <p className="text-lg text-blue-200">
-            A resilient ecosystem connecting cloud infrastructure, security layers, and AI agents
+            Hệ sinh thái linh hoạt kết nối hạ tầng đám mây, lớp bảo mật và các tác nhân AI
           </p>
         </motion.div>
 
@@ -48,9 +48,9 @@ export function EcosystemSection() {
           >
             <h3 className="text-lg font-bold text-white mb-4 flex items-center">
               <Cloud className="w-5 h-5 text-[#4C9AFF] mr-2" />
-              Cloud Infrastructure
+              Hạ tầng đám mây
             </h3>
-            {['AWS / Azure / GCP', 'Kubernetes Clusters', 'Auto-scaling Groups', 'CDN Distribution'].map((item, i) => (
+            {['AWS / Azure / GCP', 'Kubernetes Clusters', 'Nhóm tự động mở rộng', 'Phân phối CDN'].map((item, i) => (
               <motion.div
                 key={i}
                 className="flex items-center space-x-3 p-4 bg-white/5 rounded-xl border border-white/10 hover:border-[#0052CC]/50 transition-colors"
@@ -90,14 +90,14 @@ export function EcosystemSection() {
                   </svg>
                 </div>
                 <h3 className="text-2xl font-bold text-white mb-2">NexusFlow Core</h3>
-                <p className="text-blue-200 text-sm mb-6">Central Intelligence Hub</p>
+                <p className="text-blue-200 text-sm mb-6">Trung tâm trí tuệ</p>
 
                 {/* Connection Lines */}
                 <div className="grid grid-cols-3 gap-4">
                   {[
-                    { icon: Bot, label: 'AI Agents' },
-                    { icon: Database, label: 'Data Lake' },
-                    { icon: Shield, label: 'Security' },
+                    { icon: Bot, label: 'Tác nhân AI' },
+                    { icon: Database, label: 'Hồ dữ liệu' },
+                    { icon: Shield, label: 'Bảo mật' },
                   ].map((item, i) => (
                     <div key={i} className="text-center">
                       <div className="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center mx-auto mb-2">
@@ -127,9 +127,9 @@ export function EcosystemSection() {
           >
             <h3 className="text-lg font-bold text-white mb-4 flex items-center">
               <Shield className="w-5 h-5 text-green-400 mr-2" />
-              Security & Compliance
+              Bảo mật & Tuân thủ
             </h3>
-            {['SOC 2 Type II', 'GDPR Compliant', 'End-to-end Encryption', 'Zero Trust Architecture'].map((item, i) => (
+            {['SOC 2 Type II', 'Tuân thủ GDPR', 'Mã hóa đầu cuối', 'Kiến trúc Zero Trust'].map((item, i) => (
               <motion.div
                 key={i}
                 className="flex items-center space-x-3 p-4 bg-white/5 rounded-xl border border-white/10 hover:border-green-500/50 transition-colors"
@@ -153,15 +153,15 @@ export function EcosystemSection() {
         >
           <div className="flex items-center justify-center space-x-2 mb-8">
             <Zap className="w-5 h-5 text-yellow-400" />
-            <h3 className="text-lg font-bold text-white">Scalability Proof</h3>
+            <h3 className="text-lg font-bold text-white">Chứng minh khả năng mở rộng</h3>
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {[
-              { value: 10, suffix: 'M+', label: 'Tickets/Month', icon: Server },
-              { value: 99.99, suffix: '%', label: 'Uptime SLA', icon: RefreshCw, decimals: 2 },
-              { value: 50, suffix: 'ms', label: 'Avg Response', icon: Zap },
-              { value: 500, suffix: '+', label: 'Enterprise Clients', icon: Globe },
+              { value: 10, suffix: 'Tr+', label: 'Tickets/Tháng', icon: Server },
+              { value: 99.99, suffix: '%', label: 'SLA Uptime', icon: RefreshCw, decimals: 2 },
+              { value: 50, suffix: 'ms', label: 'Phản hồi TB', icon: Zap },
+              { value: 500, suffix: '+', label: 'Khách hàng DN', icon: Globe },
             ].map((stat, i) => (
               <motion.div 
                 key={i} 

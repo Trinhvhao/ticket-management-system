@@ -20,20 +20,20 @@ export function Header() {
         </Link>
         
         <div className="hidden md:flex items-center space-x-8 text-gray-300 text-sm font-medium">
-          <a href="#features" className="hover:text-white transition-colors">Solutions</a>
-          <a href="#workflow" className="hover:text-white transition-colors">Automation</a>
-          <a href="#" className="hover:text-white transition-colors">AI Insights</a>
+          <a href="#features" className="hover:text-white transition-colors">Giải pháp</a>
+          <a href="#workflow" className="hover:text-white transition-colors">Tự động hóa</a>
+          <a href="#" className="hover:text-white transition-colors">Phân tích AI</a>
         </div>
 
         <div className="flex items-center space-x-4">
           <Link href="/login" className="hidden md:inline-block text-sm text-gray-300 hover:text-white font-medium transition">
-            Login
+            Đăng nhập
           </Link>
           <Link 
             href="/register" 
             className="px-5 py-2 bg-[#0052CC] hover:bg-blue-600 text-white text-sm font-bold rounded-lg transition-all"
           >
-            Try it Free
+            Dùng thử miễn phí
           </Link>
         </div>
       </nav>

@@ -20,14 +20,14 @@ export function AIFeaturesSection() {
         >
           <div className="inline-flex items-center px-4 py-2 bg-purple-100 rounded-full mb-6">
             <Brain className="w-4 h-4 text-purple-600 mr-2" />
-            <span className="text-sm font-semibold text-purple-600">AI-Powered Intelligence</span>
+            <span className="text-sm font-semibold text-purple-600">Trí tuệ nhân tạo</span>
           </div>
           <h2 className="text-4xl md:text-5xl font-extrabold text-[#172B4D] mb-6 tracking-tight">
-            Next-gen AI that
-            <span className="text-[#0052CC]"> understands context</span>
+            AI thế hệ mới
+            <span className="text-[#0052CC]"> hiểu ngữ cảnh</span>
           </h2>
           <p className="text-lg text-gray-500">
-            Leverage computer vision and NLP to automate triage, detect sentiment, and resolve issues faster
+            Tận dụng thị giác máy tính và NLP để tự động phân loại, phát hiện cảm xúc và giải quyết vấn đề nhanh hơn
           </p>
         </motion.div>
 
@@ -45,14 +45,14 @@ export function AIFeaturesSection() {
                 <Camera className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h3 className="text-xl font-bold text-[#172B4D]">Visual Triage</h3>
-                <p className="text-sm text-gray-500">YOLO-powered detection</p>
+                <h3 className="text-xl font-bold text-[#172B4D]">Phân loại trực quan</h3>
+                <p className="text-sm text-gray-500">Phát hiện bằng YOLO</p>
               </div>
             </div>
 
             <p className="text-gray-600 mb-6">
-              Upload a photo of damaged hardware — AI automatically identifies the device type, 
-              detects issues, and creates a categorized ticket.
+              Tải ảnh thiết bị hỏng lên — AI tự động nhận diện loại thiết bị, 
+              phát hiện sự cố và tạo ticket đã phân loại.
             </p>
 
             <VisualTriageDemo />
@@ -70,14 +70,14 @@ export function AIFeaturesSection() {
                 <Brain className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h3 className="text-xl font-bold text-[#172B4D]">Sentiment Analysis</h3>
-                <p className="text-sm text-gray-500">NLP emotion detection</p>
+                <h3 className="text-xl font-bold text-[#172B4D]">Phân tích cảm xúc</h3>
+                <p className="text-sm text-gray-500">Phát hiện cảm xúc bằng NLP</p>
               </div>
             </div>
 
             <p className="text-gray-600 mb-6">
-              AI analyzes ticket content to detect user frustration levels, 
-              automatically prioritizing urgent cases for faster resolution.
+              AI phân tích nội dung ticket để phát hiện mức độ khó chịu của người dùng, 
+              tự động ưu tiên các trường hợp khẩn cấp để giải quyết nhanh hơn.
             </p>
 
             <SentimentAnalysisDemo />
@@ -193,7 +193,7 @@ function VisualTriageDemo() {
               <div className="absolute top-2 right-2 flex items-center space-x-2 bg-black/70 backdrop-blur-sm px-3 py-1.5 rounded-full border border-white/10">
                 <Eye className="w-3 h-3 text-green-400" />
                 <span className="text-xs text-white font-mono">
-                  {isScanning ? 'Analyzing...' : scanComplete ? 'Complete' : 'Ready'}
+                  {isScanning ? 'Đang phân tích...' : scanComplete ? 'Hoàn tất' : 'Sẵn sàng'}
                 </span>
               </div>
             </div>
@@ -217,11 +217,11 @@ function VisualTriageDemo() {
           transition={{ delay: 0.6 }}
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-xs font-mono text-gray-400">Auto-generated ticket</span>
-            <span className="px-2 py-0.5 bg-red-100 text-red-600 text-xs font-bold rounded">HIGH</span>
+            <span className="text-xs font-mono text-gray-400">Ticket tự động tạo</span>
+            <span className="px-2 py-0.5 bg-red-100 text-red-600 text-xs font-bold rounded">CAO</span>
           </div>
-          <div className="text-sm font-semibold text-[#172B4D]">Hardware: Laptop Screen Damage</div>
-          <div className="text-xs text-gray-500 mt-1">Category: Hardware → Display → Physical Damage</div>
+          <div className="text-sm font-semibold text-[#172B4D]">Phần cứng: Màn hình laptop hỏng</div>
+          <div className="text-xs text-gray-500 mt-1">Danh mục: Phần cứng → Màn hình → Hư hỏng vật lý</div>
         </motion.div>
       )}
     </div>
@@ -233,29 +233,29 @@ function SentimentAnalysisDemo() {
 
   const tickets = [
     {
-      text: "This is UNACCEPTABLE! My laptop has been broken for 3 days and nobody is helping!!!",
+      text: "Không thể chấp nhận được! Laptop của tôi hỏng 3 ngày rồi mà không ai giúp!!!",
       sentiment: 'negative',
       score: 92,
-      priority: 'URGENT',
-      emotion: 'Frustrated',
+      priority: 'KHẨN CẤP',
+      emotion: 'Bực bội',
       icon: Frown,
       color: 'red'
     },
     {
-      text: "Hi, could you please help me reset my password when you get a chance? Thanks!",
+      text: "Xin chào, bạn có thể giúp tôi đặt lại mật khẩu khi rảnh không? Cảm ơn!",
       sentiment: 'positive',
       score: 78,
-      priority: 'LOW',
-      emotion: 'Polite',
+      priority: 'THẤP',
+      emotion: 'Lịch sự',
       icon: Smile,
       color: 'green'
     },
     {
-      text: "The printer on floor 3 is not working again. Need it fixed.",
+      text: "Máy in ở tầng 3 lại không hoạt động. Cần sửa gấp.",
       sentiment: 'neutral',
       score: 45,
-      priority: 'MEDIUM',
-      emotion: 'Neutral',
+      priority: 'TRUNG BÌNH',
+      emotion: 'Bình thường',
       icon: Meh,
       color: 'yellow'
     },
@@ -321,7 +321,7 @@ function SentimentAnalysisDemo() {
                 current.color === 'green' ? 'text-green-500' : 'text-yellow-500'
               }`} />
             </div>
-            <div className="text-xs text-gray-500 mb-1">Emotion</div>
+            <div className="text-xs text-gray-500 mb-1">Cảm xúc</div>
             <div className="text-sm font-bold text-[#172B4D]">{current.emotion}</div>
           </div>
 
@@ -330,22 +330,22 @@ function SentimentAnalysisDemo() {
             <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-purple-100 flex items-center justify-center shadow-md">
               <span className="text-lg font-bold text-purple-600">{current.score}</span>
             </div>
-            <div className="text-xs text-gray-500 mb-1">Urgency</div>
+            <div className="text-xs text-gray-500 mb-1">Mức độ khẩn</div>
             <div className="text-sm font-bold text-[#172B4D]">{current.score}%</div>
           </div>
 
           {/* Priority */}
           <div className="text-center flex flex-col justify-center">
             <div className={`w-12 h-12 mx-auto mb-3 rounded-full flex items-center justify-center shadow-md ${
-              current.priority === 'URGENT' ? 'bg-red-100' : 
-              current.priority === 'LOW' ? 'bg-green-100' : 'bg-yellow-100'
+              current.priority === 'KHẨN CẤP' ? 'bg-red-100' : 
+              current.priority === 'THẤP' ? 'bg-green-100' : 'bg-yellow-100'
             }`}>
               <CheckCircle className={`w-6 h-6 ${
-                current.priority === 'URGENT' ? 'text-red-500' : 
-                current.priority === 'LOW' ? 'text-green-500' : 'text-yellow-500'
+                current.priority === 'KHẨN CẤP' ? 'text-red-500' : 
+                current.priority === 'THẤP' ? 'text-green-500' : 'text-yellow-500'
               }`} />
             </div>
-            <div className="text-xs text-gray-500 mb-1">Auto-Priority</div>
+            <div className="text-xs text-gray-500 mb-1">Ưu tiên tự động</div>
             <div className={`text-sm font-bold ${
               current.priority === 'URGENT' ? 'text-red-600' : 
               current.priority === 'LOW' ? 'text-green-600' : 'text-yellow-600'
@@ -356,8 +356,8 @@ function SentimentAnalysisDemo() {
         {/* Additional Info */}
         <div className="mt-4 pt-4 border-t border-purple-200">
           <div className="flex items-center justify-between text-xs">
-            <span className="text-gray-500">Confidence Level</span>
-            <span className="font-bold text-purple-600">High (94%)</span>
+            <span className="text-gray-500">Độ tin cậy</span>
+            <span className="font-bold text-purple-600">Cao (94%)</span>
           </div>
           <div className="mt-2 w-full bg-purple-100 rounded-full h-1.5 overflow-hidden">
             <motion.div 

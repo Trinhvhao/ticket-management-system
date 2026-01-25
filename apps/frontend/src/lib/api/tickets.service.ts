@@ -28,6 +28,11 @@ export const ticketsService = {
     
     if (filters.createdById) params.append('submitterId', String(filters.createdById));
     if (filters.search) params.append('search', filters.search);
+    
+    // SLA filters
+    if (filters.slaBreached) params.append('slaBreached', 'true');
+    if (filters.slaAtRisk) params.append('slaAtRisk', 'true');
+    
     if (filters.page) params.append('page', String(filters.page));
     if (filters.limit) params.append('limit', String(filters.limit));
     if (filters.sortBy) params.append('sortBy', filters.sortBy);

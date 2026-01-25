@@ -150,37 +150,42 @@ export default function ArticleDetailPage() {
           {article.tags && (
             <div className="flex flex-wrap gap-2 mb-8">
               {(() => {
-                try {
-                  // Try to parse as JSON array first
-                  if (typeof article.tags === 'string') {
-                    // Check if it looks like JSON
-                    if (article.tags.trim().startsWith('[')) {
-                      return JSON.parse(article.tags);
+                const parseTags = (tags: string | string[] | any): string[] => {
+                  try {
+                    // Already an array
+                    if (Array.isArray(tags)) {
+                      return tags;
                     }
-                    // Otherwise split by comma
-                    return article.tags.split(',').map(t => t.trim()).filter(Boolean);
+                    // Try to parse as JSON array first
+                    if (typeof tags === 'string') {
+                      const trimmed = tags.trim();
+                      // Check if it looks like JSON
+                      if (trimmed.startsWith('[')) {
+                        return JSON.parse(trimmed);
+                      }
+                      // Otherwise split by comma
+                      return tags.split(',').map((t: string) => t.trim()).filter(Boolean);
+                    }
+                    return [];
+                  } catch (e) {
+                    // If JSON parse fails, try split by comma
+                    if (typeof tags === 'string') {
+                      return tags.split(',').map((t: string) => t.trim()).filter(Boolean);
+                    }
+                    return [];
                   }
-                  // Already an array
-                  if (Array.isArray(article.tags)) {
-                    return article.tags;
-                  }
-                  return [];
-                } catch (e) {
-                  // If JSON parse fails, split by comma
-                  if (typeof article.tags === 'string') {
-                    return article.tags.split(',').map(t => t.trim()).filter(Boolean);
-                  }
-                  return [];
-                }
-              })().map((tag: string, index: number) => (
-                <span
-                  key={index}
-                  className="inline-flex items-center px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm"
-                >
-                  <Tag className="w-3 h-3 mr-1" />
-                  {tag}
-                </span>
-              ))}
+                };
+
+                return parseTags(article.tags).map((tag: string, index: number) => (
+                  <span
+                    key={index}
+                    className="inline-flex items-center px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm"
+                  >
+                    <Tag className="w-3 h-3 mr-1" />
+                    {tag}
+                  </span>
+                ));
+              })()}
             </div>
           )}
 

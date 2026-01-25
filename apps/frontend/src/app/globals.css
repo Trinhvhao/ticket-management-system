@@ -25,6 +25,39 @@ body {
   font-family: var(--font-inter);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: "kern" 1;
+  font-kerning: normal;
+}
+
+/* Force consistent text color for form elements */
+input,
+textarea,
+select,
+button {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Ensure labels and text are consistently dark */
+label,
+.text-gray-700,
+.text-gray-600 {
+  color: #374151 !important; /* Tailwind gray-700 */
+}
+
+/* Placeholder text should be lighter but consistent */
+::placeholder {
+  color: #9CA3AF; /* Tailwind gray-400 */
+  opacity: 1;
+}
+
+:-ms-input-placeholder {
+  color: #9CA3AF;
+}
+
+::-ms-input-placeholder {
+  color: #9CA3AF;
 }
 
 /* Smooth scroll behavior */

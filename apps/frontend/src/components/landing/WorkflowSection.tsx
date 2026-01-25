@@ -14,26 +14,26 @@ export function WorkflowSection() {
     {
       icon: Inbox,
       number: '01',
-      title: 'Capture',
-      description: 'Multi-channel intake via portal, email, or API ensures no request is missed.',
+      title: 'Thu thập',
+      description: 'Tiếp nhận đa kênh qua cổng thông tin, email hoặc API đảm bảo không bỏ sót yêu cầu nào.',
     },
     {
       icon: GitBranch,
       number: '02',
-      title: 'Route',
-      description: 'AI-assisted categorization and auto-assignment to the right specialist team.',
+      title: 'Định tuyến',
+      description: 'Phân loại hỗ trợ AI và tự động phân công cho đội chuyên gia phù hợp.',
     },
     {
       icon: Wrench,
       number: '03',
-      title: 'Resolve',
-      description: 'Staff execute guided workflows and leverage the knowledge base.',
+      title: 'Giải quyết',
+      description: 'Nhân viên thực hiện quy trình được hướng dẫn và tận dụng cơ sở tri thức.',
     },
     {
       icon: LineChart,
       number: '04',
-      title: 'Optimize',
-      description: 'Post-incident reviews and data aggregation to identify system improvements.',
+      title: 'Tối ưu hóa',
+      description: 'Đánh giá sau sự cố và tổng hợp dữ liệu để xác định cải tiến hệ thống.',
     },
   ];
 
@@ -53,11 +53,11 @@ export function WorkflowSection() {
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
         >
           <h2 className="text-4xl md:text-5xl font-extrabold mb-6 tracking-tight text-white">
-            Transparent service
-            <span className="text-[#4C9AFF]"> lifecycle</span>
+            Chu trình dịch vụ
+            <span className="text-[#4C9AFF]"> minh bạch</span>
           </h2>
           <p className="text-lg text-blue-200">
-            From request to resolution with a structured, auditable process that keeps stakeholders informed
+            Từ yêu cầu đến giải quyết với quy trình có cấu trúc, có thể kiểm toán và giữ cho các bên liên quan được thông báo
           </p>
         </motion.div>
 

@@ -32,18 +32,18 @@ export function FeaturesShowcase() {
           >
             <div className="inline-flex items-center px-4 py-2 bg-purple-100 rounded-full mb-6">
               <Bot className="w-4 h-4 text-purple-600 mr-2" />
-              <span className="text-sm font-semibold text-purple-600">AI-Powered Support</span>
+              <span className="text-sm font-semibold text-purple-600">Hỗ trợ bởi AI</span>
             </div>
             <h3 className="text-4xl md:text-5xl font-extrabold text-[#172B4D] mb-6 leading-tight">
-              Chatbot that
-              <span className="text-[#0052CC]"> actually helps</span>
+              Chatbot
+              <span className="text-[#0052CC]"> thực sự hữu ích</span>
             </h3>
             <p className="text-lg text-gray-500 mb-8 leading-relaxed">
-              Smart virtual assistant answers FAQs, guides users, and auto-creates tickets when needed. 
-              Reduce IT workload by 40%.
+              Trợ lý ảo thông minh trả lời câu hỏi thường gặp, hướng dẫn người dùng và tự động tạo ticket khi cần. 
+              Giảm khối lượng công việc IT 40%.
             </p>
             <ul className="space-y-4">
-              {['Instant 24/7 responses', 'Knowledge Base integration', 'Learns from interactions'].map((item, i) => (
+              {['Phản hồi tức thì 24/7', 'Tích hợp cơ sở tri thức', 'Học từ tương tác'].map((item, i) => (
                 <li key={i} className="flex items-center space-x-3">
                   <div className="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center">
                     <CheckCircle className="w-4 h-4 text-green-600" />
@@ -66,18 +66,18 @@ export function FeaturesShowcase() {
             >
               <div className="inline-flex items-center px-4 py-2 bg-[#0052CC]/20 rounded-full mb-6">
                 <Sparkles className="w-4 h-4 text-[#4C9AFF] mr-2" />
-                <span className="text-sm font-semibold text-[#4C9AFF]">Real-time Analytics</span>
+                <span className="text-sm font-semibold text-[#4C9AFF]">Phân tích thời gian thực</span>
               </div>
               <h3 className="text-4xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
-                Insights that
-                <span className="text-[#4C9AFF]"> drive decisions</span>
+                Thông tin chi tiết
+                <span className="text-[#4C9AFF]"> thúc đẩy quyết định</span>
               </h3>
               <p className="text-lg text-blue-200 mb-8 leading-relaxed">
-                Track performance, trends, and KPIs with intuitive dashboards. 
-                Automated reports help management make data-driven decisions.
+                Theo dõi hiệu suất, xu hướng và KPI với bảng điều khiển trực quan. 
+                Báo cáo tự động giúp quản lý đưa ra quyết định dựa trên dữ liệu.
               </p>
               <ul className="space-y-4">
-                {['Real-time metrics', 'Custom reports', 'Multi-format export'].map((item, i) => (
+                {['Số liệu thời gian thực', 'Báo cáo tùy chỉnh', 'Xuất đa định dạng'].map((item, i) => (
                   <li key={i} className="flex items-center space-x-3">
                     <div className="w-6 h-6 bg-[#0052CC] rounded-full flex items-center justify-center">
                       <CheckCircle className="w-4 h-4 text-white" />
@@ -117,7 +117,7 @@ function ChatbotIllustration() {
               <span className="text-white font-semibold text-sm">NexusFlow AI</span>
               <div className="flex items-center space-x-1">
                 <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                <span className="text-blue-200 text-xs">Online</span>
+                <span className="text-blue-200 text-xs">Trực tuyến</span>
               </div>
             </div>
           </div>
@@ -132,7 +132,7 @@ function ChatbotIllustration() {
             transition={{ delay: 0.3 }}
           >
             <div className="bg-gray-100 rounded-2xl rounded-tr-sm px-4 py-3 max-w-[80%]">
-              <p className="text-sm text-[#172B4D]">How do I reset my password?</p>
+              <p className="text-sm text-[#172B4D]">Làm thế nào để đặt lại mật khẩu?</p>
             </div>
           </motion.div>
 
@@ -143,7 +143,7 @@ function ChatbotIllustration() {
             transition={{ delay: 0.6 }}
           >
             <div className="bg-[#0052CC] rounded-2xl rounded-tl-sm px-4 py-3 max-w-[80%]">
-              <p className="text-sm text-white">I can help with that! Go to Settings → Security → Reset Password. Need me to create a ticket?</p>
+              <p className="text-sm text-white">Tôi có thể giúp bạn! Vào Cài đặt → Bảo mật → Đặt lại mật khẩu. Bạn có cần tôi tạo ticket không?</p>
             </div>
           </motion.div>
 
@@ -154,10 +154,10 @@ function ChatbotIllustration() {
             transition={{ delay: 0.9 }}
           >
             <button className="px-4 py-2 bg-green-100 text-green-700 text-sm font-medium rounded-full hover:bg-green-200 transition">
-              Yes, create ticket
+              Có, tạo ticket
             </button>
             <button className="px-4 py-2 bg-gray-100 text-gray-600 text-sm font-medium rounded-full hover:bg-gray-200 transition">
-              No thanks
+              Không, cảm ơn
             </button>
           </motion.div>
         </div>
@@ -169,7 +169,7 @@ function ChatbotIllustration() {
         animate={{ y: [0, -5, 0] }}
         transition={{ duration: 2, repeat: Infinity }}
       >
-        <span className="text-sm font-bold">40% less tickets</span>
+        <span className="text-sm font-bold">Giảm 40% ticket</span>
       </motion.div>
     </div>
   );
@@ -182,9 +182,9 @@ function DashboardIllustration() {
         {/* Stats Row */}
         <div className="grid grid-cols-3 gap-4 mb-6">
           {[
-            { value: '1,234', label: 'Total', trend: '+12%', color: 'text-[#4C9AFF]' },
+            { value: '1,234', label: 'Tổng số', trend: '+12%', color: 'text-[#4C9AFF]' },
             { value: '94%', label: 'SLA', trend: '+3%', color: 'text-green-400' },
-            { value: '2.4h', label: 'Avg Time', trend: '-18%', color: 'text-purple-400' },
+            { value: '2.4h', label: 'TG TB', trend: '-18%', color: 'text-purple-400' },
           ].map((stat, i) => (
             <motion.div 
               key={i} 
@@ -203,7 +203,7 @@ function DashboardIllustration() {
         {/* Chart */}
         <div className="bg-white/5 rounded-xl p-4 border border-white/10">
           <div className="flex items-center justify-between mb-4">
-            <span className="text-sm font-semibold text-white">Weekly Trends</span>
+            <span className="text-sm font-semibold text-white">Xu hướng tuần</span>
             <TrendingUp className="w-4 h-4 text-green-400" />
           </div>
           <div className="flex items-end justify-between h-32 gap-2">
@@ -218,7 +218,7 @@ function DashboardIllustration() {
             ))}
           </div>
           <div className="flex justify-between mt-2 text-xs text-blue-300">
-            {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day, i) => (
+            {['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'].map((day, i) => (
               <span key={i}>{day}</span>
             ))}
           </div>
@@ -236,8 +236,8 @@ function DashboardIllustration() {
             <CheckCircle className="w-5 h-5 text-green-600" />
           </div>
           <div>
-            <div className="text-sm font-semibold text-[#172B4D]">SLA Target Met</div>
-            <div className="text-xs text-gray-500">This month: 94%</div>
+            <div className="text-sm font-semibold text-[#172B4D]">Đạt mục tiêu SLA</div>
+            <div className="text-xs text-gray-500">Tháng này: 94%</div>
           </div>
         </div>
       </motion.div>

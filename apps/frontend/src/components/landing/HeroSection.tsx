@@ -10,8 +10,7 @@ export function HeroSection() {
       {/* Animated Background Circles */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <motion.div 
-          className="absolute w-96 h-96 bg-gradient-to-br from-[#0052CC]/10 to-transparent rounded-full blur-3xl"
-          style={{ top: '10%', left: '5%' }}
+          className="absolute w-96 h-96 bg-gradient-to-br from-[#0052CC]/10 to-transparent rounded-full blur-3xl top-[10%] left-[5%]"
           animate={{ 
             x: [0, 50, 0],
             y: [0, 30, 0],
@@ -24,8 +23,7 @@ export function HeroSection() {
           }}
         />
         <motion.div 
-          className="absolute w-80 h-80 bg-gradient-to-br from-blue-400/10 to-transparent rounded-full blur-3xl"
-          style={{ top: '50%', right: '10%' }}
+          className="absolute w-80 h-80 bg-gradient-to-br from-blue-400/10 to-transparent rounded-full blur-3xl top-[50%] right-[10%]"
           animate={{ 
             x: [0, -40, 0],
             y: [0, -50, 0],
@@ -39,8 +37,7 @@ export function HeroSection() {
           }}
         />
         <motion.div 
-          className="absolute w-64 h-64 bg-gradient-to-br from-[#0052CC]/5 to-transparent rounded-full blur-2xl"
-          style={{ bottom: '10%', left: '30%' }}
+          className="absolute w-64 h-64 bg-gradient-to-br from-[#0052CC]/5 to-transparent rounded-full blur-2xl bottom-[10%] left-[30%]"
           animate={{ 
             x: [0, 30, 0],
             y: [0, -40, 0],
@@ -54,8 +51,7 @@ export function HeroSection() {
           }}
         />
         <motion.div 
-          className="absolute w-72 h-72 bg-gradient-to-br from-blue-300/8 to-transparent rounded-full blur-3xl"
-          style={{ top: '30%', right: '25%' }}
+          className="absolute w-72 h-72 bg-gradient-to-br from-blue-300/8 to-transparent rounded-full blur-3xl top-[30%] right-[25%]"
           animate={{ 
             x: [0, -30, 0],
             y: [0, 40, 0],
@@ -71,8 +67,7 @@ export function HeroSection() {
         
         {/* Small floating circles */}
         <motion.div 
-          className="absolute w-20 h-20 bg-[#0052CC]/20 rounded-full blur-xl"
-          style={{ top: '20%', left: '15%' }}
+          className="absolute w-20 h-20 bg-[#0052CC]/20 rounded-full blur-xl top-[20%] left-[15%]"
           animate={{ 
             y: [0, -20, 0],
             opacity: [0.3, 0.6, 0.3]
@@ -84,8 +79,7 @@ export function HeroSection() {
           }}
         />
         <motion.div 
-          className="absolute w-16 h-16 bg-blue-400/20 rounded-full blur-xl"
-          style={{ top: '60%', right: '20%' }}
+          className="absolute w-16 h-16 bg-blue-400/20 rounded-full blur-xl top-[60%] right-[20%]"
           animate={{ 
             y: [0, 25, 0],
             opacity: [0.2, 0.5, 0.2]
@@ -98,8 +92,7 @@ export function HeroSection() {
           }}
         />
         <motion.div 
-          className="absolute w-24 h-24 bg-[#0052CC]/15 rounded-full blur-xl"
-          style={{ bottom: '25%', left: '50%' }}
+          className="absolute w-24 h-24 bg-[#0052CC]/15 rounded-full blur-xl bottom-[25%] left-[50%]"
           animate={{ 
             x: [0, 20, 0],
             y: [0, -15, 0],
@@ -129,23 +122,19 @@ export function HeroSection() {
             transition={{ duration: 0.5, delay: 0.1 }}
           >
             <span className="text-sm font-semibold text-[#0052CC] tracking-wide uppercase">
-              2026 Ready: AI-Augmented Dispatch
+              Sẵn sàng 2026: Công nghệ tiên tiến
             </span>
           </motion.div>
 
           {/* Headline - Modern Typography */}
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold text-[#172B4D] leading-[1.1] tracking-tight mb-6">
-            Elevate IT service
-            <br />
-            with{' '}
-            <span className="text-[#0052CC]">intelligent</span>
-            <br />
-            control.
+            Quản lý dịch vụ IT{' '}
+            <span className="text-[#0052CC]">thông minh</span>
           </h1>
           
           <p className="text-lg md:text-xl text-gray-500 mb-10 leading-relaxed max-w-lg">
-            Built for Growth Engineers. Standardize, automate, and scale your 
-            IT ticketing system with the speed of light.
+            Được xây dựng cho các kỹ sư phát triển. Chuẩn hóa, tự động hóa và mở rộng 
+            hệ thống quản lý ticket IT của bạn với tốc độ ánh sáng.
           </p>
 
           <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
@@ -153,13 +142,13 @@ export function HeroSection() {
               href="/register"
               className="px-8 py-4 bg-[#0052CC] hover:bg-blue-700 text-white font-bold rounded-lg transition-all text-center shadow-lg shadow-[#0052CC]/25"
             >
-              Get Started Free
+              Bắt đầu miễn phí
             </Link>
             <Link
               href="/login"
               className="px-8 py-4 border-2 border-gray-200 text-[#172B4D] hover:border-[#0052CC] hover:text-[#0052CC] font-semibold rounded-lg transition-all text-center"
             >
-              Sign In
+              Đăng nhập
             </Link>
           </div>
         </motion.div>
@@ -237,11 +226,11 @@ function AnimatedTicketDashboard() {
             <div className="flex items-center space-x-3 flex-1">
               <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></div>
               <div>
-                <div className="font-semibold text-[#172B4D] text-sm">Ticket #2026: AI Infrastructure</div>
-                <div className="text-xs text-gray-400 mt-1">Priority: High • 2h ago</div>
+                <div className="font-semibold text-[#172B4D] text-sm">Ticket #2026: Hạ tầng AI</div>
+                <div className="text-xs text-gray-400 mt-1">Ưu tiên: Cao • 2 giờ trước</div>
               </div>
             </div>
-            <span className="px-3 py-1 bg-red-500 text-white text-xs font-bold rounded-full">URGENT</span>
+            <span className="px-3 py-1 bg-red-500 text-white text-xs font-bold rounded-full">KHẨN CẤP</span>
           </motion.div>
 
           <motion.div 
@@ -254,11 +243,11 @@ function AnimatedTicketDashboard() {
             <div className="flex items-center space-x-3 flex-1">
               <div className="w-2 h-2 rounded-full bg-gray-400"></div>
               <div>
-                <div className="font-semibold text-[#172B4D] text-sm">Database Optimization</div>
-                <div className="text-xs text-gray-400 mt-1">Priority: Medium • 5h ago</div>
+                <div className="font-semibold text-[#172B4D] text-sm">Tối ưu hóa Database</div>
+                <div className="text-xs text-gray-400 mt-1">Ưu tiên: Trung bình • 5 giờ trước</div>
               </div>
             </div>
-            <span className="px-3 py-1 bg-gray-200 text-gray-600 text-xs font-bold rounded-full">PENDING</span>
+            <span className="px-3 py-1 bg-gray-200 text-gray-600 text-xs font-bold rounded-full">CHỜ XỬ LÝ</span>
           </motion.div>
 
           <motion.div 
@@ -271,11 +260,11 @@ function AnimatedTicketDashboard() {
             <div className="flex items-center space-x-3 flex-1">
               <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
               <div>
-                <div className="font-semibold text-green-700 text-sm">New AI Agent Deployment</div>
-                <div className="text-xs text-gray-400 mt-1">Priority: Low • 1d ago</div>
+                <div className="font-semibold text-green-700 text-sm">Triển khai AI Agent mới</div>
+                <div className="text-xs text-gray-400 mt-1">Ưu tiên: Thấp • 1 ngày trước</div>
               </div>
             </div>
-            <span className="px-3 py-1 bg-green-500 text-white text-xs font-bold rounded-full">ACTIVE</span>
+            <span className="px-3 py-1 bg-green-500 text-white text-xs font-bold rounded-full">ĐANG XỬ LÝ</span>
           </motion.div>
         </div>
 
@@ -287,7 +276,7 @@ function AnimatedTicketDashboard() {
           transition={{ duration: 0.6, delay: 1.5 }}
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-xs text-gray-500 font-medium">Today's Progress</span>
+            <span className="text-xs text-gray-500 font-medium">Tiến độ hôm nay</span>
             <span className="text-xs text-[#0052CC] font-bold">87%</span>
           </div>
           <div className="w-full bg-gray-100 rounded-full h-2 overflow-hidden">
@@ -331,7 +320,7 @@ function AnimatedTicketDashboard() {
         <div className="flex items-center space-x-2">
           <TrendingUp className="w-4 h-4 text-green-500" />
           <div>
-            <div className="text-xs text-gray-400">Response Time</div>
+            <div className="text-xs text-gray-400">Thời gian phản hồi</div>
             <div className="text-sm font-bold text-green-600">-23%</div>
           </div>
         </div>
@@ -346,7 +335,7 @@ function AnimatedTicketDashboard() {
         <div className="flex items-center space-x-2">
           <BarChart3 className="w-4 h-4 text-[#0052CC]" />
           <div>
-            <div className="text-xs text-gray-400">Satisfaction</div>
+            <div className="text-xs text-gray-400">Hài lòng</div>
             <div className="text-sm font-bold text-[#0052CC]">98.5%</div>
           </div>
         </div>

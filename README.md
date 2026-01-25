@@ -55,9 +55,15 @@ Hệ thống Quản lý Ticket là giải pháp toàn diện để số hóa quy
 
 ### Yêu cầu hệ thống
 
-- Node.js >= 18.x
-- PostgreSQL >= 14.x
-- npm hoặc yarn
+- **Node.js**: >= 18.0.0 (Khuyến nghị: 20.x LTS)
+- **npm**: >= 9.0.0
+- **PostgreSQL**: >= 14.x (hoặc Supabase)
+
+**Phiên bản đang sử dụng:**
+- Node.js: v24.11.0
+- npm: 11.6.1
+
+> 📖 Xem chi tiết: [VERSION-INFO.md](./VERSION-INFO.md) | [INSTALLATION-GUIDE.md](./INSTALLATION-GUIDE.md)
 
 ### Cài đặt
 

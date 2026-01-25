@@ -13,33 +13,33 @@ export function CapabilitiesSection() {
   const features = [
     {
       icon: FileText,
-      title: 'Unified Request Hub',
-      description: 'Consolidate tickets, incidents, and service requests from all channels into a single dashboard.',
+      title: 'Trung tâm yêu cầu thống nhất',
+      description: 'Tập trung ticket, sự cố và yêu cầu dịch vụ từ mọi kênh vào một bảng điều khiển duy nhất.',
     },
     {
       icon: Zap,
-      title: 'Smart Automation',
-      description: 'Automate repetitive tasks, routing rules, and approvals to reduce manual effort.',
+      title: 'Tự động hóa thông minh',
+      description: 'Tự động hóa các tác vụ lặp lại, quy tắc định tuyến và phê duyệt để giảm công việc thủ công.',
     },
     {
       icon: Clock,
-      title: 'Dynamic SLA Tracking',
-      description: 'Ensure commitments are met with real-time SLA monitoring and automatic breach alerts.',
+      title: 'Theo dõi SLA động',
+      description: 'Đảm bảo cam kết được thực hiện với giám sát SLA thời gian thực và cảnh báo vi phạm tự động.',
     },
     {
       icon: BarChart3,
-      title: 'Executive Reports',
-      description: 'Visualize performance with customizable dashboards and reports for stakeholders.',
+      title: 'Báo cáo quản lý',
+      description: 'Trực quan hóa hiệu suất với bảng điều khiển và báo cáo tùy chỉnh cho các bên liên quan.',
     },
     {
       icon: Shield,
-      title: 'Enterprise Security',
-      description: 'Bank-grade encryption, role-based access, and audit trails for compliance.',
+      title: 'Bảo mật doanh nghiệp',
+      description: 'Mã hóa cấp ngân hàng, kiểm soát truy cập theo vai trò và nhật ký kiểm toán để tuân thủ.',
     },
     {
       icon: Users,
-      title: 'Team Collaboration',
-      description: 'Built-in chat, mentions, and shared workspaces for seamless teamwork.',
+      title: 'Cộng tác nhóm',
+      description: 'Chat tích hợp, đề cập và không gian làm việc chung để làm việc nhóm liền mạch.',
     },
   ];
 
@@ -53,11 +53,11 @@ export function CapabilitiesSection() {
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
         >
           <h2 className="text-4xl md:text-5xl font-extrabold mb-6 tracking-tight text-[#172B4D]">
-            Engineered for
-            <span className="text-[#0052CC]"> operational control</span>
+            Được thiết kế cho
+            <span className="text-[#0052CC]"> kiểm soát vận hành</span>
           </h2>
           <p className="text-lg text-gray-500">
-            Centralize IT processes and empower your team with a powerful service management toolkit
+            Tập trung hóa quy trình IT và trao quyền cho đội ngũ của bạn với bộ công cụ quản lý dịch vụ mạnh mẽ
           </p>
         </motion.div>
 

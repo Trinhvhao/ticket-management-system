@@ -9,24 +9,24 @@ export function Footer() {
         {/* CTA Section */}
         <div className="text-center mb-20">
           <h2 className="text-4xl md:text-5xl font-extrabold text-white mb-6 tracking-tight">
-            Ready to transform your
-            <span className="text-[#4C9AFF]"> IT operations?</span>
+            Sẵn sàng chuyển đổi
+            <span className="text-[#4C9AFF]"> vận hành IT?</span>
           </h2>
           <p className="text-lg text-blue-200 mb-10 max-w-2xl mx-auto">
-            Join organizations using NexusFlow to standardize IT delivery and improve organizational resilience.
+            Tham gia các tổ chức sử dụng NexusFlow để chuẩn hóa cung cấp dịch vụ IT và cải thiện khả năng phục hồi tổ chức.
           </p>
           <div className="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
             <Link
               href="/register"
               className="px-8 py-4 bg-[#0052CC] hover:bg-blue-600 text-white font-bold rounded-lg transition-all shadow-lg shadow-[#0052CC]/25"
             >
-              Start Free Trial
+              Dùng thử miễn phí
             </Link>
             <a
               href="#features"
               className="px-8 py-4 border-2 border-white/20 text-white hover:bg-white/10 font-semibold rounded-lg transition-all"
             >
-              Schedule Demo
+              Đặt lịch demo
             </a>
           </div>
         </div>
@@ -45,37 +45,37 @@ export function Footer() {
               <span className="text-white text-xl font-bold">NexusFlow</span>
             </Link>
             <p className="text-blue-200 text-sm leading-relaxed">
-              Enterprise IT service management platform built for reliability and transparency.
+              Nền tảng quản lý dịch vụ IT doanh nghiệp được xây dựng cho độ tin cậy và minh bạch.
             </p>
           </div>
 
           <div>
-            <h4 className="text-white font-semibold mb-6 uppercase text-sm tracking-wider">Product</h4>
+            <h4 className="text-white font-semibold mb-6 uppercase text-sm tracking-wider">Sản phẩm</h4>
             <ul className="space-y-4 text-blue-200 text-sm">
-              <li><a href="#features" className="hover:text-white transition">Features</a></li>
-              <li><a href="#" className="hover:text-white transition">Integrations</a></li>
-              <li><a href="#" className="hover:text-white transition">Security</a></li>
-              <li><a href="#" className="hover:text-white transition">Roadmap</a></li>
+              <li><a href="#features" className="hover:text-white transition">Tính năng</a></li>
+              <li><a href="#" className="hover:text-white transition">Tích hợp</a></li>
+              <li><a href="#" className="hover:text-white transition">Bảo mật</a></li>
+              <li><a href="#" className="hover:text-white transition">Lộ trình</a></li>
             </ul>
           </div>
 
           <div>
-            <h4 className="text-white font-semibold mb-6 uppercase text-sm tracking-wider">Resources</h4>
+            <h4 className="text-white font-semibold mb-6 uppercase text-sm tracking-wider">Tài nguyên</h4>
             <ul className="space-y-4 text-blue-200 text-sm">
-              <li><a href="#" className="hover:text-white transition">Documentation</a></li>
+              <li><a href="#" className="hover:text-white transition">Tài liệu</a></li>
               <li><a href="#" className="hover:text-white transition">API Reference</a></li>
               <li><a href="#" className="hover:text-white transition">Case Studies</a></li>
-              <li><a href="#" className="hover:text-white transition">Support</a></li>
+              <li><a href="#" className="hover:text-white transition">Hỗ trợ</a></li>
             </ul>
           </div>
 
           <div>
-            <h4 className="text-white font-semibold mb-6 uppercase text-sm tracking-wider">Company</h4>
+            <h4 className="text-white font-semibold mb-6 uppercase text-sm tracking-wider">Công ty</h4>
             <ul className="space-y-4 text-blue-200 text-sm">
-              <li><a href="#" className="hover:text-white transition">About Us</a></li>
-              <li><a href="#" className="hover:text-white transition">Careers</a></li>
-              <li><a href="#" className="hover:text-white transition">Contact</a></li>
-              <li><a href="#" className="hover:text-white transition">Partners</a></li>
+              <li><a href="#" className="hover:text-white transition">Về chúng tôi</a></li>
+              <li><a href="#" className="hover:text-white transition">Tuyển dụng</a></li>
+              <li><a href="#" className="hover:text-white transition">Liên hệ</a></li>
+              <li><a href="#" className="hover:text-white transition">Đối tác</a></li>
             </ul>
           </div>
         </div>
@@ -84,8 +84,8 @@ export function Footer() {
         <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row items-center justify-between text-sm text-blue-300">
           <p>© 2025 Công ty TNHH 28H. All rights reserved.</p>
           <div className="flex space-x-6 mt-4 md:mt-0">
-            <a href="#" className="hover:text-white transition">Privacy Policy</a>
-            <a href="#" className="hover:text-white transition">Terms of Service</a>
+            <a href="#" className="hover:text-white transition">Chính sách bảo mật</a>
+            <a href="#" className="hover:text-white transition">Điều khoản dịch vụ</a>
             <a href="#" className="hover:text-white transition">SLA</a>
           </div>
         </div>

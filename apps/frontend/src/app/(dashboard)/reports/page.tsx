@@ -186,18 +186,18 @@ export default function ReportsPage() {
                 </thead>
                 <tbody className="divide-y divide-gray-200">
                   {staffPerformance.map((staff) => (
-                    <tr key={staff.userId} className="hover:bg-gray-50">
+                    <tr key={staff.staffId} className="hover:bg-gray-50">
                       <td className="px-4 py-3">
                         <div className="flex items-center space-x-3">
                           <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-medium">
-                            {staff.fullName?.charAt(0) || '?'}
+                            {staff.staffName?.charAt(0) || '?'}
                           </div>
-                          <span className="font-medium text-gray-900">{staff.fullName || 'Unknown'}</span>
+                          <span className="font-medium text-gray-900">{staff.staffName || 'Unknown'}</span>
                         </div>
                       </td>
                       <td className="px-4 py-3 text-center text-sm text-gray-600">{staff.assignedTickets}</td>
                       <td className="px-4 py-3 text-center text-sm text-gray-600">{staff.resolvedTickets}</td>
-                      <td className="px-4 py-3 text-center text-sm text-gray-600">{staff.avgResolutionTime}</td>
+                      <td className="px-4 py-3 text-center text-sm text-gray-600">{staff.averageResolutionHours}h</td>
                       <td className="px-4 py-3 text-center">
                         <span className={`px-2 py-1 text-xs font-medium rounded-full ${
                           staff.slaComplianceRate >= 80 ? 'bg-green-100 text-green-700' :
