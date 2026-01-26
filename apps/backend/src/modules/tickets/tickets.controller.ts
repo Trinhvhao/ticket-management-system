@@ -55,6 +55,8 @@ export class TicketsController {
   @ApiQuery({ name: 'submitterId', required: false, type: Number })
   @ApiQuery({ name: 'assigneeId', required: false, type: Number })
   @ApiQuery({ name: 'search', required: false, type: String })
+  @ApiQuery({ name: 'slaBreached', required: false, type: Boolean, description: 'Filter overdue tickets' })
+  @ApiQuery({ name: 'slaAtRisk', required: false, type: Boolean, description: 'Filter tickets at risk' })
   @ApiQuery({ name: 'page', required: false, type: Number })
   @ApiQuery({ name: 'limit', required: false, type: Number })
   @ApiQuery({ name: 'sortBy', required: false, type: String })
@@ -69,6 +71,8 @@ export class TicketsController {
     @Query('submitterId') submitterId?: string,
     @Query('assigneeId') assigneeId?: string,
     @Query('search') search?: string,
+    @Query('slaBreached') slaBreached?: string,
+    @Query('slaAtRisk') slaAtRisk?: string,
     @Query('page') page?: string,
     @Query('limit') limit?: string,
     @Query('sortBy') sortBy?: string,
@@ -81,6 +85,8 @@ export class TicketsController {
       submitterId: submitterId ? parseInt(submitterId) : undefined,
       assigneeId: assigneeId === 'null' ? null : (assigneeId ? parseInt(assigneeId) : undefined),
       search,
+      slaBreached: slaBreached === 'true',
+      slaAtRisk: slaAtRisk === 'true',
     };
 
     const pagination: PaginationOptions = {

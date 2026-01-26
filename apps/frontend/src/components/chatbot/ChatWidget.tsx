@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { chatbotService, ChatMessage, ChatResponse } from '@/lib/api/chatbot.service';
 import { useAuthStore } from '@/lib/stores/auth.store';
+import { FormattedMessage } from './FormattedMessage';
 import {
   MessageCircle,
   X,
@@ -196,7 +197,11 @@ export default function ChatWidget() {
                             : 'bg-gray-100 text-gray-800 rounded-bl-md'
                         }`}
                       >
-                        <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
+                        {msg.type === 'user' ? (
+                          <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
+                        ) : (
+                          <FormattedMessage content={msg.content} />
+                        )}
                       </div>
 
                       {/* Articles */}

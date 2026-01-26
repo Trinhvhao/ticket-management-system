@@ -49,6 +49,10 @@ export class ChatbotLLMRAGService {
         return this.handleHelp();
       }
 
+      if (intent === 'project_author') {
+        return this.handleProjectAuthor();
+      }
+
       // Step 2: Generate embedding for query
       const queryEmbedding = await this.embeddingService.generateEmbedding(message);
       this.logger.debug(`Generated query embedding: ${queryEmbedding.length} dimensions`);
@@ -193,6 +197,13 @@ export class ChatbotLLMRAGService {
       return 'help';
     }
 
+    // Detect project/author questions
+    if (/(project|dự án|hệ thống|phần mềm).*(ai|của ai|tác giả|người làm|người phát triển|developer|dev|làm|phát triển)/i.test(message) ||
+        /(ai|tác giả|người làm|người phát triển|developer|dev).*(project|dự án|hệ thống|phần mềm|này|này|làm|phát triển)/i.test(message) ||
+        /^(ai làm|ai phát triển|tác giả|developer|người làm)/i.test(message)) {
+      return 'project_author';
+    }
+
     return 'query';
   }
 
@@ -251,6 +262,41 @@ Hãy cho tôi biết bạn cần hỗ trợ về vấn đề gì?`,
         'Kết nối WiFi',
         'Sử dụng máy in',
         'Chính sách bảo mật',
+      ],
+      confidence: 1,
+    };
+  }
+
+  /**
+   * Handle project author questions
+   */
+  private handleProjectAuthor(): RAGResponse {
+    return {
+      type: 'project_info',
+      message: `📚 **Thông tin về dự án**
+
+Hệ thống Quản lý Ticket này được phát triển bởi:
+
+👤 **Tác giả:** Nguyễn Thị Thu Trang
+🎓 **Lớp:** ĐH12C2
+
+**Về dự án:**
+• Hệ thống quản lý yêu cầu hỗ trợ kỹ thuật cho Công ty TNHH 28H
+• Số hóa quy trình hỗ trợ từ thủ công sang hệ thống tập trung
+• Tích hợp AI Chatbot, Knowledge Base, và quản lý SLA
+• Tuân thủ tiêu chuẩn ITIL/ITSM
+
+**Công nghệ sử dụng:**
+• Backend: NestJS + PostgreSQL
+• Frontend: Next.js + React
+• AI: OpenRouter API (Xiaomi MiMo-V2-Flash)
+
+Bạn có câu hỏi gì khác về hệ thống không?`,
+      suggestions: [
+        'Tính năng của hệ thống',
+        'Hướng dẫn sử dụng',
+        'Tạo ticket hỗ trợ',
+        'Xem Knowledge Base',
       ],
       confidence: 1,
     };

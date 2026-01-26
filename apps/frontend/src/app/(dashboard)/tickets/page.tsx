@@ -140,11 +140,14 @@ export default function TicketsPage() {
       processedFilters.assigneeId = user.id;
     }
 
-    setFilters(prev => ({
-      ...prev,
-      ...processedFilters,
+    // Always apply the filter, even if it's the same preset
+    setFilters({
       page: 1,
-    }));
+      limit: 10,
+      sortBy: 'createdAt',
+      sortOrder: 'DESC',
+      ...processedFilters,
+    });
     setActivePreset(preset.id);
     setSearchQuery('');
   };
@@ -584,22 +587,26 @@ export default function TicketsPage() {
                         <td className="px-6 py-4 hidden md:table-cell cursor-pointer" onClick={() => router.push(`/tickets/${ticket.id}`)}>
                           {ticket.dueDate ? (
                             <div className="flex flex-col">
-                              <span className={`text-sm ${
+                              <span className={`text-sm font-medium ${
                                 new Date(ticket.dueDate) < new Date() && ticket.status !== 'Resolved' && ticket.status !== 'Closed'
                                   ? 'text-red-600 font-semibold'
                                   : new Date(ticket.dueDate).getTime() - new Date().getTime() < 2 * 60 * 60 * 1000
                                   ? 'text-orange-600 font-medium'
-                                  : 'text-gray-600'
+                                  : 'text-gray-700'
                               }`}>
                                 {new Date(ticket.dueDate).toLocaleDateString('vi-VN', {
                                   day: '2-digit',
                                   month: '2-digit',
+                                  year: '2-digit', // Add year for clarity
+                                })}
+                                {' '}
+                                {new Date(ticket.dueDate).toLocaleTimeString('vi-VN', {
                                   hour: '2-digit',
                                   minute: '2-digit',
                                 })}
                               </span>
                               {new Date(ticket.dueDate) < new Date() && ticket.status !== 'Resolved' && ticket.status !== 'Closed' && (
-                                <span className="text-xs text-red-500 font-medium">⚠️ Quá hạn</span>
+                                <span className="text-xs text-red-500 font-medium mt-0.5">⚠️ Quá hạn</span>
                               )}
                             </div>
                           ) : (

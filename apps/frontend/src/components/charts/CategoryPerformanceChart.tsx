@@ -1,6 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useState } from 'react';
 import { Folder, Clock, Star, TrendingUp } from 'lucide-react';
 
@@ -20,6 +20,7 @@ interface CategoryPerformanceChartProps {
 export default function CategoryPerformanceChart({ data }: CategoryPerformanceChartProps) {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [sortBy, setSortBy] = useState<'tickets' | 'time' | 'satisfaction'>('tickets');
+  const [isTransitioning, setIsTransitioning] = useState(false);
 
   // Sort data based on selected metric
   const sortedData = [...data].sort((a, b) => {
@@ -42,6 +43,19 @@ export default function CategoryPerformanceChart({ data }: CategoryPerformanceCh
     if (hours < 1) return `${Math.round(hours * 60)}m`;
     if (hours < 24) return `${hours.toFixed(1)}h`;
     return `${(hours / 24).toFixed(1)}d`;
+  };
+
+  // Handle sort change with transition
+  const handleSortChange = (newSort: 'tickets' | 'time' | 'satisfaction') => {
+    if (newSort === sortBy) return;
+    
+    setIsTransitioning(true);
+    setSortBy(newSort);
+    
+    // Reset transition after animation
+    setTimeout(() => {
+      setIsTransitioning(false);
+    }, 600);
   };
 
   return (
@@ -71,12 +85,13 @@ export default function CategoryPerformanceChart({ data }: CategoryPerformanceCh
             ].map(({ key, icon: Icon, label }) => (
               <button
                 key={key}
-                onClick={() => setSortBy(key as any)}
+                onClick={() => handleSortChange(key as any)}
+                disabled={isTransitioning}
                 className={`flex items-center gap-1 px-2 py-1 rounded text-xs font-medium transition-all ${
                   sortBy === key 
                     ? 'bg-white shadow-sm text-gray-900' 
                     : 'text-gray-500 hover:text-gray-700'
-                }`}
+                } ${isTransitioning ? 'opacity-50 cursor-wait' : ''}`}
               >
                 <Icon className="w-3 h-3" />
                 <span className="hidden sm:inline">{label}</span>
@@ -85,18 +100,37 @@ export default function CategoryPerformanceChart({ data }: CategoryPerformanceCh
           </div>
         </div>
 
+        {/* Loading overlay */}
+        <AnimatePresence>
+          {isTransitioning && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="absolute inset-0 bg-white/80 backdrop-blur-sm flex items-center justify-center z-10 rounded-lg"
+            >
+              <div className="flex flex-col items-center gap-2">
+                <div className="w-8 h-8 border-3 border-purple-500 border-t-transparent rounded-full animate-spin" />
+                <p className="text-sm text-gray-600 font-medium">Đang cập nhật...</p>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
         {/* Category bars */}
-        <div className="space-y-4">
-          {sortedData.map((category, index) => {
+        <div className="space-y-4 relative">
+          <AnimatePresence mode="popLayout">
+            {sortedData.map((category, index) => {
             const ticketPercent = (category.ticketCount / maxTickets) * 100;
             const isHovered = hoveredIndex === index;
 
             return (
               <motion.div
-                key={category.name}
+                key={`${category.name}-${sortBy}`}
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: index * 0.1 }}
+                exit={{ opacity: 0, x: 20 }}
+                transition={{ delay: index * 0.05, duration: 0.3 }}
                 onMouseEnter={() => setHoveredIndex(index)}
                 onMouseLeave={() => setHoveredIndex(null)}
                 className={`relative p-3 rounded-lg transition-all cursor-pointer ${
@@ -198,6 +232,7 @@ export default function CategoryPerformanceChart({ data }: CategoryPerformanceCh
               </motion.div>
             );
           })}
+          </AnimatePresence>
         </div>
 
         {/* Empty state */}

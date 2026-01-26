@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/lib/stores/auth.store';
 import { Sidebar } from '@/components/layout/Sidebar';
 import { Header } from '@/components/layout/Header';
-import { AuthDebugPanel } from '@/components/debug/AuthDebugPanel';
+// import { AuthDebugPanel } from '@/components/debug/AuthDebugPanel'; // Disabled
 import ChatWidget from '@/components/chatbot/ChatWidget';
 import '@/lib/utils/debug-auth'; // Load debug utility
 
@@ -91,8 +91,8 @@ export default function DashboardLayout({
       {/* Chatbot Widget */}
       <ChatWidget />
 
-      {/* Auth Debug Panel (Development only) */}
-      <AuthDebugPanel />
+      {/* Auth Debug Panel (Development only) - Disabled */}
+      {/* <AuthDebugPanel /> */}
     </div>
   );
 }

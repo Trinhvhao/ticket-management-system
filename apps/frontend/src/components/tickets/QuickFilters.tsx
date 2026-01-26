@@ -102,7 +102,7 @@ export default function QuickFilters({ activePreset, onPresetChange, ticketCount
         return (
           <button
             key={preset.id}
-            onClick={() => onPresetChange(isActive ? null : preset)}
+            onClick={() => onPresetChange(preset)}
             className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium transition-all ${
               isActive
                 ? 'bg-[#0052CC] text-white shadow-md'

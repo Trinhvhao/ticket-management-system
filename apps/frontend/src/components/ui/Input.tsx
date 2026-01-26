@@ -20,10 +20,12 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         <input
           type={type}
           className={cn(
-            'w-full px-4 py-2.5 text-gray-900 bg-white border rounded-lg transition-colors',
-            'placeholder:text-gray-400',
+            'w-full px-4 py-2.5 bg-white border rounded-lg transition-colors',
+            'text-gray-900 font-medium', // Force dark text with medium weight
+            'placeholder:text-gray-400 placeholder:font-normal',
             'focus:outline-none focus:ring-2 focus:ring-[#0052CC] focus:border-transparent',
             'disabled:bg-gray-50 disabled:text-gray-500 disabled:cursor-not-allowed',
+            '[color-scheme:light]', // Force light color scheme to prevent browser dark mode
             error
               ? 'border-red-300 focus:ring-red-500'
               : 'border-gray-300 hover:border-gray-400',
