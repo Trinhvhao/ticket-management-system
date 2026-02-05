@@ -186,4 +186,32 @@ export class EmailService {
       text: `SLA Warning\n\nTicket ID: #${ticketId}\nTitle: ${title}\nTime Remaining: ${timeRemaining}\n\nPlease prioritize this ticket to avoid SLA breach.`,
     });
   }
+
+  async sendPasswordResetEmail(to: string, otp: string): Promise<boolean> {
+    return this.sendEmail({
+      to,
+      subject: 'Đặt lại mật khẩu - Hệ thống Quản lý Ticket',
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          <h2 style="color: #2563eb;">Đặt lại mật khẩu</h2>
+          <p>Bạn đã yêu cầu đặt lại mật khẩu cho tài khoản của mình.</p>
+          <p>Mã OTP của bạn là:</p>
+          <div style="background-color: #f3f4f6; padding: 20px; text-align: center; margin: 20px 0; border-radius: 8px;">
+            <h1 style="color: #2563eb; font-size: 32px; letter-spacing: 8px; margin: 0;">${otp}</h1>
+          </div>
+          <p><strong>Lưu ý:</strong></p>
+          <ul>
+            <li>Mã OTP này có hiệu lực trong <strong>10 phút</strong></li>
+            <li>Không chia sẻ mã này với bất kỳ ai</li>
+            <li>Nếu bạn không yêu cầu đặt lại mật khẩu, vui lòng bỏ qua email này</li>
+          </ul>
+          <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 20px 0;">
+          <p style="color: #6b7280; font-size: 12px;">
+            Email này được gửi tự động từ Hệ thống Quản lý Ticket - Công ty TNHH 28H
+          </p>
+        </div>
+      `,
+      text: `Đặt lại mật khẩu\n\nBạn đã yêu cầu đặt lại mật khẩu cho tài khoản của mình.\n\nMã OTP của bạn là: ${otp}\n\nLưu ý:\n- Mã OTP này có hiệu lực trong 10 phút\n- Không chia sẻ mã này với bất kỳ ai\n- Nếu bạn không yêu cầu đặt lại mật khẩu, vui lòng bỏ qua email này\n\nEmail này được gửi tự động từ Hệ thống Quản lý Ticket - Công ty TNHH 28H`,
+    });
+  }
 }

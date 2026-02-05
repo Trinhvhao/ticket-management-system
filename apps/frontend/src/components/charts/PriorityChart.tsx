@@ -2,6 +2,7 @@
 
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, Cell } from 'recharts';
 import { motion } from 'framer-motion';
+import { useLanguage } from '@/lib/contexts/LanguageContext';
 
 interface PriorityData {
   priority: string;
@@ -21,9 +22,9 @@ const CustomTooltip = ({ active, payload }: any) => {
         animate={{ opacity: 1, scale: 1 }}
         className="bg-white/95 backdrop-blur-sm px-4 py-3 rounded-lg shadow-xl border border-gray-200"
       >
-        <p className="font-semibold text-gray-900">{payload[0].payload.priority} Priority</p>
+        <p className="font-semibold text-gray-900">{payload[0].payload.priority}</p>
         <p className="text-sm text-gray-600">
-          <span className="font-medium">{payload[0].value}</span> tickets
+          <span className="font-medium">{payload[0].value}</span> ticket
         </p>
       </motion.div>
     );
@@ -32,6 +33,8 @@ const CustomTooltip = ({ active, payload }: any) => {
 };
 
 export default function PriorityChart({ data }: PriorityChartProps) {
+  const { t } = useLanguage();
+  
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -45,7 +48,7 @@ export default function PriorityChart({ data }: PriorityChartProps) {
       <div className="relative">
         <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
           <span className="w-1 h-6 bg-gradient-to-b from-orange-600 to-red-600 rounded-full mr-3" />
-          Phân bố độ ưu tiên
+          {t('reports.ticketsByPriority')}
         </h3>
         <ResponsiveContainer width="100%" height={300}>
           <BarChart data={data}>
@@ -77,7 +80,7 @@ export default function PriorityChart({ data }: PriorityChartProps) {
             />
             <Bar 
               dataKey="count" 
-              name="Tickets" 
+              name={t('tickets.title')}
               radius={[12, 12, 0, 0]}
               filter="url(#bar-shadow)"
               animationDuration={1000}

@@ -88,7 +88,7 @@ export default function EscalationPage() {
   if (!permissions.canManageSLA()) {
     return (
       <div className="p-8 text-center">
-        <p className="text-gray-500">You don't have permission to manage escalation rules.</p>
+        <p className="text-gray-500">Bạn không có quyền quản lý quy tắc escalation.</p>
       </div>
     );
   }
@@ -99,9 +99,9 @@ export default function EscalationPage() {
       <div className="mb-6">
         <div className="flex items-center justify-between mb-2">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">Escalation Management</h1>
+            <h1 className="text-2xl font-bold text-gray-900">Quản lý Escalation</h1>
             <p className="text-sm text-gray-500 mt-1">
-              Auto-escalate tickets based on SLA, assignment, and response time
+              Tự động leo thang ticket dựa trên SLA, phân công và thời gian phản hồi
             </p>
           </div>
           <div className="flex gap-2">
@@ -110,7 +110,7 @@ export default function EscalationPage() {
               variant="outline"
             >
               <History className="w-4 h-4 mr-2" />
-              View History
+              Xem Lịch sử
             </Button>
             <Button
               onClick={() => triggerCheckMutation.mutate()}
@@ -118,11 +118,11 @@ export default function EscalationPage() {
               variant="outline"
             >
               <Play className="w-4 h-4 mr-2" />
-              {triggerCheckMutation.isPending ? 'Checking...' : 'Run Check Now'}
+              {triggerCheckMutation.isPending ? 'Đang kiểm tra...' : 'Chạy Kiểm tra'}
             </Button>
             <Button onClick={() => setShowForm(true)}>
               <Plus className="w-4 h-4 mr-2" />
-              New Rule
+              Quy tắc Mới
             </Button>
           </div>
         </div>
@@ -132,7 +132,7 @@ export default function EscalationPage() {
           <div className="bg-white p-4 rounded-lg border border-gray-200">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-500">Total Rules</p>
+                <p className="text-sm text-gray-500">Tổng Quy tắc</p>
                 <p className="text-2xl font-bold text-gray-900">{rules.length}</p>
               </div>
               <TrendingUp className="w-8 h-8 text-blue-500" />
@@ -141,7 +141,7 @@ export default function EscalationPage() {
           <div className="bg-white p-4 rounded-lg border border-gray-200">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-500">Active Rules</p>
+                <p className="text-sm text-gray-500">Đang Hoạt động</p>
                 <p className="text-2xl font-bold text-green-600">
                   {rules.filter(r => r.isActive).length}
                 </p>
@@ -152,7 +152,7 @@ export default function EscalationPage() {
           <div className="bg-white p-4 rounded-lg border border-gray-200">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-500">SLA Rules</p>
+                <p className="text-sm text-gray-500">Quy tắc SLA</p>
                 <p className="text-2xl font-bold text-yellow-600">
                   {rules.filter(r => r.triggerType.includes('sla')).length}
                 </p>
@@ -163,7 +163,7 @@ export default function EscalationPage() {
           <div className="bg-white p-4 rounded-lg border border-gray-200">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-500">Time-based</p>
+                <p className="text-sm text-gray-500">Theo Thời gian</p>
                 <p className="text-2xl font-bold text-orange-600">
                   {rules.filter(r => r.triggerType === 'no_response' || r.triggerType === 'no_assignment').length}
                 </p>
@@ -184,7 +184,7 @@ export default function EscalationPage() {
               : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50'
           }`}
         >
-          All Rules
+          Tất cả
         </button>
         <button
           onClick={() => setFilter('active')}
@@ -194,7 +194,7 @@ export default function EscalationPage() {
               : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50'
           }`}
         >
-          Active Only
+          Đang hoạt động
         </button>
         <button
           onClick={() => setFilter('inactive')}
@@ -204,7 +204,7 @@ export default function EscalationPage() {
               : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50'
           }`}
         >
-          Inactive Only
+          Không hoạt động
         </button>
       </div>
 
@@ -212,14 +212,14 @@ export default function EscalationPage() {
       {isLoading ? (
         <div className="text-center py-12">
           <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-          <p className="mt-2 text-gray-500">Loading rules...</p>
+          <p className="mt-2 text-gray-500">Đang tải quy tắc...</p>
         </div>
       ) : rules.length === 0 ? (
         <div className="text-center py-12 bg-white rounded-lg border border-gray-200">
           <AlertTriangle className="w-12 h-12 text-gray-400 mx-auto mb-3" />
-          <p className="text-gray-500">No escalation rules found</p>
+          <p className="text-gray-500">Không tìm thấy quy tắc escalation</p>
           <Button onClick={() => setShowForm(true)} className="mt-4">
-            Create First Rule
+            Tạo Quy tắc Đầu tiên
           </Button>
         </div>
       ) : (
@@ -241,10 +241,10 @@ export default function EscalationPage() {
                           : 'bg-gray-100 text-gray-600'
                       }`}
                     >
-                      {rule.isActive ? 'Active' : 'Inactive'}
+                      {rule.isActive ? 'Hoạt động' : 'Tắt'}
                     </span>
                     <span className="px-2 py-1 text-xs font-medium rounded-full bg-blue-100 text-blue-700">
-                      Level {rule.escalationLevel}
+                      Cấp {rule.escalationLevel}
                     </span>
                   </div>
 
@@ -254,37 +254,37 @@ export default function EscalationPage() {
 
                   <div className="grid grid-cols-4 gap-4 text-sm">
                     <div>
-                      <span className="text-gray-500">Trigger:</span>
+                      <span className="text-gray-500">Kích hoạt:</span>
                       <p className="font-medium text-gray-900">
                         {getTriggerTypeLabel(rule.triggerType)}
                       </p>
                     </div>
                     {rule.triggerHours && (
                       <div>
-                        <span className="text-gray-500">After:</span>
+                        <span className="text-gray-500">Sau:</span>
                         <p className="font-medium text-gray-900">{rule.triggerHours}h</p>
                       </div>
                     )}
                     <div>
-                      <span className="text-gray-500">Target:</span>
+                      <span className="text-gray-500">Đối tượng:</span>
                       <p className="font-medium text-gray-900">{getTargetTypeLabel(rule)}</p>
                     </div>
                     {rule.priority && (
                       <div>
-                        <span className="text-gray-500">Priority:</span>
+                        <span className="text-gray-500">Ưu tiên:</span>
                         <p className="font-medium text-gray-900">{rule.priority}</p>
                       </div>
                     )}
                     {rule.category && (
                       <div>
-                        <span className="text-gray-500">Category:</span>
+                        <span className="text-gray-500">Danh mục:</span>
                         <p className="font-medium text-gray-900">{rule.category.name}</p>
                       </div>
                     )}
                     <div>
-                      <span className="text-gray-500">Notify Manager:</span>
+                      <span className="text-gray-500">Thông báo Admin:</span>
                       <p className="font-medium text-gray-900">
-                        {rule.notifyManager ? 'Yes' : 'No'}
+                        {rule.notifyManager ? 'Có' : 'Không'}
                       </p>
                     </div>
                   </div>
@@ -297,7 +297,7 @@ export default function EscalationPage() {
                       isActive: !rule.isActive 
                     })}
                     className="p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
-                    title={rule.isActive ? 'Deactivate' : 'Activate'}
+                    title={rule.isActive ? 'Tắt' : 'Bật'}
                   >
                     {rule.isActive ? (
                       <PowerOff className="w-4 h-4" />
@@ -311,18 +311,18 @@ export default function EscalationPage() {
                       setShowForm(true);
                     }}
                     className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
-                    title="Edit"
+                    title="Sửa"
                   >
                     <Edit className="w-4 h-4" />
                   </button>
                   <button
                     onClick={() => {
-                      if (confirm('Are you sure you want to delete this rule?')) {
+                      if (confirm('Bạn có chắc muốn xóa quy tắc này?')) {
                         deleteMutation.mutate(rule.id);
                       }
                     }}
                     className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                    title="Delete"
+                    title="Xóa"
                   >
                     <Trash2 className="w-4 h-4" />
                   </button>

@@ -23,17 +23,17 @@ export interface NavItem {
 
 export const mainNavigation: NavItem[] = [
   {
-    title: 'Dashboard',
+    title: 'Tổng quan',
     href: '/dashboard',
     icon: LayoutDashboard,
   },
   {
-    title: 'Tickets',
+    title: 'Ticket',
     href: '/tickets',
     icon: Ticket,
   },
   {
-    title: 'Knowledge Base',
+    title: 'Kho kiến thức',
     href: '/knowledge',
     icon: BookOpen,
   },
@@ -41,25 +41,25 @@ export const mainNavigation: NavItem[] = [
 
 export const managementNavigation: NavItem[] = [
   {
-    title: 'Users',
+    title: 'Người dùng',
     href: '/users',
     icon: Users,
     roles: ['Admin'],
   },
   {
-    title: 'Categories',
+    title: 'Danh mục',
     href: '/categories',
     icon: FolderOpen,
     roles: ['Admin'],
   },
   {
-    title: 'SLA Management',
+    title: 'Quản lý SLA',
     href: '/sla',
     icon: Clock,
     roles: ['Admin', 'IT_Staff'],
   },
   {
-    title: 'Reports',
+    title: 'Báo cáo',
     href: '/reports',
     icon: BarChart3,
     roles: ['Admin', 'IT_Staff'],
@@ -68,12 +68,12 @@ export const managementNavigation: NavItem[] = [
 
 export const userNavigation: NavItem[] = [
   {
-    title: 'Notifications',
+    title: 'Thông báo',
     href: '/notifications',
     icon: Bell,
   },
   {
-    title: 'Settings',
+    title: 'Cài đặt',
     href: '/settings',
     icon: Settings,
   },

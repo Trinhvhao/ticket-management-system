@@ -12,6 +12,7 @@ import { RateTicketDto } from './dto/rate-ticket.dto';
 import { TicketHistoryService } from '../ticket-history/ticket-history.service';
 import { SlaService } from '../sla/sla.service';
 import { PermissionsUtil } from '../../common/utils/permissions.util';
+import { NotificationsService } from '../notifications/notifications.service';
 
 export interface TicketFilters {
   status?: TicketStatus | undefined;
@@ -42,6 +43,7 @@ export class TicketsService {
     private readonly categoryModel: typeof Category,
     private readonly ticketHistoryService: TicketHistoryService,
     private readonly slaService: SlaService,
+    private readonly notificationsService: NotificationsService,
   ) {}
 
   /**
@@ -71,21 +73,38 @@ export class TicketsService {
 
     // Calculate SLA due date based on priority
     const priority = createTicketDto.priority || TicketPriority.MEDIUM;
-    const createdAt = new Date();
+    const createdAt = new Date(); // UTC time from JavaScript
     const dueDate = await this.slaService.calculateDueDate(priority, createdAt);
 
-    // Create ticket
+    // 🔍 TIMEZONE DEBUG LOG
+    console.log('🎫 Creating Ticket - Timezone Debug:', {
+      ticketNumber,
+      priority,
+      createdAt_ISO: createdAt.toISOString(),
+      createdAt_Unix: createdAt.getTime(),
+      dueDate_ISO: dueDate?.toISOString(),
+      dueDate_Unix: dueDate?.getTime(),
+      diffHours: dueDate ? (dueDate.getTime() - createdAt.getTime()) / (1000 * 60 * 60) : null,
+      serverTimezone: process.env.TZ || 'system default',
+    });
+
+    // Create ticket with explicit UTC timestamps
     const ticket = await this.ticketModel.create({
       ...createTicketDto,
       ticketNumber,
       submitterId: userId,
       status: TicketStatus.NEW,
       priority,
-      dueDate, // ✅ Auto-set dueDate based on SLA
+      dueDate,
+      createdAt, // Explicitly set UTC time from JavaScript
+      updatedAt: createdAt, // Explicitly set UTC time from JavaScript
     } as any);
 
     // Log ticket creation
     await this.ticketHistoryService.logTicketCreated(ticket.id, userId);
+
+    // 🔔 Send notification to IT Staff and Admins
+    await this.notificationsService.notifyTicketCreated(ticket.id);
 
     return this.findOne(ticket.id);
   }
@@ -242,6 +261,9 @@ export class TicketsService {
     if (updateTicketDto.categoryId) {
       await this.ticketHistoryService.logCategoryChange(ticket.id, currentUser.id, updateTicketDto.categoryId, ticket.categoryId);
     }
+
+    // 🔔 Send notification about ticket update
+    await this.notificationsService.notifyTicketUpdated(ticket.id, currentUser);
     
     return this.findOne(id);
   }
@@ -272,6 +294,9 @@ export class TicketsService {
 
     // Log assignment
     await this.ticketHistoryService.logAssignment(ticket.id, currentUser.id, oldAssigneeId, assignTicketDto.assigneeId);
+
+    // 🔔 Send notification to assignee
+    await this.notificationsService.notifyTicketAssigned(ticket.id, assignTicketDto.assigneeId, currentUser);
 
     return this.findOne(id);
   }
@@ -322,6 +347,15 @@ export class TicketsService {
       currentStatus,
       newStatus,
     );
+
+    // 🔔 Send notifications based on status
+    if (newStatus === TicketStatus.RESOLVED) {
+      await this.notificationsService.notifyTicketResolved(ticket.id, currentUser);
+    } else if (newStatus === TicketStatus.CLOSED) {
+      await this.notificationsService.notifyTicketClosed(ticket.id);
+    } else {
+      await this.notificationsService.notifyTicketUpdated(ticket.id, currentUser);
+    }
 
     return this.findOne(id, currentUser);
   }

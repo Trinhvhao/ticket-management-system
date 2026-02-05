@@ -1,4 +1,5 @@
-import { IsString, IsNotEmpty, IsOptional, IsArray, MaxLength, IsBoolean } from 'class-validator';
+import { IsString, IsNotEmpty, IsOptional, IsArray, MaxLength, IsBoolean, IsInt } from 'class-validator';
+import { Type } from 'class-transformer';
 
 export class CreateArticleDto {
   @IsString()
@@ -20,9 +21,10 @@ export class CreateArticleDto {
   @IsOptional()
   tags?: string[];
 
-  @IsString()
-  @IsOptional()
-  category?: string;
+  @IsInt()
+  @Type(() => Number)
+  @IsNotEmpty()
+  categoryId!: number;
 
   @IsBoolean()
   @IsOptional()

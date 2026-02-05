@@ -160,7 +160,7 @@ export default function CategoryPerformanceChart({ data }: CategoryPerformanceCh
                           <Clock className="w-3 h-3" />
                           <span className="text-sm font-medium">{formatTime(category.avgResolutionTime)}</span>
                         </div>
-                        <p className="text-xs text-gray-400">Avg. time</p>
+                        <p className="text-xs text-gray-400">TG TB</p>
                       </div>
                     )}
                     {category.satisfactionRate !== undefined && (
@@ -169,7 +169,7 @@ export default function CategoryPerformanceChart({ data }: CategoryPerformanceCh
                           <Star className="w-3 h-3 text-yellow-500 fill-yellow-500" />
                           <span className="text-sm font-medium text-gray-900">{category.satisfactionRate}%</span>
                         </div>
-                        <p className="text-xs text-gray-400">Satisfaction</p>
+                        <p className="text-xs text-gray-400">Hài lòng</p>
                       </div>
                     )}
                   </div>

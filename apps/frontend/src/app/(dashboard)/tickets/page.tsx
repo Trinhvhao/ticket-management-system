@@ -9,6 +9,8 @@ import { categoriesService } from '@/lib/api/categories.service';
 import { TicketStatus, TicketPriority, TicketFilters } from '@/lib/types/ticket.types';
 import { useAuthStore } from '@/lib/stores/auth.store';
 import { useSavedViews } from '@/lib/hooks/useSavedViews';
+import { useLanguage } from '@/lib/contexts/LanguageContext';
+import { formatDateTime } from '@/lib/utils/format';
 import BulkActionBar from '@/components/tickets/BulkActionBar';
 import QuickFilters, { QuickFilterPreset } from '@/components/tickets/QuickFilters';
 import CompactTicketList from '@/components/tickets/CompactTicketList';
@@ -70,6 +72,7 @@ export default function TicketsPage() {
   const queryClient = useQueryClient();
   const { user } = useAuthStore();
   const { savedViews, saveView, deleteView } = useSavedViews();
+  const { t } = useLanguage();
   
   // State
   const [filters, setFilters] = useState<TicketFilters>({
@@ -163,16 +166,6 @@ export default function TicketsPage() {
     toast.success(`View "${name}" saved`);
   };
 
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('vi-VN', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-    });
-  };
-
   // Bulk operations mutations
   const bulkAssignMutation = useMutation({
     mutationFn: (assigneeId: number) => ticketsService.bulkAssign(selectedIds, assigneeId),
@@ -243,8 +236,8 @@ export default function TicketsPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Quản lý Ticket</h1>
-          <p className="text-gray-500 mt-1">Quản lý và theo dõi các yêu cầu hỗ trợ</p>
+          <h1 className="text-2xl font-bold text-gray-900">{t('tickets.title')}</h1>
+          <p className="text-gray-500 mt-1">{t('tickets.description')}</p>
         </div>
         <div className="flex items-center gap-3">
           <button
@@ -252,7 +245,7 @@ export default function TicketsPage() {
             className="inline-flex items-center justify-center space-x-2 px-4 py-2.5 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium"
           >
             <CalendarIcon className="w-5 h-5" />
-            <span className="hidden sm:inline">Lịch</span>
+            <span className="hidden sm:inline">{t('common.calendar')}</span>
           </button>
           <button
             onClick={() => router.push('/tickets/kanban')}
@@ -266,7 +259,7 @@ export default function TicketsPage() {
             className="inline-flex items-center justify-center space-x-2 px-4 py-2.5 bg-[#0052CC] text-white rounded-lg hover:bg-[#0047B3] transition-colors font-medium"
           >
             <Plus className="w-5 h-5" />
-            <span>Tạo ticket</span>
+            <span>{t('tickets.createTicket')}</span>
           </button>
         </div>
       </div>
@@ -274,7 +267,7 @@ export default function TicketsPage() {
       {/* Quick Filters */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-sm font-medium text-gray-700">Bộ lọc nhanh</h3>
+          <h3 className="text-sm font-medium text-gray-700">{t('tickets.quickFilters')}</h3>
           <div className="flex items-center gap-2">
             {/* Saved Views */}
             <div className="relative">
@@ -285,7 +278,7 @@ export default function TicketsPage() {
                 }`}
               >
                 <Bookmark className="w-4 h-4" />
-                Lưu bộ lọc
+                {t('tickets.savedViews')}
                 {savedViews.length > 0 && (
                   <span className={`px-1.5 py-0.5 text-xs rounded-full ${
                     showSavedViews ? 'bg-white/20' : 'bg-gray-200'
@@ -344,7 +337,7 @@ export default function TicketsPage() {
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Tìm kiếm ticket..."
+                placeholder={t('tickets.searchPlaceholder')}
                 className="w-full pl-9 pr-4 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0052CC] focus:border-transparent"
               />
             </div>
@@ -357,14 +350,14 @@ export default function TicketsPage() {
               <button
                 onClick={() => setViewMode('table')}
                 className={`p-1.5 rounded transition-colors ${viewMode === 'table' ? 'bg-white shadow-sm' : ''}`}
-                title="Dạng bảng"
+                title={t('tickets.tableView')}
               >
                 <Table2 className="w-4 h-4 text-gray-600" />
               </button>
               <button
                 onClick={() => setViewMode('compact')}
                 className={`p-1.5 rounded transition-colors ${viewMode === 'compact' ? 'bg-white shadow-sm' : ''}`}
-                title="Dạng thu gọn"
+                title={t('tickets.compactView')}
               >
                 <List className="w-4 h-4 text-gray-600" />
               </button>
@@ -377,14 +370,14 @@ export default function TicketsPage() {
               }`}
             >
               <Filter className="w-4 h-4" />
-              <span>Bộ lọc</span>
+              <span>{t('common.filter')}</span>
             </button>
             <button
               onClick={() => setShowAdvancedFilters(true)}
               className="inline-flex items-center space-x-2 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
             >
               <SlidersHorizontal className="w-4 h-4" />
-              <span className="hidden sm:inline">Nâng cao</span>
+              <span className="hidden sm:inline">{t('tickets.advanced')}</span>
             </button>
             {hasActiveFilters && (
               <button
@@ -392,7 +385,7 @@ export default function TicketsPage() {
                 className="inline-flex items-center space-x-1 px-3 py-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
               >
                 <X className="w-4 h-4" />
-                <span>Xóa</span>
+                <span>{t('common.clear')}</span>
               </button>
             )}
           </div>
@@ -402,39 +395,39 @@ export default function TicketsPage() {
         {showFilters && (
           <div className="mt-4 pt-4 border-t border-gray-200 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Trạng thái</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">{t('tickets.status')}</label>
               <select
                 value={filters.status || ''}
                 onChange={(e) => handleFilterChange('status', e.target.value as TicketStatus)}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0052CC]"
               >
-                <option value="">Tất cả trạng thái</option>
+                <option value="">{t('tickets.allStatus')}</option>
                 {Object.values(TicketStatus).map(status => (
-                  <option key={status} value={status}>{status}</option>
+                  <option key={status} value={status}>{t(`status.${status.replace(' ', '_')}`)}</option>
                 ))}
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Độ ưu tiên</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">{t('tickets.priority')}</label>
               <select
                 value={filters.priority || ''}
                 onChange={(e) => handleFilterChange('priority', e.target.value as TicketPriority)}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0052CC]"
               >
-                <option value="">Tất cả độ ưu tiên</option>
+                <option value="">{t('tickets.allPriority')}</option>
                 {Object.values(TicketPriority).map(priority => (
-                  <option key={priority} value={priority}>{priority}</option>
+                  <option key={priority} value={priority}>{t(`priority.${priority}`)}</option>
                 ))}
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Danh mục</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">{t('tickets.category')}</label>
               <select
                 value={filters.categoryId || ''}
                 onChange={(e) => handleFilterChange('categoryId', e.target.value ? Number(e.target.value) : undefined)}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0052CC]"
               >
-                <option value="">Tất cả danh mục</option>
+                <option value="">{t('tickets.allCategories')}</option>
                 {categories?.map(cat => (
                   <option key={cat.id} value={cat.id}>{cat.name}</option>
                 ))}
@@ -445,7 +438,7 @@ export default function TicketsPage() {
                 onClick={clearFilters}
                 className="w-full px-4 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
               >
-                Xóa bộ lọc
+                {t('tickets.clearFilters')}
               </button>
             </div>
           </div>
@@ -479,16 +472,16 @@ export default function TicketsPage() {
         ) : !ticketsData?.tickets?.length ? (
           <div className="text-center py-20">
             <TicketIcon className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 mb-2">Không tìm thấy ticket</h3>
+            <h3 className="text-lg font-medium text-gray-900 mb-2">{t('tickets.noTickets')}</h3>
             <p className="text-gray-500 mb-6">
-              {hasActiveFilters ? 'Thử điều chỉnh bộ lọc của bạn' : 'Tạo ticket đầu tiên để bắt đầu'}
+              {hasActiveFilters ? t('tickets.adjustFilters') : t('tickets.createFirst')}
             </p>
             <button
               onClick={() => router.push('/tickets/new')}
               className="inline-flex items-center space-x-2 px-4 py-2 bg-[#0052CC] text-white rounded-lg hover:bg-[#0047B3] transition-colors"
             >
               <Plus className="w-5 h-5" />
-              <span>Tạo ticket</span>
+              <span>{t('tickets.createTicket')}</span>
             </button>
           </div>
         ) : viewMode === 'compact' ? (
@@ -502,7 +495,17 @@ export default function TicketsPage() {
           <>
             {/* Table View */}
             <div className="overflow-x-auto">
-              <table className="w-full">
+              <table className="w-full table-fixed">
+                <colgroup>
+                  <col className="w-12" />
+                  <col className="w-auto min-w-[200px]" />
+                  <col className="w-32" />
+                  <col className="w-28" />
+                  <col className="w-36" />
+                  <col className="w-40" />
+                  <col className="w-36" />
+                  <col className="w-36" />
+                </colgroup>
                 <thead className="bg-gray-50 border-b border-gray-200">
                   <tr>
                     <th className="px-4 py-3 text-left">
@@ -513,13 +516,13 @@ export default function TicketsPage() {
                         className="w-4 h-4 text-[#0052CC] border-gray-300 rounded focus:ring-[#0052CC]"
                       />
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Ticket</th>
-                    <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Trạng thái</th>
-                    <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Độ ưu tiên</th>
-                    <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider hidden xl:table-cell">Danh mục</th>
-                    <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider hidden lg:table-cell">Người xử lý</th>
-                    <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider hidden md:table-cell">Hạn xử lý</th>
-                    <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider hidden sm:table-cell">Ngày tạo</th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Ticket</th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">{t('tickets.status')}</th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">{t('tickets.priority')}</th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider hidden xl:table-cell">{t('tickets.category')}</th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider hidden lg:table-cell">{t('tickets.assignee')}</th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider hidden md:table-cell">{t('tickets.dueDate')}</th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider hidden sm:table-cell">{t('tickets.createdAt')}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200">
@@ -532,7 +535,7 @@ export default function TicketsPage() {
                         key={ticket.id} 
                         className={`hover:bg-gray-50 transition-colors ${rowHighlight}`}
                       >
-                        <td className="px-4 py-4">
+                        <td className="px-4 py-3">
                           <input
                             type="checkbox"
                             checked={selectedIds.includes(ticket.id)}
@@ -540,81 +543,72 @@ export default function TicketsPage() {
                             className="w-4 h-4 text-[#0052CC] border-gray-300 rounded focus:ring-[#0052CC]"
                           />
                         </td>
-                        <td className="px-6 py-4 cursor-pointer" onClick={() => router.push(`/tickets/${ticket.id}`)}>
-                          <div className="flex items-start space-x-3">
+                        <td className="px-4 py-3 cursor-pointer" onClick={() => router.push(`/tickets/${ticket.id}`)}>
+                          <div className="flex items-start space-x-2">
                             {/* Status indicator dot */}
-                            <div className="flex-shrink-0 mt-1.5">
-                              <span className={`inline-block w-2.5 h-2.5 rounded-full ${statusDotColors[ticket.status] || 'bg-gray-400'} ${needsAttention ? 'animate-pulse' : ''}`} />
+                            <div className="flex-shrink-0 mt-1">
+                              <span className={`inline-block w-2 h-2 rounded-full ${statusDotColors[ticket.status] || 'bg-gray-400'} ${needsAttention ? 'animate-pulse' : ''}`} />
                             </div>
                             <div className="flex-1 min-w-0">
                               <div className="flex items-center gap-2">
-                                <p className="text-sm font-medium text-gray-900 truncate">{ticket.title}</p>
+                                <p className="text-sm font-medium text-gray-900 truncate" title={ticket.title}>{ticket.title}</p>
                                 {needsAttention && (
-                                  <span className="flex-shrink-0 px-1.5 py-0.5 text-[10px] font-semibold bg-orange-100 text-orange-700 rounded">
-                                    CẦN XỬ LÝ
+                                  <span className="flex-shrink-0 px-1.5 py-0.5 text-[10px] font-semibold bg-orange-100 text-orange-700 rounded whitespace-nowrap">
+                                    {t('tickets.needsAction')}
                                   </span>
                                 )}
                               </div>
-                              <p className="text-xs text-gray-500 mt-1">{ticket.ticketNumber}</p>
+                              <p className="text-xs text-gray-500 mt-0.5">{ticket.ticketNumber}</p>
                             </div>
                           </div>
                         </td>
-                        <td className="px-6 py-4 cursor-pointer" onClick={() => router.push(`/tickets/${ticket.id}`)}>
-                          <span className={`inline-flex px-2.5 py-1 text-xs font-medium rounded-full ${statusColors[ticket.status] || 'bg-gray-100 text-gray-700'}`}>
+                        <td className="px-4 py-3 cursor-pointer" onClick={() => router.push(`/tickets/${ticket.id}`)}>
+                          <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full whitespace-nowrap ${statusColors[ticket.status] || 'bg-gray-100 text-gray-700'}`}>
                             {ticket.status}
                           </span>
                         </td>
-                        <td className="px-6 py-4 cursor-pointer" onClick={() => router.push(`/tickets/${ticket.id}`)}>
-                          <span className={`inline-flex px-2.5 py-1 text-xs font-medium rounded-full ${priorityColors[ticket.priority] || 'bg-gray-100 text-gray-700'}`}>
+                        <td className="px-4 py-3 cursor-pointer" onClick={() => router.push(`/tickets/${ticket.id}`)}>
+                          <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full whitespace-nowrap ${priorityColors[ticket.priority] || 'bg-gray-100 text-gray-700'}`}>
                             {ticket.priority}
                           </span>
                         </td>
-                        <td className="px-6 py-4 hidden xl:table-cell cursor-pointer" onClick={() => router.push(`/tickets/${ticket.id}`)}>
-                          <span className="text-sm text-gray-600">{ticket.category?.name || '-'}</span>
+                        <td className="px-4 py-3 hidden xl:table-cell cursor-pointer" onClick={() => router.push(`/tickets/${ticket.id}`)}>
+                          <span className="text-sm text-gray-600 truncate block" title={ticket.category?.name}>{ticket.category?.name || '-'}</span>
                         </td>
-                        <td className="px-6 py-4 hidden lg:table-cell cursor-pointer" onClick={() => router.push(`/tickets/${ticket.id}`)}>
+                        <td className="px-4 py-3 hidden lg:table-cell cursor-pointer" onClick={() => router.push(`/tickets/${ticket.id}`)}>
                           {ticket.assignee ? (
-                            <div className="flex items-center space-x-2">
-                              <div className="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center">
+                            <div className="flex items-center space-x-2 min-w-0">
+                              <div className="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0">
                                 <span className="text-xs font-medium text-blue-600">{ticket.assignee.fullName.charAt(0)}</span>
                               </div>
-                              <span className="text-sm text-gray-600">{ticket.assignee.fullName}</span>
+                              <span className="text-sm text-gray-600 truncate" title={ticket.assignee.fullName}>{ticket.assignee.fullName}</span>
                             </div>
                           ) : (
-                            <span className="text-sm text-orange-500 font-medium">⚠ Chưa phân công</span>
+                            <span className="text-sm text-orange-500 font-medium whitespace-nowrap">⚠ {t('tickets.unassigned')}</span>
                           )}
                         </td>
-                        <td className="px-6 py-4 hidden md:table-cell cursor-pointer" onClick={() => router.push(`/tickets/${ticket.id}`)}>
+                        <td className="px-4 py-3 hidden md:table-cell cursor-pointer" onClick={() => router.push(`/tickets/${ticket.id}`)}>
                           {ticket.dueDate ? (
                             <div className="flex flex-col">
-                              <span className={`text-sm font-medium ${
+                              <span className={`text-xs font-medium whitespace-nowrap ${
                                 new Date(ticket.dueDate) < new Date() && ticket.status !== 'Resolved' && ticket.status !== 'Closed'
                                   ? 'text-red-600 font-semibold'
                                   : new Date(ticket.dueDate).getTime() - new Date().getTime() < 2 * 60 * 60 * 1000
                                   ? 'text-orange-600 font-medium'
                                   : 'text-gray-700'
                               }`}>
-                                {new Date(ticket.dueDate).toLocaleDateString('vi-VN', {
-                                  day: '2-digit',
-                                  month: '2-digit',
-                                  year: '2-digit', // Add year for clarity
-                                })}
-                                {' '}
-                                {new Date(ticket.dueDate).toLocaleTimeString('vi-VN', {
-                                  hour: '2-digit',
-                                  minute: '2-digit',
-                                })}
+                                {formatDateTime(ticket.dueDate)}
                               </span>
                               {new Date(ticket.dueDate) < new Date() && ticket.status !== 'Resolved' && ticket.status !== 'Closed' && (
-                                <span className="text-xs text-red-500 font-medium mt-0.5">⚠️ Quá hạn</span>
+                                <span className="text-xs text-red-500 font-medium mt-0.5 whitespace-nowrap">⚠️ {t('tickets.overdue')}</span>
                               )}
                             </div>
                           ) : (
                             <span className="text-sm text-gray-400">-</span>
                           )}
                         </td>
-                        <td className="px-6 py-4 hidden sm:table-cell">
-                          <span className="text-sm text-gray-500">{formatDate(ticket.createdAt)}</span>
+                        <td className="px-4 py-3 hidden sm:table-cell">
+                          <span className="text-xs text-gray-500 whitespace-nowrap">{formatDateTime(ticket.createdAt)}</span>
                         </td>
                       </tr>
                     );
@@ -629,8 +623,8 @@ export default function TicketsPage() {
         {ticketsData && ticketsData.totalPages > 1 && (
           <div className="px-6 py-4 border-t border-gray-200 flex items-center justify-between">
             <p className="text-sm text-gray-600">
-              Hiển thị {((ticketsData.page - 1) * (filters.limit || 10)) + 1} đến{' '}
-              {Math.min(ticketsData.page * (filters.limit || 10), ticketsData.total)} trong tổng số {ticketsData.total} ticket
+              {t('common.showing')} {((ticketsData.page - 1) * (filters.limit || 10)) + 1} {t('common.to')}{' '}
+              {Math.min(ticketsData.page * (filters.limit || 10), ticketsData.total)} {t('common.of')} {ticketsData.total} {t('tickets.title').toLowerCase()}
             </p>
             <div className="flex items-center space-x-2">
               <button
@@ -640,7 +634,7 @@ export default function TicketsPage() {
               >
                 <ChevronLeft className="w-5 h-5" />
               </button>
-              <span className="text-sm text-gray-600">Trang {ticketsData.page} / {ticketsData.totalPages}</span>
+              <span className="text-sm text-gray-600">{t('common.page')} {ticketsData.page} / {ticketsData.totalPages}</span>
               <button
                 onClick={() => handlePageChange(ticketsData.page + 1)}
                 disabled={ticketsData.page === ticketsData.totalPages}

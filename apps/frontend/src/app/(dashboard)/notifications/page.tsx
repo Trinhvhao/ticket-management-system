@@ -3,8 +3,10 @@
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
-import { notificationsService, Notification } from '@/lib/api/notifications.service';
+import { notificationsService } from '@/lib/api/notifications.service';
+import type { Notification } from '@/types/notification.types';
 import { toast } from 'react-hot-toast';
+import { useLanguage } from '@/lib/contexts/LanguageContext';
 import {
   Bell,
   BellOff,
@@ -42,6 +44,7 @@ const notificationColors: Record<string, string> = {
 export default function NotificationsPage() {
   const router = useRouter();
   const queryClient = useQueryClient();
+  const { t } = useLanguage();
   const [filter, setFilter] = useState<'all' | 'unread'>('all');
 
   const { data: notifications, isLoading, refetch } = useQuery({
@@ -62,7 +65,7 @@ export default function NotificationsPage() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['notifications'] });
       queryClient.invalidateQueries({ queryKey: ['unread-count'] });
-      toast.success('All notifications marked as read');
+      toast.success(t('notifications.markedAsRead'));
     },
   });
 
@@ -71,7 +74,7 @@ export default function NotificationsPage() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['notifications'] });
       queryClient.invalidateQueries({ queryKey: ['unread-count'] });
-      toast.success('Notification deleted');
+      toast.success(t('notifications.deleted'));
     },
   });
 
@@ -80,7 +83,7 @@ export default function NotificationsPage() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['notifications'] });
       queryClient.invalidateQueries({ queryKey: ['unread-count'] });
-      toast.success('All notifications deleted');
+      toast.success(t('notifications.allDeleted'));
     },
   });
 
@@ -101,10 +104,10 @@ export default function NotificationsPage() {
     const hours = Math.floor(diff / 3600000);
     const days = Math.floor(diff / 86400000);
 
-    if (minutes < 1) return 'Just now';
-    if (minutes < 60) return `${minutes}m ago`;
-    if (hours < 24) return `${hours}h ago`;
-    if (days < 7) return `${days}d ago`;
+    if (minutes < 1) return t('notifications.justNow');
+    if (minutes < 60) return t('notifications.minutesAgo').replace('{count}', minutes.toString());
+    if (hours < 24) return t('notifications.hoursAgo').replace('{count}', hours.toString());
+    if (days < 7) return t('notifications.daysAgo').replace('{count}', days.toString());
     return date.toLocaleDateString('vi-VN');
   };
 
@@ -114,9 +117,13 @@ export default function NotificationsPage() {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Notifications</h1>
+          <h1 className="text-2xl font-bold text-gray-900">{t('notifications.title')}</h1>
           <p className="text-gray-500 mt-1">
-            {unreadCount > 0 ? `You have ${unreadCount} unread notification${unreadCount > 1 ? 's' : ''}` : 'All caught up!'}
+            {unreadCount > 0 
+              ? (unreadCount === 1 
+                  ? t('notifications.unreadCount').replace('{count}', unreadCount.toString())
+                  : t('notifications.unreadCountPlural').replace('{count}', unreadCount.toString()))
+              : t('notifications.allCaughtUp')}
           </p>
         </div>
         <div className="flex items-center space-x-3">
@@ -133,7 +140,7 @@ export default function NotificationsPage() {
               className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50"
             >
               <CheckCheck className="w-4 h-4 mr-2" />
-              Mark all read
+              {t('notifications.markAllAsRead')}
             </button>
           )}
           {notifications && notifications.length > 0 && (
@@ -143,7 +150,7 @@ export default function NotificationsPage() {
               className="inline-flex items-center px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:opacity-50"
             >
               <Trash2 className="w-4 h-4 mr-2" />
-              Clear all
+              {t('notifications.clearAll')}
             </button>
           )}
         </div>
@@ -157,7 +164,7 @@ export default function NotificationsPage() {
             filter === 'all' ? 'bg-blue-100 text-blue-700' : 'text-gray-600 hover:bg-gray-100'
           }`}
         >
-          All
+          {t('common.all')}
         </button>
         <button
           onClick={() => setFilter('unread')}
@@ -165,7 +172,7 @@ export default function NotificationsPage() {
             filter === 'unread' ? 'bg-blue-100 text-blue-700' : 'text-gray-600 hover:bg-gray-100'
           }`}
         >
-          Unread {unreadCount > 0 && `(${unreadCount})`}
+          {t('notifications.unread')} {unreadCount > 0 && `(${unreadCount})`}
         </button>
       </div>
 
@@ -178,9 +185,9 @@ export default function NotificationsPage() {
         ) : !notifications || notifications.length === 0 ? (
           <div className="text-center py-20">
             <BellOff className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 mb-2">No notifications</h3>
+            <h3 className="text-lg font-medium text-gray-900 mb-2">{t('notifications.noNotifications')}</h3>
             <p className="text-gray-500">
-              {filter === 'unread' ? 'You have no unread notifications' : 'You have no notifications yet'}
+              {filter === 'unread' ? t('notifications.noUnreadNotifications') : t('notifications.noNotificationsYet')}
             </p>
           </div>
         ) : (

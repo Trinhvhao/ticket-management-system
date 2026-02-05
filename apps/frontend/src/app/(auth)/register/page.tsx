@@ -9,10 +9,10 @@ export default function RegisterPage() {
       {/* Title */}
       <div className="text-center mb-8">
         <h1 className="text-3xl font-bold text-[#172B4D] mb-2">
-          Create Account
+          Tạo tài khoản
         </h1>
         <p className="text-gray-500">
-          Get started with your free account
+          Bắt đầu với tài khoản miễn phí của bạn
         </p>
       </div>
 
@@ -22,12 +22,12 @@ export default function RegisterPage() {
       {/* Login Link */}
       <div className="mt-6 text-center">
         <p className="text-sm text-gray-600">
-          Already have an account?{' '}
+          Đã có tài khoản?{' '}
           <Link
             href="/login"
             className="text-[#0052CC] hover:text-blue-700 font-semibold"
           >
-            Sign in
+            Đăng nhập
           </Link>
         </p>
       </div>

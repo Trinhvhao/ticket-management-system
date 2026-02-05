@@ -2,6 +2,7 @@
 
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from 'recharts';
 import { motion } from 'framer-motion';
+import { useLanguage } from '@/lib/contexts/LanguageContext';
 
 interface StatusData {
   name: string;
@@ -48,7 +49,7 @@ const CustomTooltip = ({ active, payload }: any) => {
       >
         <p className="font-semibold text-gray-900">{payload[0].name}</p>
         <p className="text-sm text-gray-600">
-          <span className="font-medium">{payload[0].value}</span> tickets
+          <span className="font-medium">{payload[0].value}</span> ticket
         </p>
         {data.description && (
           <p className="text-xs text-gray-500 mt-1">{data.description}</p>
@@ -60,6 +61,8 @@ const CustomTooltip = ({ active, payload }: any) => {
 };
 
 export default function TicketStatusChart({ data }: TicketStatusChartProps) {
+  const { t } = useLanguage();
+  
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -73,7 +76,7 @@ export default function TicketStatusChart({ data }: TicketStatusChartProps) {
       <div className="relative">
         <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
           <span className="w-1 h-6 bg-gradient-to-b from-blue-600 to-purple-600 rounded-full mr-3" />
-          Phân bố trạng thái ticket
+          {t('reports.ticketsByStatus')}
         </h3>
         <ResponsiveContainer width="100%" height={300}>
           <PieChart>

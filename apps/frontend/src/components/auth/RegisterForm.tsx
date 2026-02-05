@@ -41,20 +41,20 @@ export function RegisterForm() {
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
       {/* Username */}
       <Input
-        label="Username"
+        label="Tên đăng nhập"
         type="text"
         placeholder="johndoe"
         error={errors.username?.message}
-        helperText="Unique username (lowercase, alphanumeric, underscore)"
+        helperText="Tên duy nhất (chữ thường, số, gạch dưới)"
         required
         {...register('username')}
       />
 
       {/* Full Name */}
       <Input
-        label="Full Name"
+        label="Họ và tên"
         type="text"
-        placeholder="John Doe"
+        placeholder="Nguyễn Văn A"
         error={errors.fullName?.message}
         required
         {...register('fullName')}
@@ -64,7 +64,7 @@ export function RegisterForm() {
       <Input
         label="Email"
         type="email"
-        placeholder="your.email@company.com"
+        placeholder="email.cua.ban@congty.com"
         error={errors.email?.message}
         required
         {...register('email')}
@@ -72,22 +72,22 @@ export function RegisterForm() {
 
       {/* Department */}
       <Input
-        label="Department"
+        label="Phòng ban"
         type="text"
-        placeholder="IT, HR, Sales, etc."
+        placeholder="IT, Nhân sự, Kinh doanh, v.v."
         error={errors.department?.message}
-        helperText="Optional - Your department or team"
+        helperText="Tùy chọn - Phòng ban hoặc nhóm của bạn"
         {...register('department')}
       />
 
       {/* Password */}
       <div className="relative">
         <Input
-          label="Password"
+          label="Mật khẩu"
           type={showPassword ? 'text' : 'password'}
-          placeholder="Create a strong password"
+          placeholder="Tạo mật khẩu mạnh"
           error={errors.password?.message}
-          helperText="Min 6 characters, 1 uppercase, 1 lowercase, 1 number"
+          helperText="Tối thiểu 6 ký tự, 1 chữ hoa, 1 chữ thường, 1 số"
           required
           {...register('password')}
         />
@@ -107,9 +107,9 @@ export function RegisterForm() {
       {/* Confirm Password */}
       <div className="relative">
         <Input
-          label="Confirm Password"
+          label="Xác nhận mật khẩu"
           type={showConfirmPassword ? 'text' : 'password'}
-          placeholder="Re-enter your password"
+          placeholder="Nhập lại mật khẩu"
           error={errors.confirmPassword?.message}
           required
           {...register('confirmPassword')}
@@ -131,13 +131,13 @@ export function RegisterForm() {
       <div className="flex items-start space-x-2">
         <Checkbox id="terms" required />
         <label htmlFor="terms" className="text-sm text-gray-600 leading-relaxed">
-          I agree to the{' '}
+          Tôi đồng ý với{' '}
           <a href="#" className="text-[#0052CC] hover:underline">
-            Terms of Service
+            Điều khoản dịch vụ
           </a>{' '}
-          and{' '}
+          và{' '}
           <a href="#" className="text-[#0052CC] hover:underline">
-            Privacy Policy
+            Chính sách bảo mật
           </a>
         </label>
       </div>
@@ -150,7 +150,7 @@ export function RegisterForm() {
         fullWidth
         isLoading={isLoading}
       >
-        {isLoading ? 'Creating account...' : 'Create Account'}
+        {isLoading ? 'Đang tạo tài khoản...' : 'Tạo tài khoản'}
       </Button>
     </form>
   );

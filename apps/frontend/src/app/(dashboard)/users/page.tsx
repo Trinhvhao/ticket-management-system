@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { usersService, UsersFilters } from '@/lib/api/users.service';
 import { useAuthStore } from '@/lib/stores/auth.store';
 import { UserRole } from '@/lib/types/auth.types';
+import { useLanguage } from '@/lib/contexts/LanguageContext';
 import {
   Plus,
   Search,
@@ -28,6 +29,7 @@ const roleColors: Record<string, string> = {
 export default function UsersPage() {
   const router = useRouter();
   const { user } = useAuthStore();
+  const { t } = useLanguage();
   const [filters, setFilters] = useState<UsersFilters>({ page: 1, limit: 10 });
   const [searchQuery, setSearchQuery] = useState('');
   const [showFilters, setShowFilters] = useState(false);
@@ -37,8 +39,8 @@ export default function UsersPage() {
     return (
       <div className="text-center py-20">
         <Shield className="w-16 h-16 text-red-400 mx-auto mb-4" />
-        <h2 className="text-xl font-semibold text-gray-900 mb-2">Access Denied</h2>
-        <p className="text-gray-500">You don't have permission to view this page.</p>
+        <h2 className="text-xl font-semibold text-gray-900 mb-2">{t('users.accessDenied')}</h2>
+        <p className="text-gray-500">{t('users.noPermission')}</p>
       </div>
     );
   }
@@ -61,15 +63,15 @@ export default function UsersPage() {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Users</h1>
-          <p className="text-gray-500 mt-1">Manage system users and permissions</p>
+          <h1 className="text-2xl font-bold text-gray-900">{t('users.title')}</h1>
+          <p className="text-gray-500 mt-1">{t('users.description')}</p>
         </div>
         <button
           onClick={() => router.push('/users/new')}
           className="inline-flex items-center justify-center space-x-2 px-4 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
         >
           <Plus className="w-5 h-5" />
-          <span>Add User</span>
+          <span>{t('users.addUser')}</span>
         </button>
       </div>
 
@@ -82,7 +84,7 @@ export default function UsersPage() {
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search by name or email..."
+                placeholder={t('users.searchPlaceholder')}
                 className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
@@ -94,35 +96,35 @@ export default function UsersPage() {
             }`}
           >
             <Filter className="w-5 h-5" />
-            <span>Filters</span>
+            <span>{t('common.filter')}</span>
           </button>
         </div>
 
         {showFilters && (
           <div className="mt-4 pt-4 border-t border-gray-200 grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Role</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">{t('users.role')}</label>
               <select
                 value={filters.role || ''}
                 onChange={(e) => handleFilterChange('role', e.target.value as UserRole)}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
-                <option value="">All Roles</option>
+                <option value="">{t('users.allRoles')}</option>
                 {Object.values(UserRole).map(role => (
-                  <option key={role} value={role}>{role}</option>
+                  <option key={role} value={role}>{t(`role.${role}`)}</option>
                 ))}
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">{t('common.status')}</label>
               <select
                 value={filters.isActive === undefined ? '' : String(filters.isActive)}
                 onChange={(e) => handleFilterChange('isActive', e.target.value === '' ? undefined : e.target.value === 'true')}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
-                <option value="">All Status</option>
-                <option value="true">Active</option>
-                <option value="false">Inactive</option>
+                <option value="">{t('users.allStatus')}</option>
+                <option value="true">{t('common.active')}</option>
+                <option value="false">{t('common.inactive')}</option>
               </select>
             </div>
             <div className="flex items-end">
@@ -130,7 +132,7 @@ export default function UsersPage() {
                 onClick={() => { setFilters({ page: 1, limit: 10 }); setSearchQuery(''); }}
                 className="w-full px-4 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg"
               >
-                Clear Filters
+                {t('users.clearFilters')}
               </button>
             </div>
           </div>
@@ -145,8 +147,8 @@ export default function UsersPage() {
         ) : !usersData?.users?.length ? (
           <div className="text-center py-20">
             <UsersIcon className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 mb-2">No users found</h3>
-            <p className="text-gray-500">Try adjusting your filters</p>
+            <h3 className="text-lg font-medium text-gray-900 mb-2">{t('users.noUsers')}</h3>
+            <p className="text-gray-500">{t('users.adjustFilters')}</p>
           </div>
         ) : (
           <>
@@ -154,11 +156,11 @@ export default function UsersPage() {
               <table className="w-full">
                 <thead className="bg-gray-50 border-b border-gray-200">
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">User</th>
-                    <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Role</th>
-                    <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase hidden md:table-cell">Department</th>
-                    <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase hidden lg:table-cell">Contact</th>
-                    <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Status</th>
+                    <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">{t('users.user')}</th>
+                    <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">{t('users.role')}</th>
+                    <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase hidden md:table-cell">{t('users.department')}</th>
+                    <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase hidden lg:table-cell">{t('users.contact')}</th>
+                    <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">{t('common.status')}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200">
@@ -177,7 +179,7 @@ export default function UsersPage() {
                       </td>
                       <td className="px-6 py-4">
                         <span className={`inline-flex px-2.5 py-1 text-xs font-medium rounded-full ${roleColors[u.role]}`}>
-                          {u.role}
+                          {t(`role.${u.role}`)}
                         </span>
                       </td>
                       <td className="px-6 py-4 hidden md:table-cell">
@@ -195,7 +197,7 @@ export default function UsersPage() {
                           u.isActive ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
                         }`}>
                           <span className={`w-1.5 h-1.5 rounded-full mr-1.5 ${u.isActive ? 'bg-green-500' : 'bg-red-500'}`}></span>
-                          {u.isActive ? 'Active' : 'Inactive'}
+                          {u.isActive ? t('common.active') : t('common.inactive')}
                         </span>
                       </td>
                     </tr>
@@ -207,7 +209,7 @@ export default function UsersPage() {
             {usersData.totalPages > 1 && (
               <div className="px-6 py-4 border-t border-gray-200 flex items-center justify-between">
                 <p className="text-sm text-gray-600">
-                  Showing {((usersData.page - 1) * (filters.limit || 10)) + 1} to {Math.min(usersData.page * (filters.limit || 10), usersData.total)} of {usersData.total}
+                  {t('common.showing')} {((usersData.page - 1) * (filters.limit || 10)) + 1} {t('common.to')} {Math.min(usersData.page * (filters.limit || 10), usersData.total)} {t('common.of')} {usersData.total}
                 </p>
                 <div className="flex items-center space-x-2">
                   <button
@@ -217,7 +219,7 @@ export default function UsersPage() {
                   >
                     <ChevronLeft className="w-5 h-5" />
                   </button>
-                  <span className="text-sm text-gray-600">Page {usersData.page} of {usersData.totalPages}</span>
+                  <span className="text-sm text-gray-600">{t('common.page')} {usersData.page} {t('common.of')} {usersData.totalPages}</span>
                   <button
                     onClick={() => setFilters(prev => ({ ...prev, page: (prev.page || 1) + 1 }))}
                     disabled={usersData.page === usersData.totalPages}

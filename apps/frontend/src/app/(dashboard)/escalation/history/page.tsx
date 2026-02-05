@@ -69,14 +69,14 @@ export default function EscalationHistoryPage() {
           className="mb-4"
         >
           <ArrowLeft className="w-4 h-4 mr-2" />
-          Back
+          Quay lại
         </Button>
 
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">Escalation History</h1>
+            <h1 className="text-2xl font-bold text-gray-900">Lịch sử Escalation</h1>
             <p className="text-sm text-gray-500 mt-1">
-              View all ticket escalations and their details
+              Xem tất cả các lần leo thang ticket và chi tiết
             </p>
           </div>
         </div>
@@ -89,7 +89,7 @@ export default function EscalationHistoryPage() {
           <div className="flex-1 grid grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                Start Date
+                Ngày bắt đầu
               </label>
               <input
                 type="date"
@@ -100,7 +100,7 @@ export default function EscalationHistoryPage() {
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                End Date
+                Ngày kết thúc
               </label>
               <input
                 type="date"
@@ -114,7 +114,7 @@ export default function EscalationHistoryPage() {
             variant="outline"
             onClick={() => setFilters({ startDate: '', endDate: '' })}
           >
-            Clear
+            Xóa
           </Button>
         </div>
       </div>
@@ -122,23 +122,23 @@ export default function EscalationHistoryPage() {
       {/* Stats */}
       <div className="grid grid-cols-4 gap-4 mb-6">
         <div className="bg-white p-4 rounded-lg border border-gray-200">
-          <p className="text-sm text-gray-500">Total Escalations</p>
+          <p className="text-sm text-gray-500">Tổng Escalation</p>
           <p className="text-2xl font-bold text-gray-900">{history.length}</p>
         </div>
         <div className="bg-white p-4 rounded-lg border border-gray-200">
-          <p className="text-sm text-gray-500">Level 1</p>
+          <p className="text-sm text-gray-500">Cấp 1</p>
           <p className="text-2xl font-bold text-blue-600">
             {history.filter(h => h.toLevel === 1).length}
           </p>
         </div>
         <div className="bg-white p-4 rounded-lg border border-gray-200">
-          <p className="text-sm text-gray-500">Level 2+</p>
+          <p className="text-sm text-gray-500">Cấp 2+</p>
           <p className="text-2xl font-bold text-orange-600">
             {history.filter(h => h.toLevel >= 2).length}
           </p>
         </div>
         <div className="bg-white p-4 rounded-lg border border-gray-200">
-          <p className="text-sm text-gray-500">Today</p>
+          <p className="text-sm text-gray-500">Hôm nay</p>
           <p className="text-2xl font-bold text-green-600">
             {history.filter(h => {
               const today = new Date();
@@ -153,12 +153,12 @@ export default function EscalationHistoryPage() {
       {isLoading ? (
         <div className="text-center py-12">
           <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-          <p className="mt-2 text-gray-500">Loading history...</p>
+          <p className="mt-2 text-gray-500">Đang tải lịch sử...</p>
         </div>
       ) : history.length === 0 ? (
         <div className="text-center py-12 bg-white rounded-lg border border-gray-200">
           <TrendingUp className="w-12 h-12 text-gray-400 mx-auto mb-3" />
-          <p className="text-gray-500">No escalation history found</p>
+          <p className="text-gray-500">Không tìm thấy lịch sử escalation</p>
         </div>
       ) : (
         <div className="space-y-3">
@@ -181,11 +181,11 @@ export default function EscalationHistoryPage() {
                     </div>
                     <div className="flex gap-2 ml-auto">
                       <span className={`px-3 py-1 text-xs font-medium rounded-full ${getEscalationColor(item.fromLevel)}`}>
-                        From L{item.fromLevel}
+                        Từ C{item.fromLevel}
                       </span>
                       <span className="text-gray-400">→</span>
                       <span className={`px-3 py-1 text-xs font-medium rounded-full ${getEscalationColor(item.toLevel)}`}>
-                        To L{item.toLevel}
+                        Đến C{item.toLevel}
                       </span>
                     </div>
                   </div>
@@ -194,14 +194,14 @@ export default function EscalationHistoryPage() {
                     <div className="flex items-center gap-2">
                       <User className="w-4 h-4 text-gray-400" />
                       <div>
-                        <span className="text-gray-500">Escalated By:</span>
+                        <span className="text-gray-500">Leo thang bởi:</span>
                         <p className="font-medium text-gray-900">{item.escalatedBy}</p>
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
                       <User className="w-4 h-4 text-gray-400" />
                       <div>
-                        <span className="text-gray-500">Escalated To:</span>
+                        <span className="text-gray-500">Leo thang đến:</span>
                         <p className="font-medium text-gray-900">
                           {item.escalatedToUser?.fullName || item.escalatedToRole || 'N/A'}
                         </p>
@@ -210,7 +210,7 @@ export default function EscalationHistoryPage() {
                     <div className="flex items-center gap-2">
                       <Calendar className="w-4 h-4 text-gray-400" />
                       <div>
-                        <span className="text-gray-500">Date:</span>
+                        <span className="text-gray-500">Ngày:</span>
                         <p className="font-medium text-gray-900">{formatDate(item.createdAt)}</p>
                       </div>
                     </div>
@@ -220,7 +220,7 @@ export default function EscalationHistoryPage() {
                     <div className="mt-3 flex items-start gap-2 p-3 bg-gray-50 rounded-lg">
                       <FileText className="w-4 h-4 text-gray-400 mt-0.5" />
                       <div>
-                        <span className="text-sm text-gray-500">Reason:</span>
+                        <span className="text-sm text-gray-500">Lý do:</span>
                         <p className="text-sm text-gray-900">{item.reason}</p>
                       </div>
                     </div>
@@ -228,7 +228,7 @@ export default function EscalationHistoryPage() {
 
                   {item.rule && (
                     <div className="mt-2">
-                      <span className="text-xs text-gray-500">Rule: </span>
+                      <span className="text-xs text-gray-500">Quy tắc: </span>
                       <span className="text-xs font-medium text-blue-600">{item.rule.name}</span>
                     </div>
                   )}
@@ -240,7 +240,7 @@ export default function EscalationHistoryPage() {
                   onClick={() => router.push(`/tickets/${item.ticketId}`)}
                   className="ml-4"
                 >
-                  View Ticket
+                  Xem Ticket
                 </Button>
               </div>
             </div>

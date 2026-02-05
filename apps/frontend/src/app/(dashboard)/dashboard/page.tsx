@@ -25,6 +25,7 @@ import {
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
+import { useLanguage } from '@/lib/contexts/LanguageContext';
 
 const statusColors: Record<string, string> = {
   'New': 'bg-blue-100 text-blue-700',
@@ -33,12 +34,20 @@ const statusColors: Record<string, string> = {
   'Pending': 'bg-yellow-100 text-yellow-700',
   'Resolved': 'bg-green-100 text-green-700',
   'Closed': 'bg-gray-100 text-gray-700',
+  // Vietnamese translations
+  'Mới': 'bg-blue-100 text-blue-700',
+  'Đã phân công': 'bg-purple-100 text-purple-700',
+  'Đang xử lý': 'bg-orange-100 text-orange-700',
+  'Chờ xử lý': 'bg-yellow-100 text-yellow-700',
+  'Đã giải quyết': 'bg-green-100 text-green-700',
+  'Đã đóng': 'bg-gray-100 text-gray-700',
 };
 
 export default function DashboardPage() {
   const { user } = useAuth();
   const router = useRouter();
   const [trendDays, setTrendDays] = useState(7);
+  const { t } = useLanguage();
 
   // Fetch dashboard data
   const { data: dashboardData, isLoading } = useQuery({
@@ -75,19 +84,19 @@ export default function DashboardPage() {
   // Prepare chart data - Group statuses into logical categories
   const statusChartData = dashboardData ? [
     { 
-      name: 'Open', 
+      name: t('status.Open'), 
       value: dashboardData.ticketsByStatus.new + dashboardData.ticketsByStatus.assigned, 
       color: '#3B82F6',
       description: 'New + Assigned'
     },
     { 
-      name: 'In Progress', 
+      name: t('status.In_Progress'), 
       value: dashboardData.ticketsByStatus.in_progress + dashboardData.ticketsByStatus.pending, 
       color: '#F59E0B',
       description: 'In Progress + Pending'
     },
     { 
-      name: 'Resolved', 
+      name: t('status.Resolved'), 
       value: dashboardData.ticketsByStatus.resolved + dashboardData.ticketsByStatus.closed, 
       color: '#10B981',
       description: 'Resolved + Closed'
@@ -95,9 +104,9 @@ export default function DashboardPage() {
   ].filter(item => item.value > 0) : []; // Only show categories with tickets
 
   const priorityChartData = dashboardData ? [
-    { priority: 'Low', count: dashboardData.ticketsByPriority.low, color: '#10B981' },
-    { priority: 'Medium', count: dashboardData.ticketsByPriority.medium, color: '#F59E0B' },
-    { priority: 'High', count: dashboardData.ticketsByPriority.high, color: '#EF4444' },
+    { priority: t('priority.Low'), count: dashboardData.ticketsByPriority.low, color: '#10B981' },
+    { priority: t('priority.Medium'), count: dashboardData.ticketsByPriority.medium, color: '#F59E0B' },
+    { priority: t('priority.High'), count: dashboardData.ticketsByPriority.high, color: '#EF4444' },
   ] : [];
 
   // Transform trend data for chart - Backend already returns oldest to newest
@@ -140,6 +149,19 @@ export default function DashboardPage() {
     trendValue: 0,
   })) || [];
 
+  // Helper function to translate status
+  const translateStatus = (status: string): string => {
+    const translations: Record<string, string> = {
+      'New': 'Mới',
+      'Assigned': 'Đã phân công',
+      'In Progress': 'Đang xử lý',
+      'Pending': 'Chờ xử lý',
+      'Resolved': 'Đã giải quyết',
+      'Closed': 'Đã đóng',
+    };
+    return translations[status] || status;
+  };
+
   if (isLoading) {
     return (
       <div className="flex items-center justify-center py-20">
@@ -172,7 +194,7 @@ export default function DashboardPage() {
               transition={{ delay: 0.2 }}
               className="text-3xl font-bold mb-2"
             >
-              Chào mừng trở lại, {user?.fullName}! 👋
+              {t('user.welcome')}, {user?.fullName}! 👋
             </motion.h1>
             <motion.p 
               initial={{ opacity: 0, x: -20 }}
@@ -180,7 +202,7 @@ export default function DashboardPage() {
               transition={{ delay: 0.3 }}
               className="text-blue-100"
             >
-              Đây là tổng quan về các yêu cầu hỗ trợ hôm nay.
+              {t('dashboard.overview')}
             </motion.p>
           </div>
           
@@ -193,17 +215,17 @@ export default function DashboardPage() {
           >
             <div className="text-center">
               <p className="text-3xl font-bold">{dashboardData?.openTickets || 0}</p>
-              <p className="text-sm text-blue-200">Đang mở</p>
+              <p className="text-sm text-blue-200">{t('dashboard.openTickets')}</p>
             </div>
             <div className="w-px h-12 bg-white/20" />
             <div className="text-center">
               <p className="text-3xl font-bold">{dashboardData?.closedToday || 0}</p>
-              <p className="text-sm text-blue-200">Đã giải quyết hôm nay</p>
+              <p className="text-sm text-blue-200">{t('dashboard.resolvedTickets')}</p>
             </div>
             <div className="w-px h-12 bg-white/20" />
             <div className="text-center">
               <p className="text-3xl font-bold">{dashboardData?.slaComplianceRate || 0}%</p>
-              <p className="text-sm text-blue-200">Tỷ lệ SLA</p>
+              <p className="text-sm text-blue-200">{t('sla.compliance')}</p>
             </div>
           </motion.div>
         </div>
@@ -211,14 +233,14 @@ export default function DashboardPage() {
 
       {/* Quick Actions */}
       <div>
-        <h2 className="text-lg font-semibold text-gray-900 mb-4">Thao tác nhanh</h2>
+        <h2 className="text-lg font-semibold text-gray-900 mb-4">{t('dashboard.quickActions')}</h2>
         <QuickActions />
       </div>
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <StatCard
-          title="Tổng số ticket"
+          title={t('dashboard.totalTickets')}
           value={dashboardData?.totalTickets || 0}
           icon={Ticket}
           color="text-blue-600"
@@ -226,7 +248,7 @@ export default function DashboardPage() {
           change={{ value: 12, trend: 'up' }}
         />
         <StatCard
-          title="Ticket đang mở"
+          title={t('dashboard.openTickets')}
           value={dashboardData?.openTickets || 0}
           icon={Clock}
           color="text-yellow-600"
@@ -234,7 +256,7 @@ export default function DashboardPage() {
           change={{ value: 5, trend: 'up' }}
         />
         <StatCard
-          title="Đã giải quyết hôm nay"
+          title={t('dashboard.resolvedTickets')}
           value={dashboardData?.closedToday || 0}
           icon={CheckCircle}
           color="text-green-600"
@@ -242,7 +264,7 @@ export default function DashboardPage() {
           change={{ value: 8, trend: 'up' }}
         />
         <StatCard
-          title="Thời gian xử lý TB"
+          title={t('reports.trendAnalysis')}
           value={`${dashboardData?.avgResolutionTime || 0}h`}
           icon={TrendingUp}
           color="text-purple-600"
@@ -295,13 +317,13 @@ export default function DashboardPage() {
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-lg font-semibold text-gray-900 flex items-center">
             <span className="w-1 h-6 bg-gradient-to-b from-blue-500 to-cyan-500 rounded-full mr-3" />
-            Ticket gần đây
+            {t('dashboard.recentTickets')}
           </h3>
           <button
             onClick={() => router.push('/tickets')}
             className="text-sm text-[#0052CC] hover:text-[#0047B3] font-medium flex items-center group"
           >
-            Xem tất cả
+            {t('common.all')}
             <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
           </button>
         </div>
@@ -323,15 +345,15 @@ export default function DashboardPage() {
                   #{ticket.ticketNumber} • {new Date(ticket.createdAt).toLocaleDateString('vi-VN')}
                 </p>
               </div>
-              <span className={`ml-3 px-3 py-1.5 text-xs font-medium rounded-full ${statusColors[ticket.status] || 'bg-gray-100 text-gray-700'}`}>
-                {ticket.status.replace('_', ' ')}
+              <span className={`ml-3 px-3 py-1.5 text-xs font-medium rounded-full ${statusColors[translateStatus(ticket.status)] || statusColors[ticket.status] || 'bg-gray-100 text-gray-700'}`}>
+                {translateStatus(ticket.status)}
               </span>
             </motion.div>
           ))}
           {(!recentTickets?.tickets || recentTickets.tickets.length === 0) && (
             <div className="text-center py-12 text-gray-500">
               <Ticket className="w-12 h-12 mx-auto mb-3 text-gray-300" />
-              <p>Không có ticket gần đây</p>
+              <p>{t('tickets.noTickets')}</p>
             </div>
           )}
         </div>

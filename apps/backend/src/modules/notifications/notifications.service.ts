@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Notification, NotificationType, User, Ticket } from '../../database/entities';
 import { EmailService } from '../../common/services/email.service';
+import { NotificationsGateway } from '../../common/gateways/notifications.gateway';
 
 export interface CreateNotificationDto {
   userId: number;
@@ -21,6 +22,7 @@ export class NotificationsService {
     @InjectModel(Ticket)
     private ticketModel: typeof Ticket,
     private emailService: EmailService,
+    private notificationsGateway: NotificationsGateway,
   ) {}
 
   async create(createNotificationDto: CreateNotificationDto): Promise<Notification> {
@@ -32,11 +34,26 @@ export class NotificationsService {
       ticketId: createNotificationDto.ticketId,
     } as any);
 
-    // Send email notification
-    const user = await this.userModel.findByPk(createNotificationDto.userId);
-    if (user && user.email) {
-      await this.sendEmailNotification(user.email, notification);
-    }
+    // 🔔 Send real-time notification via WebSocket
+    this.notificationsGateway.sendNotificationToUser(createNotificationDto.userId, {
+      id: notification.id,
+      type: notification.type,
+      title: notification.title,
+      message: notification.message,
+      ticketId: notification.ticketId,
+      createdAt: notification.createdAt,
+      isRead: false,
+    });
+
+    // Update unread count
+    const unreadCount = await this.getUnreadCount(createNotificationDto.userId);
+    this.notificationsGateway.sendUnreadCountUpdate(createNotificationDto.userId, unreadCount);
+
+    // Send email notification (optional - can be disabled)
+    // const user = await this.userModel.findByPk(createNotificationDto.userId);
+    // if (user && user.email) {
+    //   await this.sendEmailNotification(user.email, notification);
+    // }
 
     return notification;
   }
@@ -88,6 +105,10 @@ export class NotificationsService {
     notification.markAsRead();
     await notification.save();
 
+    // Update unread count via WebSocket
+    const unreadCount = await this.getUnreadCount(userId);
+    this.notificationsGateway.sendUnreadCountUpdate(userId, unreadCount);
+
     return notification;
   }
 
@@ -96,6 +117,9 @@ export class NotificationsService {
       { isRead: true, readAt: new Date() },
       { where: { userId, isRead: false } },
     );
+
+    // Update unread count via WebSocket
+    this.notificationsGateway.sendUnreadCountUpdate(userId, 0);
 
     return { count };
   }
@@ -148,6 +172,7 @@ export class NotificationsService {
     const ticket = await this.ticketModel.findByPk(ticketId);
     if (!ticket) return;
 
+    // Notify assignee
     await this.create({
       userId: assigneeId,
       type: NotificationType.TICKET_ASSIGNED,
@@ -155,6 +180,17 @@ export class NotificationsService {
       message: `Ticket #${ticket.id}: ${ticket.title} has been assigned to you by ${assignedBy.fullName}`,
       ticketId: ticket.id,
     });
+
+    // Notify ticket submitter (creator)
+    if (ticket.submitterId !== assigneeId && ticket.submitterId !== assignedBy.id) {
+      await this.create({
+        userId: ticket.submitterId,
+        type: NotificationType.TICKET_ASSIGNED,
+        title: 'Your Ticket Has Been Assigned',
+        message: `Your ticket #${ticket.id}: ${ticket.title} has been assigned to ${(await this.userModel.findByPk(assigneeId))?.fullName || 'IT Staff'}`,
+        ticketId: ticket.id,
+      });
+    }
 
     // Send email
     const assignee = await this.userModel.findByPk(assigneeId);
@@ -254,8 +290,17 @@ export class NotificationsService {
     const ticket = await this.ticketModel.findByPk(ticketId);
     if (!ticket) return;
 
-    // Notify assignee if exists
-    if (ticket.assigneeId) {
+    // Notify submitter (creator)
+    await this.create({
+      userId: ticket.submitterId,
+      type: NotificationType.TICKET_CLOSED,
+      title: 'Your Ticket Has Been Closed',
+      message: `Your ticket #${ticket.id}: ${ticket.title} has been closed`,
+      ticketId: ticket.id,
+    });
+
+    // Notify assignee if exists and different from submitter
+    if (ticket.assigneeId && ticket.assigneeId !== ticket.submitterId) {
       await this.create({
         userId: ticket.assigneeId,
         type: NotificationType.TICKET_CLOSED,
@@ -266,18 +311,42 @@ export class NotificationsService {
     }
   }
 
-  private async sendEmailNotification(email: string, notification: Notification): Promise<void> {
-    const ticket = notification.ticketId
-      ? await this.ticketModel.findByPk(notification.ticketId)
-      : null;
+  async notifyTicketEscalated(ticketId: number, managerId: number): Promise<void> {
+    const ticket = await this.ticketModel.findByPk(ticketId);
+    if (!ticket) return;
 
-    switch (notification.type) {
-      case NotificationType.TICKET_CREATED:
-        if (ticket) {
-          await this.emailService.sendTicketCreatedEmail(email, ticket.id, ticket.title);
-        }
-        break;
-      // Other cases are handled in specific notify methods
-    }
+    await this.create({
+      userId: managerId,
+      type: NotificationType.TICKET_ESCALATED,
+      title: 'Ticket Escalated',
+      message: `Ticket #${ticket.id}: ${ticket.title} has been escalated to you`,
+      ticketId: ticket.id,
+    });
+  }
+
+  async notifySLAWarning(ticketId: number, userId: number): Promise<void> {
+    const ticket = await this.ticketModel.findByPk(ticketId);
+    if (!ticket) return;
+
+    await this.create({
+      userId,
+      type: NotificationType.SLA_WARNING,
+      title: 'SLA Warning',
+      message: `Ticket #${ticket.id}: ${ticket.title} is approaching SLA deadline`,
+      ticketId: ticket.id,
+    });
+  }
+
+  async notifySLABreach(ticketId: number, userId: number): Promise<void> {
+    const ticket = await this.ticketModel.findByPk(ticketId);
+    if (!ticket) return;
+
+    await this.create({
+      userId,
+      type: NotificationType.SLA_BREACH,
+      title: 'SLA Breach',
+      message: `Ticket #${ticket.id}: ${ticket.title} has breached SLA deadline`,
+      ticketId: ticket.id,
+    });
   }
 }

@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { Maximize2 } from 'lucide-react';
 import { useState } from 'react';
 import ChartModal from './ChartModal';
+import { useLanguage } from '@/lib/contexts/LanguageContext';
 
 interface TrendData {
   date: string;
@@ -81,6 +82,7 @@ const CustomDot = (props: any) => {
 
 export default function TicketTrendChart({ data, onTimeRangeChange, currentRange = 7, isLoading = false }: TicketTrendChartProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { t } = useLanguage();
   
   // Check if there's any real data
   const hasData = data.some(item => item.created > 0 || item.resolved > 0 || item.closed > 0);
@@ -91,9 +93,9 @@ export default function TicketTrendChart({ data, onTimeRangeChange, currentRange
   const totalClosed = data.reduce((sum, item) => sum + item.closed, 0);
   
   const timeRanges = [
-    { label: '7 ngày', value: 7 },
-    { label: '14 ngày', value: 14 },
-    { label: '30 ngày', value: 30 },
+    { label: t('common.days7'), value: 7 },
+    { label: t('common.days14'), value: 14 },
+    { label: t('common.days30'), value: 30 },
   ];
   
   const ChartContent = ({ height = 300, showStats = false }: { height?: number; showStats?: boolean }) => (
@@ -101,15 +103,15 @@ export default function TicketTrendChart({ data, onTimeRangeChange, currentRange
       {showStats && hasData && (
         <div className="grid grid-cols-3 gap-4 mb-6">
           <div className="bg-blue-50 rounded-lg p-4">
-            <p className="text-sm text-blue-600 mb-1">Tổng đã tạo</p>
+            <p className="text-sm text-blue-600 mb-1">{t('common.created')}</p>
             <p className="text-2xl font-bold text-blue-700">{totalCreated}</p>
           </div>
           <div className="bg-green-50 rounded-lg p-4">
-            <p className="text-sm text-green-600 mb-1">Tổng đã giải quyết</p>
+            <p className="text-sm text-green-600 mb-1">{t('status.Resolved')}</p>
             <p className="text-2xl font-bold text-green-700">{totalResolved}</p>
           </div>
           <div className="bg-gray-50 rounded-lg p-4">
-            <p className="text-sm text-gray-600 mb-1">Tổng đã đóng</p>
+            <p className="text-sm text-gray-600 mb-1">{t('status.Closed')}</p>
             <p className="text-2xl font-bold text-gray-700">{totalClosed}</p>
           </div>
         </div>
@@ -119,7 +121,7 @@ export default function TicketTrendChart({ data, onTimeRangeChange, currentRange
         <div className="flex items-center justify-center" style={{ height: `${height}px` }}>
           <div className="text-center">
             <div className="w-12 h-12 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin mx-auto mb-3" />
-            <p className="text-sm text-gray-500 font-medium">Đang tải dữ liệu...</p>
+            <p className="text-sm text-gray-500 font-medium">{t('common.loading')}</p>
           </div>
         </div>
       ) : !hasData ? (
@@ -128,8 +130,8 @@ export default function TicketTrendChart({ data, onTimeRangeChange, currentRange
             <svg className="w-16 h-16 mx-auto mb-3 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
             </svg>
-            <p className="text-sm font-medium">Chưa có dữ liệu</p>
-            <p className="text-xs mt-1">Tạo ticket để xem xu hướng</p>
+            <p className="text-sm font-medium">{t('common.noData')}</p>
+            <p className="text-xs mt-1">{t('tickets.createTicket')}</p>
           </div>
         </div>
       ) : (
@@ -179,7 +181,7 @@ export default function TicketTrendChart({ data, onTimeRangeChange, currentRange
               dataKey="created" 
               stroke="url(#lineGradientCreated)"
               strokeWidth={3}
-              name="Đã tạo"
+              name={t('common.created')}
               animationDuration={800}
               filter="url(#lineShadow)"
               dot={<CustomDot />}
@@ -191,7 +193,7 @@ export default function TicketTrendChart({ data, onTimeRangeChange, currentRange
               dataKey="resolved" 
               stroke="url(#lineGradientResolved)"
               strokeWidth={3}
-              name="Đã giải quyết"
+              name={t('status.Resolved')}
               animationDuration={800}
               filter="url(#lineShadow)"
               dot={<CustomDot />}
@@ -203,7 +205,7 @@ export default function TicketTrendChart({ data, onTimeRangeChange, currentRange
               dataKey="closed" 
               stroke="url(#lineGradientClosed)"
               strokeWidth={3}
-              name="Đã đóng"
+              name={t('status.Closed')}
               animationDuration={800}
               filter="url(#lineShadow)"
               dot={<CustomDot />}
@@ -231,7 +233,7 @@ export default function TicketTrendChart({ data, onTimeRangeChange, currentRange
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-semibold text-gray-900 flex items-center">
               <span className="w-1 h-6 bg-gradient-to-b from-blue-600 to-green-600 rounded-full mr-3" />
-              Xu hướng ticket theo thời gian
+              {t('reports.trendAnalysis')}
             </h3>
             
             <div className="flex items-center gap-2">
@@ -258,7 +260,7 @@ export default function TicketTrendChart({ data, onTimeRangeChange, currentRange
               <button
                 onClick={() => setIsModalOpen(true)}
                 className="p-2 hover:bg-gray-100 rounded-lg transition-colors group/btn"
-                title="Phóng to"
+                title={t('common.view')}
               >
                 <Maximize2 className="w-4 h-4 text-gray-500 group-hover/btn:text-blue-600" />
               </button>
@@ -273,7 +275,7 @@ export default function TicketTrendChart({ data, onTimeRangeChange, currentRange
       <ChartModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        title="Xu hướng ticket theo thời gian"
+        title={t('reports.trendAnalysis')}
       >
         <ChartContent height={600} showStats={true} />
       </ChartModal>

@@ -2,6 +2,13 @@
 
 module.exports = {
   async up(queryInterface, Sequelize) {
+    // Check if table exists
+    const tables = await queryInterface.showAllTables();
+    if (tables.includes('users')) {
+      console.log('Table "users" already exists, skipping creation...');
+      return;
+    }
+
     await queryInterface.createTable('users', {
       id: {
         type: Sequelize.UUID,
@@ -79,12 +86,36 @@ module.exports = {
       },
     });
 
-    // Add indexes
-    await queryInterface.addIndex('users', ['email'], { unique: true });
-    await queryInterface.addIndex('users', ['role']);
-    await queryInterface.addIndex('users', ['status']);
-    await queryInterface.addIndex('users', ['department']);
-    await queryInterface.addIndex('users', ['createdAt']);
+    // Add indexes with error handling
+    try {
+      await queryInterface.addIndex('users', ['email'], { unique: true, name: 'users_email' });
+    } catch (error) {
+      console.log('Index users_email already exists, skipping...');
+    }
+    
+    try {
+      await queryInterface.addIndex('users', ['role'], { name: 'users_role' });
+    } catch (error) {
+      console.log('Index users_role already exists, skipping...');
+    }
+    
+    try {
+      await queryInterface.addIndex('users', ['status'], { name: 'users_status' });
+    } catch (error) {
+      console.log('Index users_status already exists, skipping...');
+    }
+    
+    try {
+      await queryInterface.addIndex('users', ['department'], { name: 'users_department' });
+    } catch (error) {
+      console.log('Index users_department already exists, skipping...');
+    }
+    
+    try {
+      await queryInterface.addIndex('users', ['createdAt'], { name: 'users_created_at' });
+    } catch (error) {
+      console.log('Index users_created_at already exists, skipping...');
+    }
   },
 
   async down(queryInterface, Sequelize) {

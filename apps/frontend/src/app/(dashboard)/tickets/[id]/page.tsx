@@ -12,6 +12,7 @@ import { usersService } from '@/lib/api/users.service';
 import { useAuthStore } from '@/lib/stores/auth.store';
 import { UserRole, User } from '@/lib/types/auth.types';
 import { usePermissions } from '@/lib/hooks/usePermissions';
+import { formatDateTime } from '@/lib/utils/format';
 import {
   ArrowLeft, Loader2, Clock, User as UserIcon, Calendar, Tag, AlertCircle, CheckCircle,
   Play, XCircle, RotateCcw, Star, MessageSquare, Paperclip, Edit2, Trash2,
@@ -183,7 +184,7 @@ export default function TicketDetailPage() {
   });
 
   const rateMutation = useMutation({
-    mutationFn: () => ticketsService.rate(ticketId, { rating, feedback: ratingFeedback }),
+    mutationFn: () => ticketsService.rate(ticketId, { rating, comment: ratingFeedback }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['ticket', ticketId] });
       setShowRatingModal(false);
@@ -286,12 +287,7 @@ export default function TicketDetailPage() {
     }
   };
 
-  const formatDate = (date: string) => {
-    return new Date(date).toLocaleString('vi-VN', {
-      day: '2-digit', month: '2-digit', year: 'numeric',
-      hour: '2-digit', minute: '2-digit',
-    });
-  };
+
 
   if (isLoading) {
     return (
@@ -563,7 +559,6 @@ export default function TicketDetailPage() {
                           setEditingContent={setEditingContent}
                           onUpdate={(id, content) => updateCommentMutation.mutate({ id, content })}
                           onDelete={(id) => deleteCommentMutation.mutate(id)}
-                          formatDate={formatDate}
                         />
                       ))}
                     </div>
@@ -615,7 +610,7 @@ export default function TicketDetailPage() {
                             <div>
                               <p className="font-medium text-gray-900">{attachment.originalName}</p>
                               <p className="text-sm text-gray-500">
-                                {attachmentsService.formatFileSize(attachment.fileSize)} • {formatDate(attachment.createdAt)}
+                                {attachmentsService.formatFileSize(attachment.fileSize)} • {formatDateTime(attachment.createdAt)}
                               </p>
                             </div>
                           </div>
@@ -665,7 +660,7 @@ export default function TicketDetailPage() {
                             <div className="bg-gray-50 rounded-lg p-3">
                               <p className="text-gray-900">{item.description}</p>
                               <p className="text-sm text-gray-500 mt-1">
-                                {item.user?.fullName || 'Hệ thống'} • {formatDate(item.createdAt)}
+                                {item.user?.fullName || 'Hệ thống'} • {formatDateTime(item.createdAt)}
                               </p>
                             </div>
                           </div>
@@ -720,7 +715,7 @@ export default function TicketDetailPage() {
                 <Calendar className="w-5 h-5 text-gray-400 mt-0.5" />
                 <div>
                   <p className="text-sm text-gray-500">Ngày tạo</p>
-                  <p className="font-medium text-gray-900">{formatDate(ticket.createdAt)}</p>
+                  <p className="font-medium text-gray-900">{formatDateTime(ticket.createdAt)}</p>
                 </div>
               </div>
               {ticket.dueDate && (
@@ -737,7 +732,7 @@ export default function TicketDetailPage() {
                         ? 'text-red-600'
                         : 'text-gray-900'
                     }`}>
-                      {formatDate(ticket.dueDate)}
+                      {formatDateTime(ticket.dueDate)}
                     </p>
                     {new Date(ticket.dueDate) < new Date() && !ticket.resolvedAt && (
                       <p className="text-xs text-red-600 mt-1">⚠️ Đã quá hạn</p>
@@ -750,7 +745,7 @@ export default function TicketDetailPage() {
                   <CheckCircle className="w-5 h-5 text-green-500 mt-0.5" />
                   <div>
                     <p className="text-sm text-gray-500">Ngày giải quyết</p>
-                    <p className="font-medium text-gray-900">{formatDate(ticket.resolvedAt)}</p>
+                    <p className="font-medium text-gray-900">{formatDateTime(ticket.resolvedAt)}</p>
                   </div>
                 </div>
               )}
@@ -759,7 +754,7 @@ export default function TicketDetailPage() {
                   <Lock className="w-5 h-5 text-gray-500 mt-0.5" />
                   <div>
                     <p className="text-sm text-gray-500">Ngày đóng</p>
-                    <p className="font-medium text-gray-900">{formatDate(ticket.closedAt)}</p>
+                    <p className="font-medium text-gray-900">{formatDateTime(ticket.closedAt)}</p>
                   </div>
                 </div>
               )}
@@ -807,8 +802,8 @@ export default function TicketDetailPage() {
                   />
                 ))}
               </div>
-              {ticket.satisfactionFeedback && (
-                <p className="text-gray-600 text-sm mt-2">{ticket.satisfactionFeedback}</p>
+              {ticket.satisfactionComment && (
+                <p className="text-gray-600 text-sm mt-2 whitespace-pre-wrap">{ticket.satisfactionComment}</p>
               )}
             </div>
           )}
@@ -1005,7 +1000,6 @@ interface CommentItemProps {
   setEditingContent: (content: string) => void;
   onUpdate: (id: number, content: string) => void;
   onDelete: (id: number) => void;
-  formatDate: (date: string) => string;
 }
 
 function CommentItem({
@@ -1019,7 +1013,6 @@ function CommentItem({
   setEditingContent,
   onUpdate,
   onDelete,
-  formatDate,
 }: CommentItemProps) {
   const isOwner = comment.userId === currentUserId;
   
@@ -1055,7 +1048,7 @@ function CommentItem({
                 <span className="text-xs text-gray-400">(đã chỉnh sửa)</span>
               )}
             </div>
-            <span className="text-sm text-gray-500">{formatDate(comment.createdAt)}</span>
+            <span className="text-sm text-gray-500">{formatDateTime(comment.createdAt)}</span>
           </div>
         </div>
         {!isSystem && (canEdit || canDelete) && !isEditing && (

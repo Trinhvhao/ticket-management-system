@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/lib/stores/auth.store';
 import { UserRole } from '@/lib/types/auth.types';
+import { useLanguage } from '@/lib/contexts/LanguageContext';
 import {
   Plus,
   Ticket,
@@ -15,8 +16,8 @@ import {
 } from 'lucide-react';
 
 interface QuickAction {
-  title: string;
-  description: string;
+  titleKey: string;
+  descriptionKey: string;
   icon: React.ComponentType<{ className?: string }>;
   href: string;
   color: string;
@@ -24,26 +25,26 @@ interface QuickAction {
   roles?: UserRole[];
 }
 
-const quickActions: QuickAction[] = [
+const getQuickActions = (): QuickAction[] => [
   {
-    title: 'Create Ticket',
-    description: 'Submit a new support request',
+    titleKey: 'tickets.createTicket',
+    descriptionKey: 'dashboard.quickActions',
     icon: Plus,
     href: '/tickets/new',
     color: 'text-blue-600',
     bgColor: 'bg-blue-50 hover:bg-blue-100',
   },
   {
-    title: 'My Tickets',
-    description: 'View tickets you created',
+    titleKey: 'tickets.myTickets',
+    descriptionKey: 'tickets.myTickets',
     icon: Ticket,
     href: '/tickets?view=my-tickets',
     color: 'text-purple-600',
     bgColor: 'bg-purple-50 hover:bg-purple-100',
   },
   {
-    title: 'Assigned to Me',
-    description: 'Tickets assigned to you',
+    titleKey: 'tickets.assignee',
+    descriptionKey: 'tickets.assignee',
     icon: UserCheck,
     href: '/tickets?view=assigned-to-me',
     color: 'text-green-600',
@@ -51,16 +52,16 @@ const quickActions: QuickAction[] = [
     roles: [UserRole.IT_STAFF, UserRole.ADMIN],
   },
   {
-    title: 'Search Knowledge',
-    description: 'Find solutions in KB',
+    titleKey: 'knowledge.searchArticles',
+    descriptionKey: 'knowledge.title',
     icon: BookOpen,
     href: '/knowledge',
     color: 'text-orange-600',
     bgColor: 'bg-orange-50 hover:bg-orange-100',
   },
   {
-    title: 'SLA Dashboard',
-    description: 'Monitor SLA compliance',
+    titleKey: 'sla.title',
+    descriptionKey: 'sla.compliance',
     icon: Clock,
     href: '/sla',
     color: 'text-yellow-600',
@@ -68,8 +69,8 @@ const quickActions: QuickAction[] = [
     roles: [UserRole.IT_STAFF, UserRole.ADMIN],
   },
   {
-    title: 'View Reports',
-    description: 'Analytics and insights',
+    titleKey: 'reports.title',
+    descriptionKey: 'reports.trendAnalysis',
     icon: BarChart3,
     href: '/reports',
     color: 'text-indigo-600',
@@ -77,8 +78,8 @@ const quickActions: QuickAction[] = [
     roles: [UserRole.IT_STAFF, UserRole.ADMIN],
   },
   {
-    title: 'Manage Users',
-    description: 'User administration',
+    titleKey: 'users.title',
+    descriptionKey: 'users.title',
     icon: Users,
     href: '/users',
     color: 'text-pink-600',
@@ -86,8 +87,8 @@ const quickActions: QuickAction[] = [
     roles: [UserRole.ADMIN],
   },
   {
-    title: 'Quick Search',
-    description: 'Search tickets and articles',
+    titleKey: 'common.search',
+    descriptionKey: 'common.search',
     icon: Search,
     href: '/search',
     color: 'text-gray-600',
@@ -98,6 +99,9 @@ const quickActions: QuickAction[] = [
 export default function QuickActions() {
   const router = useRouter();
   const { user } = useAuthStore();
+  const { t } = useLanguage();
+
+  const quickActions = getQuickActions();
 
   const filteredActions = quickActions.filter(action => {
     if (!action.roles) return true;
@@ -110,15 +114,15 @@ export default function QuickActions() {
         const Icon = action.icon;
         return (
           <button
-            key={action.title}
+            key={action.titleKey}
             onClick={() => router.push(action.href)}
             className={`${action.bgColor} rounded-xl p-6 text-left transition-all hover:shadow-md border border-transparent hover:border-gray-200 group`}
           >
             <div className={`w-12 h-12 ${action.bgColor.replace('hover:', '')} rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
               <Icon className={`w-6 h-6 ${action.color}`} />
             </div>
-            <h3 className="font-semibold text-gray-900 mb-1">{action.title}</h3>
-            <p className="text-sm text-gray-600">{action.description}</p>
+            <h3 className="font-semibold text-gray-900 mb-1">{t(action.titleKey)}</h3>
+            <p className="text-sm text-gray-600">{t(action.descriptionKey)}</p>
           </button>
         );
       })}

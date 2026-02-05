@@ -80,11 +80,11 @@ export default function EditArticlePage() {
     e.preventDefault();
     
     if (!formData.title.trim()) {
-      toast.error('Title is required');
+      toast.error('Tiêu đề là bắt buộc');
       return;
     }
     if (!formData.content.trim()) {
-      toast.error('Content is required');
+      toast.error('Nội dung là bắt buộc');
       return;
     }
 
@@ -95,8 +95,8 @@ export default function EditArticlePage() {
     return (
       <div className="text-center py-20">
         <Shield className="w-16 h-16 text-red-400 mx-auto mb-4" />
-        <h2 className="text-xl font-semibold text-gray-900 mb-2">Access Denied</h2>
-        <p className="text-gray-500">You don't have permission to edit articles.</p>
+        <h2 className="text-xl font-semibold text-gray-900 mb-2">Truy cập Bị từ chối</h2>
+        <p className="text-gray-500">Bạn không có quyền chỉnh sửa bài viết.</p>
       </div>
     );
   }
@@ -116,34 +116,34 @@ export default function EditArticlePage() {
           <ArrowLeft className="w-5 h-5" />
         </button>
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Edit Article</h1>
-          <p className="text-gray-500">Update article content</p>
+          <h1 className="text-2xl font-bold text-gray-900">Sửa Bài viết</h1>
+          <p className="text-gray-500">Cập nhật nội dung bài viết</p>
         </div>
       </div>
 
       <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Title *</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Tiêu đề *</label>
             <input
               type="text"
               value={formData.title}
               onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
               className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Enter article title"
+              placeholder="Nhập tiêu đề bài viết"
               required
             />
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Category</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Danh mục</label>
               <select
                 value={formData.categoryId || ''}
                 onChange={(e) => setFormData(prev => ({ ...prev, categoryId: e.target.value ? Number(e.target.value) : undefined }))}
                 className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
-                <option value="">Select category</option>
+                <option value="">Chọn danh mục</option>
                 {categories?.map(cat => (
                   <option key={cat.id} value={cat.id}>{cat.name}</option>
                 ))}
@@ -151,20 +151,20 @@ export default function EditArticlePage() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Status</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Trạng thái</label>
               <select
                 value={formData.isPublished ? 'published' : 'draft'}
                 onChange={(e) => setFormData(prev => ({ ...prev, isPublished: e.target.value === 'published' }))}
                 className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
-                <option value="draft">Draft</option>
-                <option value="published">Published</option>
+                <option value="draft">Nháp</option>
+                <option value="published">Đã xuất bản</option>
               </select>
             </div>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Tags</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Thẻ</label>
             <div className="flex flex-wrap gap-2 mb-2">
               {formData.tags?.map((tag, index) => (
                 <span
@@ -189,7 +189,7 @@ export default function EditArticlePage() {
                 onChange={(e) => setTagInput(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddTag())}
                 className="flex-1 px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Add a tag"
+                placeholder="Thêm thẻ"
               />
               <button
                 type="button"
@@ -202,16 +202,16 @@ export default function EditArticlePage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Content *</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Nội dung *</label>
             <textarea
               value={formData.content}
               onChange={(e) => setFormData(prev => ({ ...prev, content: e.target.value }))}
               rows={15}
               className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Write your article content here... (HTML supported)"
+              placeholder="Viết nội dung bài viết tại đây... (Hỗ trợ HTML)"
               required
             />
-            <p className="text-xs text-gray-500 mt-1">You can use HTML tags for formatting</p>
+            <p className="text-xs text-gray-500 mt-1">Bạn có thể sử dụng thẻ HTML để định dạng</p>
           </div>
 
           <div className="flex justify-end space-x-3 pt-4 border-t border-gray-200">
@@ -220,7 +220,7 @@ export default function EditArticlePage() {
               onClick={() => router.back()}
               className="px-4 py-2.5 border border-gray-300 rounded-lg hover:bg-gray-50"
             >
-              Cancel
+              Hủy
             </button>
             <button
               type="submit"
@@ -228,7 +228,7 @@ export default function EditArticlePage() {
               className="inline-flex items-center px-4 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
             >
               {updateMutation.isPending ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Save className="w-4 h-4 mr-2" />}
-              Save Changes
+              Lưu Thay đổi
             </button>
           </div>
         </form>

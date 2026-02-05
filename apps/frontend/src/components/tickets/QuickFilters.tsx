@@ -3,6 +3,7 @@
 import { useAuthStore } from '@/lib/stores/auth.store';
 import { UserRole } from '@/lib/types/auth.types';
 import { TicketStatus, TicketFilters } from '@/lib/types/ticket.types';
+import { useLanguage } from '@/lib/contexts/LanguageContext';
 import { 
   Inbox, 
   User, 
@@ -16,7 +17,7 @@ import {
 
 export interface QuickFilterPreset {
   id: string;
-  label: string;
+  labelKey: string; // Changed from label to labelKey for translation
   icon: React.ReactNode;
   filters: Partial<TicketFilters>;
   roles?: UserRole[]; // Which roles can see this filter
@@ -31,54 +32,54 @@ interface QuickFiltersProps {
 export const QUICK_FILTER_PRESETS: QuickFilterPreset[] = [
   {
     id: 'all',
-    label: 'Tất cả',
+    labelKey: 'common.all',
     icon: <Inbox className="w-4 h-4" />,
     filters: {},
   },
   {
     id: 'my-tickets',
-    label: 'Ticket của tôi',
+    labelKey: 'tickets.myTickets',
     icon: <User className="w-4 h-4" />,
     filters: { createdById: -1 }, // -1 = current user, will be replaced
     roles: [UserRole.EMPLOYEE, UserRole.IT_STAFF, UserRole.ADMIN],
   },
   {
     id: 'assigned-to-me',
-    label: 'Được giao cho tôi',
+    labelKey: 'tickets.assignedToMe',
     icon: <Bookmark className="w-4 h-4" />,
     filters: { assigneeId: -1 }, // -1 = current user
     roles: [UserRole.IT_STAFF, UserRole.ADMIN],
   },
   {
     id: 'unassigned',
-    label: 'Chưa phân công',
+    labelKey: 'tickets.unassigned',
     icon: <Users className="w-4 h-4" />,
     filters: { assigneeId: null as any }, // null = unassigned tickets
     roles: [UserRole.IT_STAFF, UserRole.ADMIN],
   },
   {
     id: 'high-priority',
-    label: 'Ưu tiên cao',
+    labelKey: 'tickets.highPriority',
     icon: <AlertTriangle className="w-4 h-4" />,
     filters: { priority: 'High' as any },
   },
   {
     id: 'sla-breached',
-    label: 'Quá hạn SLA',
+    labelKey: 'tickets.slaBreached',
     icon: <AlertCircle className="w-4 h-4" />,
     filters: { slaBreached: true } as any,
     roles: [UserRole.IT_STAFF, UserRole.ADMIN],
   },
   {
     id: 'sla-at-risk',
-    label: 'Sắp quá hạn',
+    labelKey: 'tickets.slaAtRisk',
     icon: <Clock className="w-4 h-4" />,
     filters: { slaAtRisk: true } as any,
     roles: [UserRole.IT_STAFF, UserRole.ADMIN],
   },
   {
     id: 'pending',
-    label: 'Đang chờ',
+    labelKey: 'tickets.pending',
     icon: <Clock className="w-4 h-4" />,
     filters: { status: TicketStatus.PENDING },
   },
@@ -86,6 +87,7 @@ export const QUICK_FILTER_PRESETS: QuickFilterPreset[] = [
 
 export default function QuickFilters({ activePreset, onPresetChange, ticketCounts }: QuickFiltersProps) {
   const { user } = useAuthStore();
+  const { t } = useLanguage();
 
   // Filter presets based on user role
   const visiblePresets = QUICK_FILTER_PRESETS.filter(preset => {
@@ -110,7 +112,7 @@ export default function QuickFilters({ activePreset, onPresetChange, ticketCount
             }`}
           >
             {preset.icon}
-            <span>{preset.label}</span>
+            <span>{t(preset.labelKey)}</span>
             {count !== undefined && count > 0 && (
               <span className={`ml-1 px-1.5 py-0.5 text-xs rounded-full ${
                 isActive ? 'bg-white/20 text-white' : 'bg-gray-200 text-gray-600'

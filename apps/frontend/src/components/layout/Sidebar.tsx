@@ -23,6 +23,7 @@ import {
 import { useAuth } from '@/lib/hooks/useAuth';
 import { usePermissions } from '@/lib/hooks/usePermissions';
 import { reportsService } from '@/lib/api/reports.service';
+import { useLanguage } from '@/lib/contexts/LanguageContext';
 
 interface NavItem {
   name: string;
@@ -32,61 +33,62 @@ interface NavItem {
   showBadge?: boolean;
 }
 
-const navigation: NavItem[] = [
+// Navigation items with translation keys
+const getNavigationItems = (t: (key: string) => string): NavItem[] => [
   { 
-    name: 'Tổng quan', 
+    name: t('nav.dashboard'),
     href: '/dashboard', 
     icon: LayoutDashboard,
     permissionCheck: (p) => p.canViewDashboard()
   },
   { 
-    name: 'Ticket', 
+    name: t('nav.tickets'),
     href: '/tickets', 
     icon: Ticket,
     showBadge: true
   },
   { 
-    name: 'Kho kiến thức', 
+    name: t('nav.knowledge'),
     href: '/knowledge', 
     icon: BookOpen 
   },
   {
-    name: 'Thông báo',
+    name: t('nav.notifications'),
     href: '/notifications',
     icon: Bell
   },
   { 
-    name: 'Người dùng', 
+    name: t('nav.users'),
     href: '/users', 
     icon: Users,
     permissionCheck: (p) => p.canViewUsers()
   },
   { 
-    name: 'Danh mục', 
+    name: t('nav.categories'),
     href: '/categories', 
     icon: FolderKanban,
     permissionCheck: (p) => p.canManageCategories()
   },
   { 
-    name: 'Quy tắc SLA', 
+    name: t('nav.sla'),
     href: '/sla', 
     icon: Clock,
     permissionCheck: (p) => p.canManageSLA()
   },
   { 
-    name: 'Báo cáo leo thang', 
+    name: t('nav.escalation'),
     href: '/escalation', 
     icon: TrendingUp,
     permissionCheck: (p) => p.canManageSLA()
   },
   { 
-    name: 'Báo cáo', 
+    name: t('nav.reports'),
     href: '/reports', 
     icon: BarChart3,
     permissionCheck: (p) => p.canViewReports()
   },
   { 
-    name: 'Cài đặt', 
+    name: t('nav.settings'),
     href: '/settings', 
     icon: Settings 
   },
@@ -109,6 +111,7 @@ export function Sidebar() {
   const pathname = usePathname();
   const { user } = useAuth();
   const permissions = usePermissions();
+  const { t } = useLanguage();
 
   // Fetch action required count for badge
   const { data: actionData } = useQuery({
@@ -168,6 +171,9 @@ export function Sidebar() {
 
   const badgeInfo = getBadgeInfo();
 
+  // Get navigation items with translations
+  const navigation = getNavigationItems(t);
+
   const filteredNavigation = navigation.filter(item => {
     if (!item.permissionCheck) return true;
     return item.permissionCheck(permissions);
@@ -220,10 +226,10 @@ export function Sidebar() {
           className={`flex items-center justify-center space-x-2 w-full px-4 py-2.5 bg-[#0052CC] hover:bg-blue-700 text-white rounded-lg transition-all shadow-sm hover:shadow-md ${
             collapsed ? 'px-0' : ''
           }`}
-          title="Tạo ticket mới"
+          title={t('nav.createTicket')}
         >
           <Plus className="w-5 h-5 flex-shrink-0" />
-          {!collapsed && <span className="font-medium">Tạo ticket</span>}
+          {!collapsed && <span className="font-medium">{t('nav.createTicket')}</span>}
         </Link>
       </div>
 
@@ -266,7 +272,7 @@ export function Sidebar() {
                   {/* Tooltip */}
                   {showTooltip && (
                     <div className="absolute right-0 top-full mt-2 z-50 px-3 py-2 bg-gray-900 text-white text-xs rounded-lg whitespace-nowrap shadow-lg">
-                      <div className="font-medium mb-1">Cần xử lý</div>
+                      <div className="font-medium mb-1">{t('common.actions')}</div>
                       <div className="text-gray-300">{badgeInfo.tooltip}</div>
                       <div className="absolute -top-1 right-4 w-2 h-2 bg-gray-900 rotate-45"></div>
                     </div>

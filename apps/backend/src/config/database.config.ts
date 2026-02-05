@@ -10,6 +10,7 @@ export const databaseConfig = (): SequelizeModuleOptions => ({
   autoLoadModels: true,
   synchronize: false,
   logging: process.env['NODE_ENV'] === 'development',
+  timezone: 'UTC', // Store as UTC in database
   dialectOptions: {
     ssl: process.env['DB_SSL'] === 'true' ? {
       require: true,

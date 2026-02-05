@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
+import { Injectable, NotFoundException, ForbiddenException, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Op } from 'sequelize';
 import { KnowledgeArticle } from '../../database/entities/knowledge-article.entity';
@@ -6,6 +6,7 @@ import { User, UserRole } from '../../database/entities/user.entity';
 import { CreateArticleDto } from './dto/create-article.dto';
 import { UpdateArticleDto } from './dto/update-article.dto';
 import { RateArticleDto } from './dto/rate-article.dto';
+import { EmbeddingService } from '../../common/services/embedding.service';
 
 export interface ArticleFilters {
   category?: string | undefined;
@@ -23,15 +24,32 @@ export interface PaginationOptions {
 
 @Injectable()
 export class KnowledgeService {
+  private readonly logger = new Logger(KnowledgeService.name);
+
   constructor(
     @InjectModel(KnowledgeArticle)
     private readonly articleModel: typeof KnowledgeArticle,
+    private readonly embeddingService: EmbeddingService,
   ) {}
 
   /**
    * Create a new article (IT Staff/Admin only)
    */
   async create(createArticleDto: CreateArticleDto, currentUser: User): Promise<KnowledgeArticle> {
+    this.logger.log(`Creating article: ${createArticleDto.title}`);
+
+    // Generate embedding for the article
+    let embedding: string | undefined;
+    try {
+      const textToEmbed = `${createArticleDto.title}\n\n${createArticleDto.content}`;
+      const embeddingVector = await this.embeddingService.generateEmbedding(textToEmbed);
+      embedding = JSON.stringify(embeddingVector);
+      this.logger.log(`Generated embedding for article: ${embeddingVector.length} dimensions`);
+    } catch (error) {
+      this.logger.error('Failed to generate embedding:', error);
+      // Continue without embedding - article can still be created
+    }
+
     const article = await this.articleModel.create({
       ...createArticleDto,
       authorId: currentUser.id,
@@ -40,6 +58,7 @@ export class KnowledgeService {
       viewCount: 0,
       helpfulCount: 0,
       notHelpfulCount: 0,
+      embedding,
     } as any);
 
     return this.findOne(article.id, currentUser);
@@ -154,6 +173,30 @@ export class KnowledgeService {
     // Only author or admin can update
     if (article.authorId !== currentUser.id && currentUser.role !== UserRole.ADMIN) {
       throw new ForbiddenException('You can only update your own articles');
+    }
+
+    // Regenerate embedding if title or content changed
+    if (updateArticleDto.title || updateArticleDto.content) {
+      try {
+        const title = updateArticleDto.title || article.title;
+        const content = updateArticleDto.content || article.content;
+        const textToEmbed = `${title}\n\n${content}`;
+        
+        const embeddingVector = await this.embeddingService.generateEmbedding(textToEmbed);
+        const embedding = JSON.stringify(embeddingVector);
+        
+        // Update with embedding
+        await article.update({
+          ...updateArticleDto,
+          embedding,
+        } as any);
+        
+        this.logger.log(`Regenerated embedding for article ${id}`);
+        return article;
+      } catch (error) {
+        this.logger.error('Failed to regenerate embedding:', error);
+        // Continue without updating embedding
+      }
     }
 
     await article.update(updateArticleDto);

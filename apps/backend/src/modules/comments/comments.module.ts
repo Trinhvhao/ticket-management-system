@@ -5,9 +5,13 @@ import { CommentsController, CommentsManagementController } from './comments.con
 import { Comment } from '../../database/entities/comment.entity';
 import { Ticket } from '../../database/entities/ticket.entity';
 import { User } from '../../database/entities/user.entity';
+import { NotificationsModule } from '../notifications/notifications.module';
 
 @Module({
-  imports: [SequelizeModule.forFeature([Comment, Ticket, User])],
+  imports: [
+    SequelizeModule.forFeature([Comment, Ticket, User]),
+    NotificationsModule,
+  ],
   controllers: [CommentsController, CommentsManagementController],
   providers: [CommentsService],
   exports: [CommentsService],

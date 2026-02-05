@@ -2,11 +2,18 @@
 
 module.exports = {
   async up(queryInterface, Sequelize) {
+    // Kiểm tra xem bảng đã tồn tại chưa
+    const tables = await queryInterface.showAllTables();
+    if (tables.includes('categories')) {
+      console.log('Bảng "categories" đã tồn tại, bỏ qua...');
+      return;
+    }
+
     await queryInterface.createTable('categories', {
       id: {
-        type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV4,
+        type: Sequelize.INTEGER,
         primaryKey: true,
+        autoIncrement: true,
         allowNull: false,
       },
       name: {
@@ -20,50 +27,52 @@ module.exports = {
       },
       color: {
         type: Sequelize.STRING(7),
-        allowNull: false,
-        defaultValue: '#3B82F6',
-        validate: {
-          is: /^#[0-9A-F]{6}$/i,
-        },
+        allowNull: true,
       },
       icon: {
         type: Sequelize.STRING(50),
         allowNull: true,
       },
-      isActive: {
+      is_active: {
         type: Sequelize.BOOLEAN,
         allowNull: false,
         defaultValue: true,
       },
-      sortOrder: {
+      display_order: {
         type: Sequelize.INTEGER,
         allowNull: false,
         defaultValue: 0,
       },
-      settings: {
-        type: Sequelize.JSON,
-        allowNull: true,
-      },
-      createdAt: {
+      created_at: {
         type: Sequelize.DATE,
         allowNull: false,
-        defaultValue: Sequelize.NOW,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
       },
-      updatedAt: {
+      updated_at: {
         type: Sequelize.DATE,
         allowNull: false,
-        defaultValue: Sequelize.NOW,
-      },
-      deletedAt: {
-        type: Sequelize.DATE,
-        allowNull: true,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
       },
     });
 
-    // Add indexes
-    await queryInterface.addIndex('categories', ['name'], { unique: true });
-    await queryInterface.addIndex('categories', ['isActive']);
-    await queryInterface.addIndex('categories', ['sortOrder']);
+    // Add indexes với error handling
+    try {
+      await queryInterface.addIndex('categories', ['name'], { unique: true, name: 'categories_name' });
+    } catch (error) {
+      console.log('Index categories_name đã tồn tại, bỏ qua...');
+    }
+    
+    try {
+      await queryInterface.addIndex('categories', ['is_active'], { name: 'categories_is_active' });
+    } catch (error) {
+      console.log('Index categories_is_active đã tồn tại, bỏ qua...');
+    }
+    
+    try {
+      await queryInterface.addIndex('categories', ['display_order'], { name: 'categories_display_order' });
+    } catch (error) {
+      console.log('Index categories_display_order đã tồn tại, bỏ qua...');
+    }
   },
 
   async down(queryInterface, Sequelize) {

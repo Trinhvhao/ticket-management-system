@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useAuthStore } from '@/lib/stores/auth.store';
+import { useLanguage } from '@/lib/contexts/LanguageContext';
 import apiClient from '@/lib/api/client';
 import { toast } from 'react-hot-toast';
 import {
@@ -31,6 +32,7 @@ interface ChangePasswordRequest {
 
 export default function SettingsPage() {
   const { user, setUser } = useAuthStore();
+  const { t, language, setLanguage } = useLanguage();
   const queryClient = useQueryClient();
   const [activeTab, setActiveTab] = useState<TabType>('profile');
 
@@ -66,10 +68,10 @@ export default function SettingsPage() {
   }, [user]);
 
   const tabs = [
-    { id: 'profile' as TabType, label: 'Profile', icon: User },
-    { id: 'password' as TabType, label: 'Password', icon: Lock },
-    { id: 'notifications' as TabType, label: 'Notifications', icon: Bell },
-    { id: 'appearance' as TabType, label: 'Appearance', icon: Palette },
+    { id: 'profile' as TabType, label: t('settings.profile'), icon: User },
+    { id: 'password' as TabType, label: t('settings.security'), icon: Lock },
+    { id: 'notifications' as TabType, label: t('settings.notifications'), icon: Bell },
+    { id: 'appearance' as TabType, label: t('settings.appearance'), icon: Palette },
   ];
 
   // Update profile mutation
@@ -161,8 +163,8 @@ export default function SettingsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Settings</h1>
-        <p className="text-gray-500 mt-1">Manage your account settings and preferences</p>
+        <h1 className="text-2xl font-bold text-gray-900">{t('settings.title')}</h1>
+        <p className="text-gray-500 mt-1">{t('settings.description')}</p>
       </div>
 
       <div className="flex flex-col lg:flex-row gap-6">
@@ -194,10 +196,10 @@ export default function SettingsPage() {
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
             {activeTab === 'profile' && (
               <div className="space-y-6">
-                <h2 className="text-lg font-semibold text-gray-900">Profile Information</h2>
+                <h2 className="text-lg font-semibold text-gray-900">{t('settings.profileInfo')}</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">{t('settings.fullName')}</label>
                     <input
                       type="text"
                       value={profileData.fullName}
@@ -206,7 +208,7 @@ export default function SettingsPage() {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">{t('settings.email')}</label>
                     <input
                       type="email"
                       value={profileData.email}
@@ -215,7 +217,7 @@ export default function SettingsPage() {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Phone</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">{t('settings.phone')}</label>
                     <input
                       type="tel"
                       value={profileData.phone}
@@ -224,7 +226,7 @@ export default function SettingsPage() {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Department</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">{t('settings.department')}</label>
                     <input
                       type="text"
                       value={profileData.department}
@@ -240,7 +242,7 @@ export default function SettingsPage() {
                     className="inline-flex items-center px-4 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
                   >
                     {saving ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Save className="w-4 h-4 mr-2" />}
-                    Save Changes
+                    {t('settings.saveChanges')}
                   </button>
                 </div>
               </div>
@@ -248,10 +250,10 @@ export default function SettingsPage() {
 
             {activeTab === 'password' && (
               <div className="space-y-6">
-                <h2 className="text-lg font-semibold text-gray-900">Change Password</h2>
+                <h2 className="text-lg font-semibold text-gray-900">{t('settings.changePassword')}</h2>
                 <div className="max-w-md space-y-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Current Password</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">{t('settings.currentPassword')}</label>
                     <input
                       type="password"
                       value={passwordData.currentPassword}
@@ -260,7 +262,7 @@ export default function SettingsPage() {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">New Password</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">{t('settings.newPassword')}</label>
                     <input
                       type="password"
                       value={passwordData.newPassword}
@@ -269,7 +271,7 @@ export default function SettingsPage() {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Confirm New Password</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">{t('settings.confirmPassword')}</label>
                     <input
                       type="password"
                       value={passwordData.confirmPassword}
@@ -285,7 +287,7 @@ export default function SettingsPage() {
                     className="inline-flex items-center px-4 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
                   >
                     {saving ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Lock className="w-4 h-4 mr-2" />}
-                    Change Password
+                    {t('settings.changePassword')}
                   </button>
                 </div>
               </div>
@@ -294,7 +296,7 @@ export default function SettingsPage() {
             {activeTab === 'notifications' && (
               <div className="space-y-6">
                 <div className="flex items-center justify-between">
-                  <h2 className="text-lg font-semibold text-gray-900">Notification Preferences</h2>
+                  <h2 className="text-lg font-semibold text-gray-900">{t('settings.notificationPreferences')}</h2>
                   <button
                     onClick={() => testEmailMutation.mutate()}
                     disabled={sendingEmail}
@@ -303,12 +305,12 @@ export default function SettingsPage() {
                     {sendingEmail ? (
                       <>
                         <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                        Sending...
+                        {t('settings.sendingEmail')}
                       </>
                     ) : (
                       <>
                         <Send className="w-4 h-4 mr-2" />
-                        Test Email
+                        {t('settings.testEmail')}
                       </>
                     )}
                   </button>
@@ -319,9 +321,9 @@ export default function SettingsPage() {
                   <div className="flex items-start space-x-3">
                     <Mail className="w-5 h-5 text-blue-600 mt-0.5" />
                     <div>
-                      <h3 className="font-medium text-blue-900">Email Notifications</h3>
+                      <h3 className="font-medium text-blue-900">{t('settings.emailNotifications')}</h3>
                       <p className="text-sm text-blue-700 mt-1">
-                        Click "Test Email" to verify your SMTP configuration. You'll receive a test email at <strong>{user?.email}</strong>
+                        {t('settings.emailTestInfo')} <strong>{user?.email}</strong>
                       </p>
                     </div>
                   </div>
@@ -330,8 +332,8 @@ export default function SettingsPage() {
                 <div className="space-y-4">
                   <label className="flex items-center justify-between p-4 bg-gray-50 rounded-lg cursor-pointer">
                     <div>
-                      <p className="font-medium text-gray-900">Email - Ticket Updates</p>
-                      <p className="text-sm text-gray-500">Receive emails when tickets are updated</p>
+                      <p className="font-medium text-gray-900">{t('settings.emailTicketUpdates')}</p>
+                      <p className="text-sm text-gray-500">{t('settings.emailTicketUpdatesDesc')}</p>
                     </div>
                     <input
                       type="checkbox"
@@ -342,8 +344,8 @@ export default function SettingsPage() {
                   </label>
                   <label className="flex items-center justify-between p-4 bg-gray-50 rounded-lg cursor-pointer">
                     <div>
-                      <p className="font-medium text-gray-900">Email - SLA Warnings</p>
-                      <p className="text-sm text-gray-500">Receive alerts for SLA breaches</p>
+                      <p className="font-medium text-gray-900">{t('settings.emailSlaWarnings')}</p>
+                      <p className="text-sm text-gray-500">{t('settings.emailSlaWarningsDesc')}</p>
                     </div>
                     <input
                       type="checkbox"
@@ -354,8 +356,8 @@ export default function SettingsPage() {
                   </label>
                   <label className="flex items-center justify-between p-4 bg-gray-50 rounded-lg cursor-pointer">
                     <div>
-                      <p className="font-medium text-gray-900">Browser Notifications</p>
-                      <p className="text-sm text-gray-500">Show desktop notifications</p>
+                      <p className="font-medium text-gray-900">{t('settings.browserNotifications')}</p>
+                      <p className="text-sm text-gray-500">{t('settings.browserNotificationsDesc')}</p>
                     </div>
                     <input
                       type="checkbox"
@@ -370,27 +372,57 @@ export default function SettingsPage() {
 
             {activeTab === 'appearance' && (
               <div className="space-y-6">
-                <h2 className="text-lg font-semibold text-gray-900">Appearance</h2>
+                <h2 className="text-lg font-semibold text-gray-900">{t('settings.appearance')}</h2>
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-3">Theme</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-3">{t('settings.theme')}</label>
                     <div className="flex space-x-4">
                       <button className="flex-1 p-4 border-2 border-blue-500 rounded-lg bg-white">
                         <div className="w-full h-8 bg-gray-100 rounded mb-2"></div>
-                        <p className="text-sm font-medium text-center">Light</p>
+                        <p className="text-sm font-medium text-center">{t('settings.light')}</p>
                       </button>
                       <button className="flex-1 p-4 border-2 border-gray-200 rounded-lg bg-gray-800">
                         <div className="w-full h-8 bg-gray-700 rounded mb-2"></div>
-                        <p className="text-sm font-medium text-center text-white">Dark</p>
+                        <p className="text-sm font-medium text-center text-white">{t('settings.dark')}</p>
                       </button>
                     </div>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Language</label>
-                    <select className="w-full max-w-xs px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                      <option value="vi">Tiếng Việt</option>
-                      <option value="en">English</option>
-                    </select>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">{t('settings.language')}</label>
+                    <div className="relative w-full max-w-xs">
+                      <select 
+                        value={language}
+                        onChange={(e) => setLanguage(e.target.value as 'en' | 'vi')}
+                        className="w-full px-4 py-2.5 pl-12 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none bg-white"
+                      >
+                        <option value="vi">Tiếng Việt</option>
+                        <option value="en">English</option>
+                      </select>
+                      <div className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                        {language === 'vi' ? (
+                          <svg className="w-6 h-6" viewBox="0 0 30 20" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="30" height="20" fill="#DA251D"/>
+                            <polygon points="15,4 16.5,9 21.5,9 17.5,12 19,17 15,14 11,17 12.5,12 8.5,9 13.5,9" fill="#FFFF00"/>
+                          </svg>
+                        ) : (
+                          <svg className="w-6 h-6" viewBox="0 0 60 30" xmlns="http://www.w3.org/2000/svg">
+                            <clipPath id="s">
+                              <path d="M0,0 v30 h60 v-30 z"/>
+                            </clipPath>
+                            <clipPath id="t">
+                              <path d="M30,15 h30 v15 z v-15 h-30 z h-30 v15 z v-15 h30 z"/>
+                            </clipPath>
+                            <g clipPath="url(#s)">
+                              <path d="M0,0 v30 h60 v-30 z" fill="#012169"/>
+                              <path d="M0,0 L60,30 M60,0 L0,30" stroke="#fff" strokeWidth="6"/>
+                              <path d="M0,0 L60,30 M60,0 L0,30" clipPath="url(#t)" stroke="#C8102E" strokeWidth="4"/>
+                              <path d="M30,0 v30 M0,15 h60" stroke="#fff" strokeWidth="10"/>
+                              <path d="M30,0 v30 M0,15 h60" stroke="#C8102E" strokeWidth="6"/>
+                            </g>
+                          </svg>
+                        )}
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>

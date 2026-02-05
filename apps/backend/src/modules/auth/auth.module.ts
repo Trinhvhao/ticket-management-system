@@ -6,11 +6,12 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { JwtStrategy } from './strategies/jwt.strategy';
-import { User } from '../../database/entities';
+import { User, PasswordReset } from '../../database/entities';
+import { EmailService } from '../../common/services/email.service';
 
 @Module({
   imports: [
-    SequelizeModule.forFeature([User]),
+    SequelizeModule.forFeature([User, PasswordReset]),
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.registerAsync({
       imports: [ConfigModule],
@@ -24,7 +25,7 @@ import { User } from '../../database/entities';
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy],
+  providers: [AuthService, JwtStrategy, EmailService],
   exports: [AuthService, JwtStrategy, PassportModule],
 })
 export class AuthModule {}

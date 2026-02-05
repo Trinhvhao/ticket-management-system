@@ -1,15 +1,7 @@
 import apiClient from './client';
+import type { Notification } from '@/types/notification.types';
 
-export interface Notification {
-  id: number;
-  userId: number;
-  type: 'ticket_created' | 'ticket_assigned' | 'ticket_updated' | 'ticket_resolved' | 'comment_added' | 'sla_warning' | 'sla_breach';
-  title: string;
-  message: string;
-  ticketId?: number;
-  isRead: boolean;
-  createdAt: string;
-}
+export type { Notification };
 
 export const notificationsService = {
   getAll: async (): Promise<Notification[]> => {
@@ -22,8 +14,8 @@ export const notificationsService = {
     return response.data;
   },
 
-  getUnreadCount: async (): Promise<{ count: number }> => {
-    const response = await apiClient.get<{ count: number }>('/notifications/unread/count');
+  getUnreadCount: async (): Promise<number> => {
+    const response = await apiClient.get<number>('/notifications/unread/count');
     return response.data;
   },
 

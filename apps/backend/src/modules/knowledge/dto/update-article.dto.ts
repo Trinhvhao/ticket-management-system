@@ -1,4 +1,5 @@
-import { IsString, IsOptional, IsArray, MaxLength, IsBoolean } from 'class-validator';
+import { IsString, IsOptional, IsArray, MaxLength, IsBoolean, IsInt } from 'class-validator';
+import { Type } from 'class-transformer';
 
 export class UpdateArticleDto {
   @IsString()
@@ -20,9 +21,10 @@ export class UpdateArticleDto {
   @IsOptional()
   tags?: string[];
 
-  @IsString()
+  @IsInt()
+  @Type(() => Number)
   @IsOptional()
-  category?: string;
+  categoryId?: number;
 
   @IsBoolean()
   @IsOptional()

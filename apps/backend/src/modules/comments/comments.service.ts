@@ -5,6 +5,7 @@ import { User, UserRole } from '../../database/entities/user.entity';
 import { Ticket } from '../../database/entities/ticket.entity';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
+import { NotificationsService } from '../notifications/notifications.service';
 
 @Injectable()
 export class CommentsService {
@@ -13,6 +14,7 @@ export class CommentsService {
     private readonly commentModel: typeof Comment,
     @InjectModel(Ticket)
     private readonly ticketModel: typeof Ticket,
+    private readonly notificationsService: NotificationsService,
   ) {}
 
   /**
@@ -54,6 +56,15 @@ export class CommentsService {
       content: createCommentDto.content,
       type: commentType,
     } as any);
+
+    // 🔔 Send notification about new comment (only for public and internal comments)
+    if (commentType !== CommentType.SYSTEM) {
+      await this.notificationsService.notifyTicketCommented(
+        ticketId,
+        currentUser,
+        createCommentDto.content,
+      );
+    }
 
     return this.findOne(comment.id, currentUser);
   }

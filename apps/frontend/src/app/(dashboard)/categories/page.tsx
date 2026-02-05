@@ -6,6 +6,7 @@ import { toast } from 'react-hot-toast';
 import { categoriesService, Category, CreateCategoryRequest } from '@/lib/api/categories.service';
 import { useAuthStore } from '@/lib/stores/auth.store';
 import { UserRole } from '@/lib/types/auth.types';
+import { useLanguage } from '@/lib/contexts/LanguageContext';
 import {
   Plus,
   FolderKanban,
@@ -20,6 +21,7 @@ import {
 export default function CategoriesPage() {
   const queryClient = useQueryClient();
   const { user } = useAuthStore();
+  const { t } = useLanguage();
   const [showModal, setShowModal] = useState(false);
   const [editingCategory, setEditingCategory] = useState<Category | null>(null);
   const [formData, setFormData] = useState<CreateCategoryRequest>({ name: '', description: '' });
@@ -28,8 +30,8 @@ export default function CategoriesPage() {
     return (
       <div className="text-center py-20">
         <Shield className="w-16 h-16 text-red-400 mx-auto mb-4" />
-        <h2 className="text-xl font-semibold text-gray-900 mb-2">Access Denied</h2>
-        <p className="text-gray-500">You don't have permission to view this page.</p>
+        <h2 className="text-xl font-semibold text-gray-900 mb-2">{t('users.accessDenied')}</h2>
+        <p className="text-gray-500">{t('categories.noPermission')}</p>
       </div>
     );
   }
@@ -42,38 +44,38 @@ export default function CategoriesPage() {
   const createMutation = useMutation({
     mutationFn: (data: CreateCategoryRequest) => categoriesService.create(data),
     onSuccess: () => {
-      toast.success('Category created');
+      toast.success(t('categories.created'));
       queryClient.invalidateQueries({ queryKey: ['categories'] });
       closeModal();
     },
-    onError: (error: any) => toast.error(error.response?.data?.message || 'Failed to create'),
+    onError: (error: any) => toast.error(error.response?.data?.message || t('categories.createFailed')),
   });
 
   const updateMutation = useMutation({
     mutationFn: ({ id, data }: { id: number; data: Partial<CreateCategoryRequest> }) => 
       categoriesService.update(id, data),
     onSuccess: () => {
-      toast.success('Category updated');
+      toast.success(t('categories.updated'));
       queryClient.invalidateQueries({ queryKey: ['categories'] });
       closeModal();
     },
-    onError: (error: any) => toast.error(error.response?.data?.message || 'Failed to update'),
+    onError: (error: any) => toast.error(error.response?.data?.message || t('categories.updateFailed')),
   });
 
   const deleteMutation = useMutation({
     mutationFn: (id: number) => categoriesService.delete(id),
     onSuccess: () => {
-      toast.success('Category deleted');
+      toast.success(t('categories.deleted'));
       queryClient.invalidateQueries({ queryKey: ['categories'] });
     },
-    onError: (error: any) => toast.error(error.response?.data?.message || 'Failed to delete'),
+    onError: (error: any) => toast.error(error.response?.data?.message || t('categories.deleteFailed')),
   });
 
   const toggleMutation = useMutation({
     mutationFn: ({ id, isActive }: { id: number; isActive: boolean }) => 
       isActive ? categoriesService.deactivate(id) : categoriesService.activate(id),
     onSuccess: () => {
-      toast.success('Status updated');
+      toast.success(t('categories.statusUpdated'));
       queryClient.invalidateQueries({ queryKey: ['categories'] });
     },
   });
@@ -110,15 +112,15 @@ export default function CategoriesPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Categories</h1>
-          <p className="text-gray-500 mt-1">Manage ticket categories</p>
+          <h1 className="text-2xl font-bold text-gray-900">{t('categories.title')}</h1>
+          <p className="text-gray-500 mt-1">{t('categories.description')}</p>
         </div>
         <button
           onClick={() => openModal()}
           className="inline-flex items-center space-x-2 px-4 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium"
         >
           <Plus className="w-5 h-5" />
-          <span>Add Category</span>
+          <span>{t('categories.addCategory')}</span>
         </button>
       </div>
 
@@ -130,20 +132,20 @@ export default function CategoriesPage() {
         ) : !categories?.length ? (
           <div className="text-center py-20">
             <FolderKanban className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 mb-2">No categories</h3>
+            <h3 className="text-lg font-medium text-gray-900 mb-2">{t('categories.noCategories')}</h3>
             <button onClick={() => openModal()} className="text-blue-600 hover:text-blue-700 font-medium">
-              Create first category
+              {t('categories.createFirst')}
             </button>
           </div>
         ) : (
           <table className="w-full">
             <thead className="bg-gray-50 border-b border-gray-200">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Category</th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase hidden md:table-cell">Description</th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Tickets</th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Status</th>
-                <th className="px-6 py-3 text-right text-xs font-semibold text-gray-600 uppercase">Actions</th>
+                <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">{t('categories.category')}</th>
+                <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase hidden md:table-cell">{t('categories.description')}</th>
+                <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">{t('categories.tickets')}</th>
+                <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">{t('common.status')}</th>
+                <th className="px-6 py-3 text-right text-xs font-semibold text-gray-600 uppercase">{t('common.actions')}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
@@ -170,7 +172,7 @@ export default function CategoriesPage() {
                         cat.isActive ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600'
                       }`}
                     >
-                      {cat.isActive ? 'Active' : 'Inactive'}
+                      {cat.isActive ? t('common.active') : t('common.inactive')}
                     </button>
                   </td>
                   <td className="px-6 py-4 text-right">
@@ -183,7 +185,7 @@ export default function CategoriesPage() {
                       </button>
                       <button
                         onClick={() => {
-                          if (confirm('Delete this category?')) deleteMutation.mutate(cat.id);
+                          if (confirm(t('categories.deleteConfirm'))) deleteMutation.mutate(cat.id);
                         }}
                         className="p-2 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-lg"
                       >
@@ -204,7 +206,7 @@ export default function CategoriesPage() {
           <div className="bg-white rounded-xl shadow-xl max-w-md w-full mx-4 p-6">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-semibold text-gray-900">
-                {editingCategory ? 'Edit Category' : 'New Category'}
+                {editingCategory ? t('categories.editCategory') : t('categories.newCategory')}
               </h3>
               <button onClick={closeModal} className="p-2 hover:bg-gray-100 rounded-lg">
                 <X className="w-5 h-5" />
@@ -212,7 +214,7 @@ export default function CategoriesPage() {
             </div>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Name *</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">{t('categories.name')} *</label>
                 <input
                   type="text"
                   value={formData.name}
@@ -222,7 +224,7 @@ export default function CategoriesPage() {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">{t('categories.description')}</label>
                 <textarea
                   value={formData.description}
                   onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
@@ -232,7 +234,7 @@ export default function CategoriesPage() {
               </div>
               <div className="flex justify-end space-x-3 pt-4">
                 <button type="button" onClick={closeModal} className="px-4 py-2 text-gray-700 hover:text-gray-900">
-                  Cancel
+                  {t('common.cancel')}
                 </button>
                 <button
                   type="submit"
@@ -244,7 +246,7 @@ export default function CategoriesPage() {
                   ) : (
                     <Check className="w-4 h-4 mr-2" />
                   )}
-                  {editingCategory ? 'Update' : 'Create'}
+                  {editingCategory ? t('common.update') : t('common.create')}
                 </button>
               </div>
             </form>

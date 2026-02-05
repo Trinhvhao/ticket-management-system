@@ -2,6 +2,7 @@
 
 import { Ticket, TicketStatus, TicketPriority } from '@/lib/types/ticket.types';
 import { useRouter } from 'next/navigation';
+import { formatRelativeTime } from '@/lib/utils/format';
 import { 
   Clock, 
   User, 
@@ -51,25 +52,6 @@ export default function CompactTicketList({
   const permissions = usePermissions();
   const [hoveredId, setHoveredId] = useState<number | null>(null);
   const [showActionsFor, setShowActionsFor] = useState<number | null>(null);
-
-  const formatDate = (date: string) => {
-    const d = new Date(date);
-    const now = new Date();
-    const diff = now.getTime() - d.getTime();
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    
-    if (days === 0) {
-      const hours = Math.floor(diff / (1000 * 60 * 60));
-      if (hours === 0) {
-        const mins = Math.floor(diff / (1000 * 60));
-        return `${mins}m ago`;
-      }
-      return `${hours}h ago`;
-    }
-    if (days === 1) return 'Yesterday';
-    if (days < 7) return `${days}d ago`;
-    return d.toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit' });
-  };
 
   return (
     <div className="divide-y divide-gray-100">
@@ -189,7 +171,7 @@ export default function CompactTicketList({
             {/* Updated */}
             <div className="w-20 text-right hidden sm:block">
               <span className="text-xs text-gray-500">
-                {formatDate(ticket.updatedAt)}
+                {formatRelativeTime(ticket.updatedAt)}
               </span>
             </div>
 

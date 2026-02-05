@@ -63,7 +63,7 @@ export default function StatCard({ title, value, change, icon: Icon, color, bgCo
                 </motion.span>
                 <span className="ml-1">{Math.abs(change.value)}%</span>
               </span>
-              <span className="text-xs text-gray-500 ml-2">vs last period</span>
+              <span className="text-xs text-gray-500 ml-2">so với kỳ trước</span>
             </motion.div>
           )}
         </div>

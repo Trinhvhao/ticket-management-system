@@ -86,23 +86,23 @@ export function EscalationRuleForm({ rule, onClose, onSuccess }: EscalationRuleF
     
     // Validate
     if (!formData.name.trim()) {
-      alert('Please enter a rule name');
+      alert('Vui lòng nhập tên quy tắc');
       return;
     }
 
     if (formData.targetType === 'user' && !formData.targetUserId) {
-      alert('Please select a target user');
+      alert('Vui lòng chọn người dùng đích');
       return;
     }
 
     if (formData.targetType === 'role' && !formData.targetRole) {
-      alert('Please select a target role');
+      alert('Vui lòng chọn vai trò đích');
       return;
     }
 
     if ((formData.triggerType === 'no_assignment' || formData.triggerType === 'no_response') 
         && !formData.triggerHours) {
-      alert('Please enter trigger hours');
+      alert('Vui lòng nhập số giờ kích hoạt');
       return;
     }
 
@@ -122,7 +122,7 @@ export function EscalationRuleForm({ rule, onClose, onSuccess }: EscalationRuleF
       <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
         <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
           <h2 className="text-xl font-bold text-gray-900">
-            {rule ? 'Edit Escalation Rule' : 'Create New Escalation Rule'}
+            {rule ? 'Sửa Quy tắc Escalation' : 'Tạo Quy tắc Escalation Mới'}
           </h2>
           <button
             onClick={onClose}
@@ -136,14 +136,14 @@ export function EscalationRuleForm({ rule, onClose, onSuccess }: EscalationRuleF
           {/* Name */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Rule Name <span className="text-red-500">*</span>
+              Tên Quy tắc <span className="text-red-500">*</span>
             </label>
             <input
               type="text"
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              placeholder="e.g., High Priority SLA Breach"
+              placeholder="VD: Vi phạm SLA Ưu tiên Cao"
               required
             />
           </div>
@@ -151,21 +151,21 @@ export function EscalationRuleForm({ rule, onClose, onSuccess }: EscalationRuleF
           {/* Description */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Description
+              Mô tả
             </label>
             <textarea
               value={formData.description}
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               rows={3}
-              placeholder="Describe when this rule should trigger..."
+              placeholder="Mô tả khi nào quy tắc này được kích hoạt..."
             />
           </div>
 
           {/* Trigger Type */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Trigger Type <span className="text-red-500">*</span>
+              Loại Kích hoạt <span className="text-red-500">*</span>
             </label>
             <select
               value={formData.triggerType}
@@ -177,10 +177,10 @@ export function EscalationRuleForm({ rule, onClose, onSuccess }: EscalationRuleF
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               required
             >
-              <option value="sla_breached">SLA Breached</option>
-              <option value="sla_at_risk">SLA At Risk (80%)</option>
-              <option value="no_assignment">No Assignment After X Hours</option>
-              <option value="no_response">No Response After X Hours</option>
+              <option value="sla_breached">Vi phạm SLA</option>
+              <option value="sla_at_risk">SLA có Rủi ro (80%)</option>
+              <option value="no_assignment">Chưa Phân công sau X giờ</option>
+              <option value="no_response">Chưa Phản hồi sau X giờ</option>
             </select>
           </div>
 
@@ -188,7 +188,7 @@ export function EscalationRuleForm({ rule, onClose, onSuccess }: EscalationRuleF
           {needsTriggerHours && (
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                Trigger After (Hours) <span className="text-red-500">*</span>
+                Kích hoạt Sau (Giờ) <span className="text-red-500">*</span>
               </label>
               <input
                 type="number"
@@ -200,11 +200,11 @@ export function EscalationRuleForm({ rule, onClose, onSuccess }: EscalationRuleF
                   triggerHours: parseInt(e.target.value) 
                 })}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                placeholder="e.g., 2"
+                placeholder="VD: 2"
                 required
               />
               <p className="text-xs text-gray-500 mt-1">
-                Escalate if no {formData.triggerType === 'no_assignment' ? 'assignment' : 'response'} after this many hours
+                Leo thang nếu không có {formData.triggerType === 'no_assignment' ? 'phân công' : 'phản hồi'} sau số giờ này
               </p>
             </div>
           )}
@@ -212,7 +212,7 @@ export function EscalationRuleForm({ rule, onClose, onSuccess }: EscalationRuleF
           {/* Escalation Level */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Escalation Level <span className="text-red-500">*</span>
+              Cấp Escalation <span className="text-red-500">*</span>
             </label>
             <select
               value={formData.escalationLevel}
@@ -223,18 +223,18 @@ export function EscalationRuleForm({ rule, onClose, onSuccess }: EscalationRuleF
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               required
             >
-              <option value="1">Level 1 (First Escalation)</option>
-              <option value="2">Level 2</option>
-              <option value="3">Level 3</option>
-              <option value="4">Level 4</option>
-              <option value="5">Level 5 (Highest)</option>
+              <option value="1">Cấp 1 (Leo thang Đầu tiên)</option>
+              <option value="2">Cấp 2</option>
+              <option value="3">Cấp 3</option>
+              <option value="4">Cấp 4</option>
+              <option value="5">Cấp 5 (Cao nhất)</option>
             </select>
           </div>
 
           {/* Target Type */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Escalate To <span className="text-red-500">*</span>
+              Leo thang Đến <span className="text-red-500">*</span>
             </label>
             <select
               value={formData.targetType}
@@ -247,9 +247,9 @@ export function EscalationRuleForm({ rule, onClose, onSuccess }: EscalationRuleF
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               required
             >
-              <option value="role">Role (Workload-based)</option>
-              <option value="user">Specific User</option>
-              <option value="manager">Manager</option>
+              <option value="role">Vai trò (Dựa trên khối lượng)</option>
+              <option value="user">Người dùng Cụ thể</option>
+              <option value="manager">Quản lý</option>
             </select>
           </div>
 
@@ -257,7 +257,7 @@ export function EscalationRuleForm({ rule, onClose, onSuccess }: EscalationRuleF
           {formData.targetType === 'role' && (
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                Target Role <span className="text-red-500">*</span>
+                Vai trò Đích <span className="text-red-500">*</span>
               </label>
               <select
                 value={formData.targetRole}
@@ -265,11 +265,11 @@ export function EscalationRuleForm({ rule, onClose, onSuccess }: EscalationRuleF
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 required
               >
-                <option value="IT_Staff">IT Staff</option>
+                <option value="IT_Staff">Nhân viên IT</option>
                 <option value="Admin">Admin</option>
               </select>
               <p className="text-xs text-gray-500 mt-1">
-                Will assign to user with least open tickets in this role
+                Sẽ phân công cho người có ít ticket mở nhất trong vai trò này
               </p>
             </div>
           )}
@@ -278,7 +278,7 @@ export function EscalationRuleForm({ rule, onClose, onSuccess }: EscalationRuleF
           {formData.targetType === 'user' && (
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                Target User <span className="text-red-500">*</span>
+                Người dùng Đích <span className="text-red-500">*</span>
               </label>
               <select
                 value={formData.targetUserId || ''}
@@ -289,7 +289,7 @@ export function EscalationRuleForm({ rule, onClose, onSuccess }: EscalationRuleF
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 required
               >
-                <option value="">Select a user...</option>
+                <option value="">Chọn người dùng...</option>
                 {users
                   .filter(u => u.role === 'IT_Staff' || u.role === 'Admin')
                   .map(user => (
@@ -304,7 +304,7 @@ export function EscalationRuleForm({ rule, onClose, onSuccess }: EscalationRuleF
           {/* Priority Filter */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Priority Filter (Optional)
+              Lọc Độ ưu tiên (Tùy chọn)
             </label>
             <select
               value={formData.priority || ''}
@@ -314,20 +314,20 @@ export function EscalationRuleForm({ rule, onClose, onSuccess }: EscalationRuleF
               })}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             >
-              <option value="">All Priorities</option>
-              <option value="High">High Only</option>
-              <option value="Medium">Medium Only</option>
-              <option value="Low">Low Only</option>
+              <option value="">Tất cả Độ ưu tiên</option>
+              <option value="High">Chỉ Cao</option>
+              <option value="Medium">Chỉ Trung bình</option>
+              <option value="Low">Chỉ Thấp</option>
             </select>
             <p className="text-xs text-gray-500 mt-1">
-              Leave empty to apply to all priorities
+              Để trống để áp dụng cho tất cả độ ưu tiên
             </p>
           </div>
 
           {/* Category Filter */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Category Filter (Optional)
+              Lọc Danh mục (Tùy chọn)
             </label>
             <select
               value={formData.categoryId || ''}
@@ -337,7 +337,7 @@ export function EscalationRuleForm({ rule, onClose, onSuccess }: EscalationRuleF
               })}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             >
-              <option value="">All Categories</option>
+              <option value="">Tất cả Danh mục</option>
               {categories.map(cat => (
                 <option key={cat.id} value={cat.id}>
                   {cat.name}
@@ -345,7 +345,7 @@ export function EscalationRuleForm({ rule, onClose, onSuccess }: EscalationRuleF
               ))}
             </select>
             <p className="text-xs text-gray-500 mt-1">
-              Leave empty to apply to all categories
+              Để trống để áp dụng cho tất cả danh mục
             </p>
           </div>
 
@@ -362,7 +362,7 @@ export function EscalationRuleForm({ rule, onClose, onSuccess }: EscalationRuleF
               className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
             />
             <label htmlFor="notifyManager" className="text-sm text-gray-700">
-              Notify all Admins when escalated
+              Thông báo tất cả Admin khi leo thang
             </label>
           </div>
 
@@ -379,7 +379,7 @@ export function EscalationRuleForm({ rule, onClose, onSuccess }: EscalationRuleF
               className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
             />
             <label htmlFor="isActive" className="text-sm text-gray-700">
-              Activate this rule immediately
+              Kích hoạt quy tắc này ngay lập tức
             </label>
           </div>
 
@@ -391,17 +391,17 @@ export function EscalationRuleForm({ rule, onClose, onSuccess }: EscalationRuleF
               onClick={onClose}
               disabled={createMutation.isPending || updateMutation.isPending}
             >
-              Cancel
+              Hủy
             </Button>
             <Button
               type="submit"
               disabled={createMutation.isPending || updateMutation.isPending}
             >
               {createMutation.isPending || updateMutation.isPending
-                ? 'Saving...'
+                ? 'Đang lưu...'
                 : rule
-                ? 'Update Rule'
-                : 'Create Rule'}
+                ? 'Cập nhật Quy tắc'
+                : 'Tạo Quy tắc'}
             </Button>
           </div>
         </form>

@@ -2,9 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
-import { useQuery } from '@tanstack/react-query';
 import { 
-  Bell, 
   User, 
   LogOut, 
   Settings, 
@@ -14,7 +12,9 @@ import {
   HelpCircle,
 } from 'lucide-react';
 import { useAuth } from '@/lib/hooks/useAuth';
-import { notificationsService } from '@/lib/api/notifications.service';
+import { useLanguage } from '@/lib/contexts/LanguageContext';
+import NotificationBell from './NotificationBell';
+import { LanguageSwitcher } from '../common/LanguageSwitcher';
 
 interface HeaderProps {
   onMenuClick?: () => void;
@@ -24,17 +24,9 @@ export function Header({ onMenuClick }: HeaderProps) {
   const router = useRouter();
   const pathname = usePathname();
   const { user, logout } = useAuth();
+  const { t } = useLanguage();
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-
-  // Fetch unread notification count
-  const { data: unreadData } = useQuery({
-    queryKey: ['unread-count'],
-    queryFn: () => notificationsService.getUnreadCount(),
-    refetchInterval: 30000, // Refetch every 30 seconds
-  });
-
-  const unreadCount = unreadData?.count || 0;
 
   const handleLogout = () => {
     logout();
@@ -103,7 +95,7 @@ export function Header({ onMenuClick }: HeaderProps) {
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search tickets, users, or knowledge base..."
+              placeholder="Tìm kiếm ticket, người dùng hoặc kho kiến thức..."
               className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
           </div>
@@ -117,6 +109,9 @@ export function Header({ onMenuClick }: HeaderProps) {
           <Search className="w-5 h-5 text-gray-600" />
         </button>
 
+        {/* Language Switcher */}
+        <LanguageSwitcher />
+
         {/* Help */}
         <button
           onClick={() => router.push('/knowledge')}
@@ -127,18 +122,7 @@ export function Header({ onMenuClick }: HeaderProps) {
         </button>
 
         {/* Notifications */}
-        <button
-          onClick={() => router.push('/notifications')}
-          className="p-2 rounded-lg hover:bg-gray-100 transition-colors relative"
-          title="Thông báo"
-        >
-          <Bell className="w-5 h-5 text-gray-600" />
-          {unreadCount > 0 && (
-            <span className="absolute top-1 right-1 min-w-[18px] h-[18px] bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-medium px-1">
-              {unreadCount > 99 ? '99+' : unreadCount}
-            </span>
-          )}
-        </button>
+        <NotificationBell />
 
         {/* User Menu */}
         <div className="relative">
@@ -188,7 +172,7 @@ export function Header({ onMenuClick }: HeaderProps) {
                   className="w-full flex items-center px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
                 >
                   <User className="w-4 h-4 mr-3 text-gray-400" />
-                  <span>Hồ sơ của tôi</span>
+                  <span>{t('user.profile')}</span>
                 </button>
                 
                 <button
@@ -199,7 +183,7 @@ export function Header({ onMenuClick }: HeaderProps) {
                   className="w-full flex items-center px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
                 >
                   <Settings className="w-4 h-4 mr-3 text-gray-400" />
-                  <span>Cài đặt</span>
+                  <span>{t('user.settings')}</span>
                 </button>
               </div>
               
@@ -209,7 +193,7 @@ export function Header({ onMenuClick }: HeaderProps) {
                   className="w-full flex items-center px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors"
                 >
                   <LogOut className="w-4 h-4 mr-3" />
-                  <span className="font-medium">Đăng xuất</span>
+                  <span className="font-medium">{t('user.logout')}</span>
                 </button>
               </div>
             </div>

@@ -68,12 +68,12 @@ export function LoginForm() {
 
       {/* Remember Me & Forgot Password */}
       <div className="flex items-center justify-between">
-        <Checkbox id="remember" label="Remember me" />
+        <Checkbox id="remember" label="Ghi nhớ đăng nhập" />
         <Link
           href="/forgot-password"
           className="text-sm text-[#0052CC] hover:text-blue-700 font-medium"
         >
-          Forgot password?
+          Quên mật khẩu?
         </Link>
       </div>
 
@@ -85,16 +85,16 @@ export function LoginForm() {
         fullWidth
         isLoading={isLoading}
       >
-        {isLoading ? 'Signing in...' : 'Sign In'}
+        {isLoading ? 'Đang đăng nhập...' : 'Đăng nhập'}
       </Button>
 
       {/* Demo Credentials */}
       <div className="mt-4 p-4 bg-blue-50 border border-blue-100 rounded-lg">
-        <p className="text-xs font-semibold text-blue-900 mb-2">Demo Credentials:</p>
+        <p className="text-xs font-semibold text-blue-900 mb-2">Tài khoản demo:</p>
         <div className="space-y-1 text-xs text-blue-700">
-          <p><strong>Employee:</strong> employee@28h.com / password123</p>
+          <p><strong>Nhân viên:</strong> employee@28h.com / password123</p>
           <p><strong>IT Staff:</strong> itstaff@28h.com / password123</p>
-          <p><strong>Admin:</strong> admin@28h.com / password123</p>
+          <p><strong>Quản trị:</strong> admin@28h.com / password123</p>
         </div>
       </div>
     </form>

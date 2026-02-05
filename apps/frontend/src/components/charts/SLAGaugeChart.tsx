@@ -3,6 +3,7 @@
 import { motion, useSpring, useTransform } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { AlertTriangle, CheckCircle, TrendingUp } from 'lucide-react';
+import { useLanguage } from '@/lib/contexts/LanguageContext';
 
 interface SLAGaugeChartProps {
   value: number; // 0-100
@@ -18,6 +19,7 @@ export default function SLAGaugeChart({
   atRiskCount = 0 
 }: SLAGaugeChartProps) {
   const [isVisible, setIsVisible] = useState(false);
+  const { t } = useLanguage();
   
   // Animated value
   const springValue = useSpring(0, { stiffness: 50, damping: 20 });
@@ -78,7 +80,7 @@ export default function SLAGaugeChart({
       <div className="relative">
         <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
           <span className="w-1 h-6 bg-gradient-to-b from-green-500 to-emerald-600 rounded-full mr-3" />
-          Tuân thủ SLA
+          {t('sla.compliance')}
         </h3>
 
         <div className="flex flex-col items-center">
@@ -179,7 +181,7 @@ export default function SLAGaugeChart({
               >
                 <motion.span>{displayValue}</motion.span>%
               </motion.span>
-              <span className="text-xs text-gray-500 mt-1">Tỷ lệ tuân thủ</span>
+              <span className="text-xs text-gray-500 mt-1">{t('sla.compliance')}</span>
             </div>
           </div>
 
@@ -196,7 +198,7 @@ export default function SLAGaugeChart({
               </div>
               <div>
                 <p className="text-2xl font-bold text-red-600">{breachedCount}</p>
-                <p className="text-xs text-red-600/70">Vi phạm SLA</p>
+                <p className="text-xs text-red-600/70">{t('sla.breached')}</p>
               </div>
             </motion.div>
 
@@ -211,7 +213,7 @@ export default function SLAGaugeChart({
               </div>
               <div>
                 <p className="text-2xl font-bold text-yellow-600">{atRiskCount}</p>
-                <p className="text-xs text-yellow-600/70">Có rủi ro</p>
+                <p className="text-xs text-yellow-600/70">{t('sla.atRisk')}</p>
               </div>
             </motion.div>
           </div>
@@ -230,12 +232,12 @@ export default function SLAGaugeChart({
             {value >= target ? (
               <>
                 <CheckCircle className="w-4 h-4" />
-                Đạt mục tiêu SLA
+                {t('sla.onTrack')}
               </>
             ) : (
               <>
                 <AlertTriangle className="w-4 h-4" />
-                Dưới mục tiêu ({target}%)
+                {t('sla.atRisk')} ({target}%)
               </>
             )}
           </motion.div>

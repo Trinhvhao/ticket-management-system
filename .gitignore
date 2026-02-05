@@ -107,3 +107,18 @@ uploads/
 
 # PM2
 ecosystem.config.js
+
+# Test and diagnostic scripts (temporary)
+test-*.js
+check-*.js
+diagnose-*.js
+analyze-*.js
+fix-*.js
+migrate-*.js
+rollback-*.js
+*-timezone-*.js
+reset-and-seed-*.js
+
+# Backup files
+backup*.sql
+*.backup

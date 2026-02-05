@@ -14,6 +14,7 @@ import { Holiday } from './holiday.entity';
 import { EscalationRule, EscalationTriggerType, EscalationTargetType } from './escalation-rule.entity';
 import { EscalationHistory } from './escalation-history.entity';
 import { RefreshToken } from './refresh-token.entity';
+import { PasswordReset } from './password-reset.entity';
 
 export { User, UserRole };
 export { Ticket, TicketStatus, TicketPriority };
@@ -30,6 +31,7 @@ export { Holiday };
 export { EscalationRule, EscalationTriggerType, EscalationTargetType };
 export { EscalationHistory };
 export { RefreshToken };
+export { PasswordReset };
 
 // Entity array for Sequelize configuration
 export const entities = [
@@ -48,4 +50,5 @@ export const entities = [
   EscalationRule,
   EscalationHistory,
   RefreshToken,
+  PasswordReset,
 ];

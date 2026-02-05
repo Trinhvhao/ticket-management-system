@@ -256,12 +256,12 @@ export default function StaffLeaderboard({ data, period = 'This Week' }: StaffLe
             {showAll ? (
               <>
                 <ChevronUp className="w-4 h-4" />
-                Show Less
+                Thu gọn
               </>
             ) : (
               <>
                 <ChevronDown className="w-4 h-4" />
-                Show All ({data.length})
+                Xem tất cả ({data.length})
               </>
             )}
           </motion.button>
@@ -271,7 +271,7 @@ export default function StaffLeaderboard({ data, period = 'This Week' }: StaffLe
         {data.length === 0 && (
           <div className="text-center py-12 text-gray-500">
             <Trophy className="w-12 h-12 mx-auto mb-3 text-gray-300" />
-            <p>No performance data available</p>
+            <p>Không có dữ liệu hiệu suất</p>
           </div>
         )}
       </div>
